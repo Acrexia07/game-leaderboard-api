@@ -1,4 +1,4 @@
-# TDD Log
+# Development Logs
 
 ---
 
@@ -39,7 +39,7 @@
 - Planned layered architecture (Controller → Service → Repository)
 - Designed `Player` entity with field-level validations
 - Sketched API endpoints
-- Chose MySQL for production, H2 for local/test
+- Chose MySQL for local, H2 for test
 
 **🧠 Reflection:**  
 ✅ Clear project direction and design before jumping into code  
@@ -52,7 +52,7 @@
 **📅 Date:** July 29, 2025
 
 **🎯 Goals:**
-- Configure application.properties for dev profile with MySQL
+- Configure application.properties for local profile with MySQL
 - Configure application.properties for test profile with H2 Console
 - Design and implement Docker containerization on MySQL
 - Implement Spring Security JWT Authentication
