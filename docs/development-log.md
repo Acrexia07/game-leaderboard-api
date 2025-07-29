@@ -47,18 +47,23 @@
 📌 **Next Step:** Configure Databases based on Profiles & Spring Security JWT Authentication
 
 
-## Day 3: Configure Databases based on Profiles & Spring Security JWT Authentication
+## Day 3: Configure Databases based on Profiles & JWT Initial Setup
 
 **📅 Date:** July 29, 2025
 
 **🎯 Goals:**
 - Configure application.properties for local profile with MySQL
 - Configure application.properties for test profile with H2 Console
-- Design and implement Docker containerization on MySQL
-- Implement Spring Security JWT Authentication
-- 
+- Set up Docker containerization for MYSQL
+- Add JWT dependencies in the pom.xml
 
 
 **🛠️ What I Did:**
-- Configured application.properties on both profiles (local and test)
-- 
+- Configured application.properties for both local and test profiles
+- Set up MySQL in Docker container
+- Added JWT dependencies in pom.xml for upcoming JWT implementation
+
+**🧠 Reflection:**  
+✅ Laid the groundwork for integrating Spring Security with JWT
+🧠 Helped me organize configurations before jumping into development
+📌 **Next Step:** Implement Spring Security with JWT
