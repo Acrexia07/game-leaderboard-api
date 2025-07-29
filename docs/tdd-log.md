@@ -44,5 +44,21 @@
 **🧠 Reflection:**  
 ✅ Clear project direction and design before jumping into code  
 🧠 Helped solidify leaderboard logic and backend flow  
-📌 **Next Step:** Create `Player` entity, write first test for leaderboard ranking logic
+📌 **Next Step:** Configure Databases based on Profiles & Spring Security JWT Authentication
 
+
+## Day 3: Configure Databases based on Profiles & Spring Security JWT Authentication
+
+**📅 Date:** July 29, 2025
+
+**🎯 Goals:**
+- Configure application.properties for dev profile with MySQL
+- Configure application.properties for test profile with H2 Console
+- Design and implement Docker containerization on MySQL
+- Implement Spring Security JWT Authentication
+- 
+
+
+**🛠️ What I Did:**
+- Configured application.properties on both profiles (local and test)
+- 
