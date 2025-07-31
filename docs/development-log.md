@@ -57,7 +57,6 @@
 - Set up Docker containerization for MYSQL
 - Add JWT dependencies in the pom.xml
 
-
 **🛠️ What I Did:**
 - Configured application.properties for both local and test profiles
 - Set up MySQL in Docker container
@@ -66,4 +65,14 @@
 **🧠 Reflection:**  
 ✅ Laid the groundwork for integrating Spring Security with JWT
 🧠 Helped me organize configurations before jumping into development
-📌 **Next Step:** Implement Spring Security with JWT
+📌 **Next Step:** Test case and test data development, and creation of the 'Player' entity
+
+## Day 3: Test case and test data development, and creation of the 'Player' entity
+Date: July 31, 2025
+
+**🎯 Goals:**
+- Develop test cases and test data in TDD approach
+- Create Player entity and its constraints
+- Develop a function for adding player info in service layer
+
+**🛠️ What I Did:**
