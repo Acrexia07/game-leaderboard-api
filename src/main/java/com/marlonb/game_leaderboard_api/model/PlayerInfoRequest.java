@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PlayerInfoRequest {
 
+    private String playerName;
 
     private int scores;
 

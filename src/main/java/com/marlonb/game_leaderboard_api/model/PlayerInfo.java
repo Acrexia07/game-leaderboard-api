@@ -22,7 +22,7 @@ public class PlayerInfo {
     @Column(unique = true, nullable = false)
     private UUID uuid;
 
-    private String username;
+    private String playerName;
 
     private int scores;
 
