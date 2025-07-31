@@ -6,7 +6,6 @@ import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
 import com.marlonb.game_leaderboard_api.repository.PlayerRepository;
 import com.marlonb.game_leaderboard_api.test_data.PlayerTestData;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;

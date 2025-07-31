@@ -19,7 +19,9 @@
 
 **🧠 Reflection:**  
 ✅ CI successfully runs on every push  
+
 ✅ Dummy test passed — confirms test runner and JUnit setup  
+
 📌 **Next Step:** Start project design and architecture planning
 
 ---
@@ -41,9 +43,10 @@
 - Sketched API endpoints
 - Chose MySQL for local, H2 for test
 
-**🧠 Reflection:**  
-✅ Clear project direction and design before jumping into code  
-🧠 Helped solidify leaderboard logic and backend flow  
+**🧠 Reflection:**
+- ✅ Clear project direction and design before jumping into code
+- 🧠 Helped solidify leaderboard logic and backend flow
+
 📌 **Next Step:** Configure Databases based on Profiles & Spring Security JWT Authentication
 
 
@@ -63,8 +66,9 @@
 - Added JWT dependencies in pom.xml for upcoming JWT implementation
 
 **🧠 Reflection:**  
-✅ Laid the groundwork for integrating Spring Security with JWT
-🧠 Helped me organize configurations before jumping into development
+- ✅ Laid the groundwork for integrating Spring Security with JWT
+- 🧠 Helped me organize configurations before jumping into development
+
 📌 **Next Step:** Test case and test data development, and creation of the 'Player' entity
 
 ## Day 3: Test case and test data development, and creation of the 'Player' entity
@@ -72,7 +76,21 @@ Date: July 31, 2025
 
 **🎯 Goals:**
 - Develop test cases and test data in TDD approach
-- Create Player entity and its constraints
-- Develop a function for adding player info in service layer
+- Create the `Player` entity and DTO with define validation constraints
+- Implement a service-layer function to add player info
 
-**🛠️ What I Did:**
+### 🛠️ What I Did:
+- Created `Player` entity and corresponding DTOs
+- Wrote test data helper methods and initial test case
+- Implemented `savePlayerData` service function
+
+### 🐞 Issue Encountered:
+- **Error:**  Auto-generated `contextLoads()` test was failing due to incomplete config
+- **Solution:** Deleted the unnecessary test file: `GameLeaderboardApiApplicationTests.java`
+- **Result:** CI builds successfully without failing test artifacts
+
+**🧠 Reflection:**  
+- ✅ I was impressed by the debugging experience — seeing UUID changes in real-time helped me quickly identify and fix 
+the issue
+- 🧪 Working on the service layer using a TDD mindset helped me appreciate the value of tests in driving the design
+📌 **Next Step:** Continue implementing and testing other functions in the service layer
