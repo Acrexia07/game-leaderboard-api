@@ -55,7 +55,7 @@ public class PlayerServiceUnitTests {
                     .thenReturn(expectedResponse);
 
             // Act
-            PlayerResponseDto actualResponse = PlayerService.savePlayerData(testPlayerRequest);
+            PlayerResponseDto actualResponse = playerService.savePlayerData(testPlayerRequest);
 
             // Assert
             assertThat(actualResponse).usingRecursiveAssertion().isEqualTo(expectedResponse);
