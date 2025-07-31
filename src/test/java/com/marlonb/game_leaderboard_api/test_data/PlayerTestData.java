@@ -12,7 +12,7 @@ public class PlayerTestData {
         var samplePlayerData = new PlayerInfo();
         samplePlayerData.setId(1L);
         samplePlayerData.setUuid(UUID.randomUUID());
-        samplePlayerData.setUsername("player1");
+        samplePlayerData.setPlayerName("player1");
         samplePlayerData.setScores(56700);
         samplePlayerData.setTimeStamp(LocalDateTime.now());
         return samplePlayerData;
