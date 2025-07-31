@@ -26,5 +26,5 @@ public class PlayerInfo {
 
     private int scores;
 
-    private LocalDateTime timeStamp;
+    private LocalDateTime timestamp;
 }

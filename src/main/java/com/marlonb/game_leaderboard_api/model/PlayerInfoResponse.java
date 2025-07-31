@@ -8,5 +8,5 @@ public record PlayerInfoResponse(
    UUID uuid,
    String username,
    int scores,
-   LocalDateTime timeStamps
+   LocalDateTime timestamp
 ) {}
