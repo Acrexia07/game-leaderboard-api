@@ -13,22 +13,23 @@ public class PlayerTestData {
     public static PlayerEntity samplePlayerData () {
 
         var samplePlayerData = new PlayerEntity();
+        final UUID playerUID = UUID.randomUUID();
         samplePlayerData.setId(1L);
-        samplePlayerData.setUuid(UUID.randomUUID());
+        samplePlayerData.setUuid(playerUID);
         samplePlayerData.setPlayerName("player1");
         samplePlayerData.setScores(56700);
         samplePlayerData.setTimestamp(LocalDateTime.now());
         return samplePlayerData;
     }
 
-    public static PlayerResponseDto samplePlayerResponse () {
+    public static PlayerResponseDto samplePlayerResponse (PlayerEntity samplePlayerData) {
 
         return new PlayerResponseDto(
-                samplePlayerData().getId(),
-                samplePlayerData().getUuid(),
-                samplePlayerData().getPlayerName(),
-                samplePlayerData().getScores(),
-                samplePlayerData().getTimestamp()
+                samplePlayerData.getId(),
+                samplePlayerData.getUuid(),
+                samplePlayerData.getPlayerName(),
+                samplePlayerData.getScores(),
+                samplePlayerData.getTimestamp()
         );
     }
 
