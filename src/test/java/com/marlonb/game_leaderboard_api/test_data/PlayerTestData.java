@@ -1,18 +1,18 @@
 package com.marlonb.game_leaderboard_api.test_data;
 
-import com.marlonb.game_leaderboard_api.model.PlayerInfo;
-import com.marlonb.game_leaderboard_api.model.PlayerInfoRequest;
-import com.marlonb.game_leaderboard_api.model.PlayerInfoResponse;
-import com.marlonb.game_leaderboard_api.model.PlayerInfoUpdate;
+import com.marlonb.game_leaderboard_api.model.PlayerEntity;
+import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
+import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
+import com.marlonb.game_leaderboard_api.model.PlayerUpdateDto;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class PlayerTestData {
 
-    public static PlayerInfo samplePlayerData () {
+    public static PlayerEntity samplePlayerData () {
 
-        var samplePlayerData = new PlayerInfo();
+        var samplePlayerData = new PlayerEntity();
         samplePlayerData.setId(1L);
         samplePlayerData.setUuid(UUID.randomUUID());
         samplePlayerData.setPlayerName("player1");
@@ -21,9 +21,9 @@ public class PlayerTestData {
         return samplePlayerData;
     }
 
-    public static PlayerInfoResponse samplePlayerResponse () {
+    public static PlayerResponseDto samplePlayerResponse () {
 
-        return new PlayerInfoResponse (
+        return new PlayerResponseDto(
                 samplePlayerData().getId(),
                 samplePlayerData().getUuid(),
                 samplePlayerData().getPlayerName(),
@@ -32,18 +32,18 @@ public class PlayerTestData {
         );
     }
 
-    public static PlayerInfoUpdate samplePlayerUpdate () {
+    public static PlayerUpdateDto samplePlayerUpdate () {
 
-        return new PlayerInfoUpdate (
+        return new PlayerUpdateDto(
                 samplePlayerData().getPlayerName(),
                 60000,
                 samplePlayerData().getTimestamp()
         );
     }
 
-    public static PlayerInfoRequest samplePlayerRequest () {
+    public static PlayerRequestDto samplePlayerRequest () {
 
-        return new PlayerInfoRequest(
+        return new PlayerRequestDto(
                 samplePlayerData().getPlayerName(),
                 samplePlayerData().getScores(),
                 samplePlayerData().getTimestamp()

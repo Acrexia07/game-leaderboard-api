@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlayerInfoUpdate {
+public class PlayerRequestDto {
 
     @NotBlank(message = "Player name is required!")
     @Size(max = 12, message = "Player name must not exceed 12 characters!")

@@ -9,14 +9,14 @@ import org.mapstruct.*;
 public interface PlayerInfoMapper {
 
     // Response mapping
-    PlayerInfoResponse toResponse (PlayerInfo playerInfo);
+    PlayerResponseDto toResponse (PlayerEntity playerInfo);
 
     // Request mapping
     @Mapping(target = "id", ignore = true)
-    PlayerInfo toEntity (PlayerInfoRequest playerRequest);
+    PlayerEntity toEntity (PlayerRequestDto playerRequest);
 
     // Update mapping
     @Mapping(target = "id", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void toUpdateFromEntity (@MappingTarget PlayerInfo playerInfo, PlayerInfoUpdate playerUpdate);
+    void toUpdateFromEntity (@MappingTarget PlayerEntity playerInfo, PlayerUpdateDto playerUpdate);
 }
