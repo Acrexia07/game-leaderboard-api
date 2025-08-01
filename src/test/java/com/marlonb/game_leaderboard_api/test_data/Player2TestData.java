@@ -24,14 +24,14 @@ public class Player2TestData {
         return  samplePlayerData2;
     }
 
-    public static PlayerResponseDto samplePlayerResponse2 () {
+    public static PlayerResponseDto samplePlayerResponse2 (PlayerEntity samplePlayer2Data) {
 
         return new PlayerResponseDto(
-                samplePlayerData2().getId(),
-                samplePlayerData2().getUuid(),
-                samplePlayerData2().getPlayerName(),
-                samplePlayerData2().getScores(),
-                samplePlayerData2().getTimestamp()
+                samplePlayer2Data.getId(),
+                samplePlayer2Data.getUuid(),
+                samplePlayer2Data.getPlayerName(),
+                samplePlayer2Data.getScores(),
+                samplePlayer2Data.getTimestamp()
         );
     }
 
