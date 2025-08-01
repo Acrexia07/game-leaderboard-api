@@ -7,7 +7,10 @@ import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
 import com.marlonb.game_leaderboard_api.repository.PlayerRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 @Service
 public class PlayerService {
@@ -21,6 +24,8 @@ public class PlayerService {
         this.playerMapper = playerMapper;
     }
 
+    // CREATE: Add new player data
+    @Transactional
     public static PlayerResponseDto savePlayerData (@Valid @RequestBody
                                                     PlayerRequestDto createRequest) {
 
@@ -28,4 +33,16 @@ public class PlayerService {
         playerRepository.save(createPlayer);
         return playerMapper.toResponse(createPlayer);
     }
+
+    // READ: Retrieve all players data
+    @Transactional(readOnly = true)
+    public static List<PlayerResponseDto> retrieveAllPlayersData () {
+
+        List<PlayerEntity> listOfPlayers = playerRepository.findAll();
+
+        return listOfPlayers.stream()
+                            .map(playerMapper::toResponse)
+                            .toList();
+    }
+
 }
