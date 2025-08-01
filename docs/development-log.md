@@ -1,6 +1,13 @@
 # Development Logs
 
 ---
+## Table of Contents
+- [Day 1: Project Setup and CI Integration](#day-1-project-setup-and-ci-integration)
+- [Day 2: Project Planning & Architecture Design](#day-2-project-planning--architecture-design)
+- [Day 3: Database Configuration & JWT Foundation](#day-3-database-configuration--jwt-foundation)
+- [Day 4: Entity Development & TDD Implementation](#day-4-entity-development--tdd-implementation)
+- [Day 5: Service Layer Expansion - Read Operations](#day-5-service-layer-expansion---read-operations)
+---
 
 ## Day 1: Project Setup and CI Integration
 **📅 Date:** July 27, 2025
