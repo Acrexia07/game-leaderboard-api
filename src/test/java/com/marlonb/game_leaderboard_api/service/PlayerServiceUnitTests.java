@@ -17,11 +17,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -112,6 +114,56 @@ public class PlayerServiceUnitTests {
             // Arrange
             PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
             testPlayerRequest.setPlayerName(invalidPlayerNames);
+
+            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+            Validator validator = factory.getValidator();
+
+            // Act
+            Set<ConstraintViolation<PlayerRequestDto>> requestViolations =
+                    validator.validate(testPlayerRequest);
+
+            // Assert
+            assertThat(requestViolations).isNotEmpty();
+        }
+
+        @ParameterizedTest
+        @NullSource
+        @ValueSource(ints = {-1, -99, -999})
+        @DisplayName("Should fail when player score is not valid")
+        void shouldFailWhenPlayerScoreIsNotValid (Integer invalidScores) {
+
+            // Arrange
+            PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
+            testPlayerRequest.setScores(invalidScores);
+
+            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+            Validator validator = factory.getValidator();
+
+            // Act
+            Set<ConstraintViolation<PlayerRequestDto>> requestViolations =
+                    validator.validate(testPlayerRequest);
+
+            // Assert
+            assertThat(requestViolations).isNotEmpty();
+        }
+
+        @ParameterizedTest
+        @NullSource
+        @ValueSource(strings = {
+                "2026-08-03T10:00:00",
+                "2026-08-02T15:00:00",
+                "2026-12-25T12:00:00",
+                "2026-01-01T00:00:00"
+        })
+        @DisplayName("Should fail when player timestamp is not valid")
+        void shouldFailWhenPlayerTimestampIsNotValid (String dateTimeStrings) {
+
+            // Arrange
+            LocalDateTime invalidDateTime = dateTimeStrings != null ?
+                    LocalDateTime.parse(dateTimeStrings) : null;
+
+            PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
+            testPlayerRequest.setTimestamp(invalidDateTime);
 
             ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
             Validator validator = factory.getValidator();
