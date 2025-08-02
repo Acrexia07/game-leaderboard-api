@@ -7,15 +7,25 @@ import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
 import com.marlonb.game_leaderboard_api.repository.PlayerRepository;
 import com.marlonb.game_leaderboard_api.test_data.Player2TestData;
 import com.marlonb.game_leaderboard_api.test_data.PlayerTestData;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -89,6 +99,31 @@ public class PlayerServiceUnitTests {
             assertThat(actualResponse).usingRecursiveAssertion().isEqualTo(expectedResponse);
             assertThat(testPlayer1.getUuid()).usingRecursiveAssertion().isEqualTo(actualResponse.getFirst().uuid());
             assertThat(testPlayer2.getUuid()).usingRecursiveAssertion().isEqualTo(actualResponse.getLast().uuid());
+        }
+    }
+
+    @Nested
+    class NegativeTests {
+
+        @ParameterizedTest
+        @NullAndEmptySource
+        @ValueSource(strings = {"", "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do."})
+        @DisplayName("Should fail when player name is not valid")
+        void shouldFailWhenPlayerNameIsNotValid (String invalidPlayerNames) {
+
+            // Arrange
+            PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
+            testPlayerRequest.setPlayerName(invalidPlayerNames);
+
+            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+            Validator validator = factory.getValidator();
+
+            // Act
+            Set<ConstraintViolation<PlayerRequestDto>> requestViolations =
+                    validator.validate(testPlayerRequest);
+
+            // Assert
+            assertThat(requestViolations).isNotEmpty();
         }
     }
 }
