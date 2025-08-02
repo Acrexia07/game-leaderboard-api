@@ -15,8 +15,8 @@ import java.util.List;
 @Service
 public class PlayerService {
 
-    private static PlayerRepository playerRepository;
-    private static PlayerInfoMapper playerMapper;
+    private final PlayerRepository playerRepository;
+    private final PlayerInfoMapper playerMapper;
 
     public PlayerService(PlayerRepository playerRepository,
                          PlayerInfoMapper playerMapper) {
@@ -26,7 +26,7 @@ public class PlayerService {
 
     // CREATE: Add new player data
     @Transactional
-    public static PlayerResponseDto savePlayerData (@Valid @RequestBody
+    public PlayerResponseDto savePlayerData (@Valid @RequestBody
                                                     PlayerRequestDto createRequest) {
 
         PlayerEntity createPlayer = playerMapper.toEntity(createRequest);
@@ -36,7 +36,7 @@ public class PlayerService {
 
     // READ: Retrieve all players data
     @Transactional(readOnly = true)
-    public static List<PlayerResponseDto> retrieveAllPlayersData () {
+    public List<PlayerResponseDto> retrieveAllPlayersData () {
 
         List<PlayerEntity> listOfPlayers = playerRepository.findAll();
 
