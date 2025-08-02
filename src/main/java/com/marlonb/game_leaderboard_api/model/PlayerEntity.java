@@ -24,7 +24,7 @@ public class PlayerEntity {
 
     private String playerName;
 
-    private int scores;
+    private Integer scores;
 
     private LocalDateTime timestamp;
 }
