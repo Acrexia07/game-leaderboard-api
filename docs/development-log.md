@@ -146,7 +146,40 @@ public List<PlayerResponseDto> retrieveAllPlayersData() {
 - ✅ **Enhanced Debugging Skills:** Improved test creation capabilities through systematic debugging approach  
 - 🔍 **Test Behavior Analysis:** Gained deeper insights into player data behavior within test environments
 
-📌 **Next Step:** Custom Exception Handling implementation to support robust service layer operations
+📌 **Next Step:** Test Case Development extension — Negative Test for create operation
+
+---
+## Day 6: Test Case Development extension — Negative Test for create operation
+**📅 Date:** August 2, 2025
+
+**🎯 Objectives:**
+- Develop Negative test case for create operations
+- Maintain CI/CD pipeline integrity with new test implementations
+
+**🛠️ Implementation Summary:**
+- Created comprehensive negative test cases for player data creation
+- Successfully maintained GitHub Actions CI pipeline with all tests passing
+
+**🧠 Technical Learning:**
+- **💭 Concept Recall:** Able to recall concepts in negative with Parameterized Test implementation
+
+📌 **Next Step:** Continuation of TDD development with other Service layer functions
+
+---
+
+## Day 7: Continuation of TDD development with other Service layer functions
+**📅 Date:** August 3, 2025
+
+**🎯 Objectives:**
+
+
+**🛠️ Implementation Summary:**
+
+
+**🧠 Technical Learning:**
+
+
+📌 **Next Step:** 
 
 ---
 
