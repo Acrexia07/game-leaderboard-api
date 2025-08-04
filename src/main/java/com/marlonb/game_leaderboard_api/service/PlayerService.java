@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.service;
 
+import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.PlayerEntity;
 import com.marlonb.game_leaderboard_api.model.PlayerInfoMapper;
 import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
@@ -46,4 +47,18 @@ public class PlayerService {
                             .toList();
     }
 
+    @Transactional(readOnly = true)
+    public PlayerResponseDto retrieveSpecificPlayerData (long id) {
+
+        PlayerEntity foundPlayer = findPlayerId(id);
+        return playerMapper.toResponse(foundPlayer);
+    }
+
+
+    public PlayerEntity findPlayerId (long id) {
+
+        return playerRepository.findById(id)
+                               .orElseThrow(() -> new ResourceNotFoundException
+                                            (String.format("This player Id '%d' does not exist!", id)));
+    }
 }
