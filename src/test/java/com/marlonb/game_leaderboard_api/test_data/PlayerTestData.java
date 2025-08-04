@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class PlayerTestData {
 
-    static final UUID playerUID = UUID.randomUUID();
+    private static final UUID playerUID = UUID.randomUUID();
 
     public static PlayerEntity samplePlayerData () {
 

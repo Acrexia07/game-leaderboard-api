@@ -140,6 +140,21 @@ public class PlayerServiceUnitTests {
             assertThat(actualResponse).usingRecursiveAssertion().isEqualTo(expectedResponse);
 
         }
+
+        @Test
+        @DisplayName("Should delete specific player data successfully")
+        void shouldDeleteSpecificPlayerDataSuccessfully () {
+
+            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
+            final long testPlayerId = testPlayer.getId();
+
+            when(playerRepository.findById(testPlayerId))
+                    .thenReturn(Optional.of(testPlayer));
+
+            playerService.deleteSpecificPlayerData(testPlayerId);
+
+            verify(playerRepository).deleteById(testPlayerId);
+        }
     }
 
     @Nested

@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PlayerService {
@@ -62,6 +61,14 @@ public class PlayerService {
         PlayerEntity savedUpdatedPlayer = playerRepository.save(foundPlayer);
 
         return playerMapper.toResponse(savedUpdatedPlayer);
+    }
+
+    // DELETE: remove specific player data
+    @Transactional
+    public void deleteSpecificPlayerData (long id) {
+
+        findPlayerId(id);
+        playerRepository.deleteById(id);
     }
 
     // Helper
