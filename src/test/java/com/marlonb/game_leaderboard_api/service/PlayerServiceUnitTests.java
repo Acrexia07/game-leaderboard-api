@@ -25,6 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
@@ -50,11 +51,9 @@ public class PlayerServiceUnitTests {
         @DisplayName("Should create player successfully")
         void shouldCreatePlayerSuccessfully () {
 
-            // Arrange
             PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
             PlayerResponseDto expectedResponse = PlayerTestData.samplePlayerResponse(testPlayer);
             PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
-
 
             when(playerMapper.toEntity(any(PlayerRequestDto.class)))
                     .thenReturn(testPlayer);
@@ -65,10 +64,8 @@ public class PlayerServiceUnitTests {
             when(playerMapper.toResponse(any(PlayerEntity.class)))
                     .thenReturn(expectedResponse);
 
-            // Act
             PlayerResponseDto actualResponse = playerService.savePlayerData(testPlayerRequest);
 
-            // Assert
             assertThat(actualResponse).usingRecursiveAssertion().isEqualTo(expectedResponse);
             assertThat(testPlayer.getUuid()).isEqualTo(actualResponse.uuid());
         }
@@ -77,7 +74,6 @@ public class PlayerServiceUnitTests {
         @DisplayName("Should retrieve all players data successfully")
         void shouldRetrieveAllPlayersDataSuccessfully () {
 
-            // Arrange
             PlayerEntity testPlayer1 = PlayerTestData.samplePlayerData();
             PlayerEntity testPlayer2 = Player2TestData.samplePlayerData2();
 
@@ -92,13 +88,31 @@ public class PlayerServiceUnitTests {
             when(playerMapper.toResponse(testPlayer1)).thenReturn(playerResponse1);
             when(playerMapper.toResponse(testPlayer2)).thenReturn(playerResponse2);
 
-            // Act
             List<PlayerResponseDto> actualResponse = playerService.retrieveAllPlayersData();
 
-            // Assert
             assertThat(actualResponse).usingRecursiveAssertion().isEqualTo(expectedResponse);
             assertThat(testPlayer1.getUuid()).usingRecursiveAssertion().isEqualTo(actualResponse.getFirst().uuid());
             assertThat(testPlayer2.getUuid()).usingRecursiveAssertion().isEqualTo(actualResponse.getLast().uuid());
+        }
+
+        @Test
+        @DisplayName("Should retrieve specific player data successfully")
+        void shouldRetrieveSpecificPlayerDataSuccessfully () {
+
+            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
+            PlayerResponseDto expectedResponse = PlayerTestData.samplePlayerResponse(testPlayer);
+
+            final long testPlayerId = testPlayer.getId();
+
+            when(playerRepository.findById(testPlayerId))
+                    .thenReturn(Optional.of(testPlayer));
+
+            when(playerMapper.toResponse(testPlayer))
+                    .thenReturn(expectedResponse);
+
+            PlayerResponseDto actualResponse = playerService.retrieveSpecificPlayerData(testPlayerId);
+
+            assertThat(actualResponse).usingRecursiveAssertion().isEqualTo(expectedResponse);
         }
     }
 
@@ -111,18 +125,15 @@ public class PlayerServiceUnitTests {
         @DisplayName("Should fail when player name is not valid")
         void shouldFailWhenPlayerNameIsNotValid (String invalidPlayerNames) {
 
-            // Arrange
             PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
             testPlayerRequest.setPlayerName(invalidPlayerNames);
 
             ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
             Validator validator = factory.getValidator();
 
-            // Act
             Set<ConstraintViolation<PlayerRequestDto>> requestViolations =
                     validator.validate(testPlayerRequest);
 
-            // Assert
             assertThat(requestViolations).isNotEmpty();
         }
 
@@ -132,18 +143,15 @@ public class PlayerServiceUnitTests {
         @DisplayName("Should fail when player score is not valid")
         void shouldFailWhenPlayerScoreIsNotValid (Integer invalidScores) {
 
-            // Arrange
             PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
             testPlayerRequest.setScores(invalidScores);
 
             ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
             Validator validator = factory.getValidator();
 
-            // Act
             Set<ConstraintViolation<PlayerRequestDto>> requestViolations =
                     validator.validate(testPlayerRequest);
 
-            // Assert
             assertThat(requestViolations).isNotEmpty();
         }
 
@@ -158,7 +166,6 @@ public class PlayerServiceUnitTests {
         @DisplayName("Should fail when player timestamp is not valid")
         void shouldFailWhenPlayerTimestampIsNotValid (String dateTimeStrings) {
 
-            // Arrange
             LocalDateTime invalidDateTime = dateTimeStrings != null ?
                     LocalDateTime.parse(dateTimeStrings) : null;
 
@@ -168,11 +175,9 @@ public class PlayerServiceUnitTests {
             ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
             Validator validator = factory.getValidator();
 
-            // Act
             Set<ConstraintViolation<PlayerRequestDto>> requestViolations =
                     validator.validate(testPlayerRequest);
 
-            // Assert
             assertThat(requestViolations).isNotEmpty();
         }
     }
