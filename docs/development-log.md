@@ -167,8 +167,8 @@ public List<PlayerResponseDto> retrieveAllPlayersData() {
 
 ---
 
-## Day 7: Continuation of TDD development with other Service layer functions
-**📅 Date:** August 3, 2025
+## Day 7: Continuation of TDD development with other Service layer functions and some custom exception handling
+**📅 Date:** August 4, 2025
 
 **🎯 Objectives:**
 
