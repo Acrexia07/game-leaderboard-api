@@ -1,9 +1,6 @@
 package com.marlonb.game_leaderboard_api.service;
 
-import com.marlonb.game_leaderboard_api.model.PlayerEntity;
-import com.marlonb.game_leaderboard_api.model.PlayerInfoMapper;
-import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
-import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
+import com.marlonb.game_leaderboard_api.model.*;
 import com.marlonb.game_leaderboard_api.repository.PlayerRepository;
 import com.marlonb.game_leaderboard_api.test_data.Player2TestData;
 import com.marlonb.game_leaderboard_api.test_data.PlayerTestData;
@@ -113,6 +110,35 @@ public class PlayerServiceUnitTests {
             PlayerResponseDto actualResponse = playerService.retrieveSpecificPlayerData(testPlayerId);
 
             assertThat(actualResponse).usingRecursiveAssertion().isEqualTo(expectedResponse);
+        }
+
+        @Test
+        @DisplayName("Should update specific player data successfully")
+        void shouldUpdateSpecificPlayerDataSuccessfully () {
+
+            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
+            final long testPlayerId = testPlayer.getId();
+
+            PlayerUpdateDto playerUpdateDto = PlayerTestData.samplePlayerUpdate();
+            PlayerEntity testPlayerAfterUpdate = PlayerTestData.samplePlayerDataAfterUpdate();
+            PlayerResponseDto expectedResponse = PlayerTestData.samplePlayerResponse(testPlayer);
+
+            when(playerRepository.findById(testPlayerId))
+                    .thenReturn(Optional.of(testPlayer));
+
+            doNothing().when(playerMapper)
+                    .toUpdateFromEntity(testPlayer, playerUpdateDto);
+
+            when(playerRepository.save(any(PlayerEntity.class)))
+                    .thenReturn(testPlayerAfterUpdate);
+
+            when(playerMapper.toResponse(testPlayerAfterUpdate))
+                    .thenReturn(expectedResponse);
+
+            PlayerResponseDto actualResponse = playerService.updateSpecificPlayerData(testPlayerId, playerUpdateDto);
+
+            assertThat(actualResponse).usingRecursiveAssertion().isEqualTo(expectedResponse);
+
         }
     }
 

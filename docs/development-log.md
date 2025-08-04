@@ -171,13 +171,17 @@ public List<PlayerResponseDto> retrieveAllPlayersData() {
 **📅 Date:** August 4, 2025
 
 **🎯 Objectives:**
-
+- Develop positive test cases for the other service layer functions.
+- Implement service-layer functions based on test cases.
+- Develop initial custom exception handler with `ErrorResponseDto` and `GlobalExceptionHandler`.
 
 **🛠️ Implementation Summary:**
 
 
 **🧠 Technical Learning:**
-
+- **💭 Concept Recall:** Able to recall concepts about custom exception handler development.
+- **💡 Shift mindset:** Able to implement other way of displaying error messages (field errors) with 
+Map implementation.
 
 📌 **Next Step:** 
 

@@ -1,10 +1,7 @@
 package com.marlonb.game_leaderboard_api.service;
 
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
-import com.marlonb.game_leaderboard_api.model.PlayerEntity;
-import com.marlonb.game_leaderboard_api.model.PlayerInfoMapper;
-import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
-import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
+import com.marlonb.game_leaderboard_api.model.*;
 import com.marlonb.game_leaderboard_api.repository.PlayerRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
@@ -47,6 +44,7 @@ public class PlayerService {
                             .toList();
     }
 
+    // READ: Retrieve specific player data
     @Transactional(readOnly = true)
     public PlayerResponseDto retrieveSpecificPlayerData (long id) {
 
@@ -54,7 +52,19 @@ public class PlayerService {
         return playerMapper.toResponse(foundPlayer);
     }
 
+    // UPDATE: Update specific player data
+    @Transactional
+    public PlayerResponseDto updateSpecificPlayerData (long id, PlayerUpdateDto playerUpdateDto) {
 
+        PlayerEntity foundPlayer = findPlayerId(id);
+        playerMapper.toUpdateFromEntity(foundPlayer, playerUpdateDto);
+
+        PlayerEntity savedUpdatedPlayer = playerRepository.save(foundPlayer);
+
+        return playerMapper.toResponse(savedUpdatedPlayer);
+    }
+
+    // Helper
     public PlayerEntity findPlayerId (long id) {
 
         return playerRepository.findById(id)
