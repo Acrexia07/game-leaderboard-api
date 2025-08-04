@@ -176,14 +176,16 @@ public List<PlayerResponseDto> retrieveAllPlayersData() {
 - Develop initial custom exception handler with `ErrorResponseDto` and `GlobalExceptionHandler`.
 
 **🛠️ Implementation Summary:**
-
+- Created comprehensive service function implementing test-driven development approach.
+- Updated test data based on the requirements needed based on the developed test cases.
+- Developed global exception handlers and some custom exception for preparation.
 
 **🧠 Technical Learning:**
 - **💭 Concept Recall:** Able to recall concepts about custom exception handler development.
 - **💡 Shift mindset:** Able to implement other way of displaying error messages (field errors) with 
 Map implementation.
 
-📌 **Next Step:** 
+📌 **Next Step:** Test Case Development extension — Negative Test for the other service functions
 
 ---
 
