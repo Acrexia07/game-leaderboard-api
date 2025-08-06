@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.service;
 
+import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.*;
 import com.marlonb.game_leaderboard_api.repository.PlayerRepository;
 import com.marlonb.game_leaderboard_api.test_data.Player2TestData;
@@ -8,10 +9,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
@@ -154,63 +152,85 @@ public class PlayerServiceUnitTests {
     @Nested
     class NegativeTests {
 
-        @ParameterizedTest
-        @NullAndEmptySource
-        @ValueSource(strings = {"", "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do."})
-        @DisplayName("Should fail when player name is not valid")
-        void shouldFailWhenPlayerNameIsNotValid (String invalidPlayerNames) {
+        @Nested
+        class AttributeTests {
+            @ParameterizedTest
+            @NullAndEmptySource
+            @ValueSource(strings = {"", "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do."})
+            @DisplayName("Should fail when player name is not valid")
+            void shouldFailWhenPlayerNameIsNotValid (String invalidPlayerNames) {
 
-            testPlayerRequest.setPlayerName(invalidPlayerNames);
+                testPlayerRequest.setPlayerName(invalidPlayerNames);
 
-            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-            Validator validator = factory.getValidator();
+                ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+                Validator validator = factory.getValidator();
 
-            Set<ConstraintViolation<PlayerRequestDto>> requestViolations =
-                    validator.validate(testPlayerRequest);
+                Set<ConstraintViolation<PlayerRequestDto>> requestViolations =
+                        validator.validate(testPlayerRequest);
 
-            assertThat(requestViolations).isNotEmpty();
+                assertThat(requestViolations).isNotEmpty();
+            }
+
+            @ParameterizedTest
+            @NullSource
+            @ValueSource(ints = {-1, -99, -999})
+            @DisplayName("Should fail when player score is not valid")
+            void shouldFailWhenPlayerScoreIsNotValid (Integer invalidScores) {
+
+                testPlayerRequest.setScores(invalidScores);
+
+                ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+                Validator validator = factory.getValidator();
+
+                Set<ConstraintViolation<PlayerRequestDto>> requestViolations =
+                        validator.validate(testPlayerRequest);
+
+                assertThat(requestViolations).isNotEmpty();
+            }
+
+            @ParameterizedTest
+            @NullSource
+            @ValueSource(strings = {
+                    "2026-08-03T10:00:00",
+                    "2026-08-02T15:00:00",
+                    "2026-12-25T12:00:00",
+                    "2026-01-01T00:00:00"
+            })
+            @DisplayName("Should fail when player timestamp is not valid")
+            void shouldFailWhenPlayerTimestampIsNotValid (String dateTimeStrings) {
+
+                LocalDateTime invalidDateTime = dateTimeStrings != null ?
+                        LocalDateTime.parse(dateTimeStrings) : null;
+
+                testPlayerRequest.setTimestamp(invalidDateTime);
+
+                ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+                Validator validator = factory.getValidator();
+
+                Set<ConstraintViolation<PlayerRequestDto>> requestViolations =
+                        validator.validate(testPlayerRequest);
+
+                assertThat(requestViolations).isNotEmpty();
+            }
         }
 
-        @ParameterizedTest
-        @NullSource
-        @ValueSource(ints = {-1, -99, -999})
-        @DisplayName("Should fail when player score is not valid")
-        void shouldFailWhenPlayerScoreIsNotValid (Integer invalidScores) {
+        @Nested
+        class CrudOperations {
 
-            testPlayerRequest.setScores(invalidScores);
+            @Test
+            @DisplayName("Should fail when player Id does not exist")
+            void shouldFailWhenPlayerIdDoesNotExist () {
 
-            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-            Validator validator = factory.getValidator();
+                final long nonExistentId = 100L;
 
-            Set<ConstraintViolation<PlayerRequestDto>> requestViolations =
-                    validator.validate(testPlayerRequest);
+                when(playerRepository.findById(nonExistentId))
+                        .thenReturn(Optional.empty());
 
-            assertThat(requestViolations).isNotEmpty();
-        }
+                Assertions.assertThrows(ResourceNotFoundException.class,
+                        () -> playerService.findPlayerId(nonExistentId));
 
-        @ParameterizedTest
-        @NullSource
-        @ValueSource(strings = {
-                "2026-08-03T10:00:00",
-                "2026-08-02T15:00:00",
-                "2026-12-25T12:00:00",
-                "2026-01-01T00:00:00"
-        })
-        @DisplayName("Should fail when player timestamp is not valid")
-        void shouldFailWhenPlayerTimestampIsNotValid (String dateTimeStrings) {
-
-            LocalDateTime invalidDateTime = dateTimeStrings != null ?
-                    LocalDateTime.parse(dateTimeStrings) : null;
-
-            testPlayerRequest.setTimestamp(invalidDateTime);
-
-            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-            Validator validator = factory.getValidator();
-
-            Set<ConstraintViolation<PlayerRequestDto>> requestViolations =
-                    validator.validate(testPlayerRequest);
-
-            assertThat(requestViolations).isNotEmpty();
+                verify(playerRepository).findById(nonExistentId);
+            }
         }
     }
 }

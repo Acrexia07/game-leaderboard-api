@@ -178,14 +178,34 @@ public List<PlayerResponseDto> retrieveAllPlayersData() {
 **🛠️ Implementation Summary:**
 - Created comprehensive service function implementing test-driven development approach.
 - Updated test data based on the requirements needed based on the developed test cases.
-- Developed global exception handlers and some custom exception for preparation.
+- Developed global exception handlers and some custom exceptions for preparation.
 
 **🧠 Technical Learning:**
 - **💭 Concept Recall:** Able to recall concepts about custom exception handler development.
 - **💡 Shift mindset:** Able to implement other way of displaying error messages (field errors) with 
 Map implementation.
 
-📌 **Next Step:** Test Case Development extension — Negative Test for the other service functions
+📌 **Next Step:** Test Case Development extension (Negative Test) and Basic Auth Implementation
+
+---
+
+## Day 8: Test Case Development extension (Negative Test) and Basic Auth Implementation
+**📅 Date:** August 6, 2025
+
+**🎯 Objectives:**
+- Develop negative test cases for other service functions.
+- Implement basic authentication for spring security (for now).
+
+**🛠️ Implementation Summary:**
+- Developed negative test case for read by player's `id` operation.
+- Implemented basic authentication for initial api endpoint testing later on.
+- Developed ApiResponseDto in preparation with controller layer functions development.
+
+**🧠 Technical Learning:**
+- **💭 Concept Recall:** Able to recall some syntax that I used for creating negative test cases with the read scenario.
+Also, I was able to recall on how to configure basic authentication with spring security.
+
+📌 **Next Step:** Test Case Development continuation (Negative Test for update operation)
 
 ---
 
