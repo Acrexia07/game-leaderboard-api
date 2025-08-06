@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static com.marlonb.game_leaderboard_api.test_assertions.PlayerTestAssertions.playerAssertRecursionComparisons;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -72,8 +73,7 @@ public class PlayerServiceUnitTests {
 
             PlayerResponseDto actualResponse = playerService.savePlayerData(testPlayerRequest);
 
-            assertThat(actualResponse).usingRecursiveAssertion().isEqualTo(expectedResponse);
-            assertThat(testPlayer.getUuid()).isEqualTo(actualResponse.uuid());
+            playerAssertRecursionComparisons(testPlayer, actualResponse, expectedResponse);
         }
 
         @Test
@@ -96,9 +96,7 @@ public class PlayerServiceUnitTests {
 
             List<PlayerResponseDto> actualResponse = playerService.retrieveAllPlayersData();
 
-            assertThat(actualResponse).usingRecursiveAssertion().isEqualTo(expectedResponse);
-            assertThat(testPlayer1.getUuid()).usingRecursiveAssertion().isEqualTo(actualResponse.getFirst().uuid());
-            assertThat(testPlayer2.getUuid()).usingRecursiveAssertion().isEqualTo(actualResponse.getLast().uuid());
+            playerAssertRecursionComparisons(testPlayer1, testPlayer2, actualResponse, expectedResponse);
         }
 
         @Test
@@ -113,7 +111,7 @@ public class PlayerServiceUnitTests {
 
             PlayerResponseDto actualResponse = playerService.retrieveSpecificPlayerData(testPlayerId);
 
-            assertThat(actualResponse).usingRecursiveAssertion().isEqualTo(expectedResponse);
+            playerAssertRecursionComparisons(testPlayer, actualResponse, expectedResponse);
         }
 
         @Test
@@ -137,8 +135,7 @@ public class PlayerServiceUnitTests {
 
             PlayerResponseDto actualResponse = playerService.updateSpecificPlayerData(testPlayerId, playerUpdateDto);
 
-            assertThat(actualResponse).usingRecursiveAssertion().isEqualTo(expectedResponse);
-
+            playerAssertRecursionComparisons(testPlayer, actualResponse, expectedResponse);
         }
 
         @Test
