@@ -8,6 +8,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,18 @@ public class PlayerServiceUnitTests {
     @InjectMocks
     private PlayerService playerService;
 
+    private PlayerEntity testPlayer;
+    long testPlayerId;
+    private PlayerResponseDto expectedResponse;
+    private PlayerRequestDto testPlayerRequest;
+
+    @BeforeEach
+    void initSetup () {
+        testPlayer = PlayerTestData.samplePlayerData();
+        testPlayerId = testPlayer.getId();
+        expectedResponse = PlayerTestData.samplePlayerResponse(testPlayer);
+        testPlayerRequest = PlayerTestData.samplePlayerRequest();
+    }
 
     @Nested
     class PositiveTests {
@@ -47,10 +60,6 @@ public class PlayerServiceUnitTests {
         @Test
         @DisplayName("Should create player successfully")
         void shouldCreatePlayerSuccessfully () {
-
-            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
-            PlayerResponseDto expectedResponse = PlayerTestData.samplePlayerResponse(testPlayer);
-            PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
 
             when(playerMapper.toEntity(any(PlayerRequestDto.class)))
                     .thenReturn(testPlayer);
@@ -96,11 +105,6 @@ public class PlayerServiceUnitTests {
         @DisplayName("Should retrieve specific player data successfully")
         void shouldRetrieveSpecificPlayerDataSuccessfully () {
 
-            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
-            PlayerResponseDto expectedResponse = PlayerTestData.samplePlayerResponse(testPlayer);
-
-            final long testPlayerId = testPlayer.getId();
-
             when(playerRepository.findById(testPlayerId))
                     .thenReturn(Optional.of(testPlayer));
 
@@ -116,12 +120,8 @@ public class PlayerServiceUnitTests {
         @DisplayName("Should update specific player data successfully")
         void shouldUpdateSpecificPlayerDataSuccessfully () {
 
-            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
-            final long testPlayerId = testPlayer.getId();
-
             PlayerUpdateDto playerUpdateDto = PlayerTestData.samplePlayerUpdate();
             PlayerEntity testPlayerAfterUpdate = PlayerTestData.samplePlayerDataAfterUpdate();
-            PlayerResponseDto expectedResponse = PlayerTestData.samplePlayerResponse(testPlayer);
 
             when(playerRepository.findById(testPlayerId))
                     .thenReturn(Optional.of(testPlayer));
@@ -145,9 +145,6 @@ public class PlayerServiceUnitTests {
         @DisplayName("Should delete specific player data successfully")
         void shouldDeleteSpecificPlayerDataSuccessfully () {
 
-            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
-            final long testPlayerId = testPlayer.getId();
-
             when(playerRepository.findById(testPlayerId))
                     .thenReturn(Optional.of(testPlayer));
 
@@ -166,7 +163,6 @@ public class PlayerServiceUnitTests {
         @DisplayName("Should fail when player name is not valid")
         void shouldFailWhenPlayerNameIsNotValid (String invalidPlayerNames) {
 
-            PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
             testPlayerRequest.setPlayerName(invalidPlayerNames);
 
             ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -184,7 +180,6 @@ public class PlayerServiceUnitTests {
         @DisplayName("Should fail when player score is not valid")
         void shouldFailWhenPlayerScoreIsNotValid (Integer invalidScores) {
 
-            PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
             testPlayerRequest.setScores(invalidScores);
 
             ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
@@ -210,7 +205,6 @@ public class PlayerServiceUnitTests {
             LocalDateTime invalidDateTime = dateTimeStrings != null ?
                     LocalDateTime.parse(dateTimeStrings) : null;
 
-            PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
             testPlayerRequest.setTimestamp(invalidDateTime);
 
             ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
