@@ -209,4 +209,32 @@ Also, I was able to recall on how to configure basic authentication with spring 
 
 ---
 
+## Day 9: Test Case Development continuation (Negative Test for update operation)
+**📅 Date:** August 7, 2025
+
+**🎯 Objectives:**
+- Develop negative test cases for other service functions (update operation).
+- Implement additional logic to check duplication on `playerName` in create and update operation.
+
+**🛠️ Implementation Summary:**
+- Developed negative test case for update by player's `id` operation.
+- Implemented additional logic to check duplication on `playerName` in create and update operation based on test case.
+- Added new custom exception for resource duplication `DuplicateResourceFoundException`.
+
+**🐞 Technical Challenge Resolved:**
+- **🐞 Issue:** Error occurred after adding custom query method in PlayerRepository `boolean existsByName (String name)`.
+- **🧪 Solution:** update the variable declared in the parameter of the custom query method from `name` to `playerName`.
+  that matches the player entity attribute `playerName`.
+- **✅ Result:** CI pipeline restored to successful build status.
+
+**🧠 Technical Learning:**
+- **Repositories' Custom Query Method Realization:** 
+I was able to understand the implementation of custom query abstract method in the repository wherein
+the parameter that is used to be declared in the query method must be an entity attribute.
+- 🧪 **TDD Value Recognition:** Service layer development driven by tests enhanced design appreciation
+
+📌 **Next Step:** Test Case Development for controller
+
+---
+
 *Development continues with focus on building resilient, well-tested service architecture*
