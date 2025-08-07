@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.service;
 
+import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.*;
 import com.marlonb.game_leaderboard_api.repository.PlayerRepository;
@@ -230,6 +231,29 @@ public class PlayerServiceUnitTests {
                         () -> playerService.findPlayerId(nonExistentId));
 
                 verify(playerRepository).findById(nonExistentId);
+            }
+
+
+            @Test
+            @DisplayName("Should fail update when player name already exist")
+            void shouldFailUpdateWhenPlayerNameAlreadyExist () {
+
+                PlayerEntity testPlayer2 = Player2TestData.samplePlayerData2();
+                final long testPlayer2Id = testPlayer2.getId();
+
+                PlayerUpdateDto testPlayer2Update = Player2TestData.samplePlayerUpdate2();
+                testPlayer2Update.setPlayerName("player1");
+
+                when(playerRepository.findById(testPlayer2Id))
+                        .thenReturn(Optional.of(testPlayer2));
+
+                when(playerRepository.existByPlayerName("player1"))
+                        .thenReturn(true);
+
+                Assertions.assertThrows(DuplicateResourceFoundException.class,
+                        () -> playerService.updateSpecificPlayerData(testPlayer2Id, testPlayer2Update));
+
+                verify(playerRepository, never()).save(any());
             }
         }
     }

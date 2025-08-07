@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.service;
 
+import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.*;
 import com.marlonb.game_leaderboard_api.repository.PlayerRepository;
@@ -55,8 +56,16 @@ public class PlayerService {
     @Transactional
     public PlayerResponseDto updateSpecificPlayerData (long id, PlayerUpdateDto playerUpdateDto) {
 
+        final String DUPLICATE_RESOURCE_FOUND = "Player name '%s' already exist!";
+
         PlayerEntity foundPlayer = findPlayerId(id);
         playerMapper.toUpdateFromEntity(foundPlayer, playerUpdateDto);
+
+        if(playerRepository.existByPlayerName(playerUpdateDto.getPlayerName()) &&
+                !foundPlayer.getPlayerName().equalsIgnoreCase(playerUpdateDto.getPlayerName())) {
+            throw new DuplicateResourceFoundException
+                    (String.format(DUPLICATE_RESOURCE_FOUND, playerUpdateDto.getPlayerName()));
+        }
 
         PlayerEntity savedUpdatedPlayer = playerRepository.save(foundPlayer);
 
