@@ -233,6 +233,20 @@ public class PlayerServiceUnitTests {
                 verify(playerRepository).findById(nonExistentId);
             }
 
+            @Test
+            @DisplayName("Should fail create when player name already exist")
+            void shouldFailCreateWhenPlayerNameAlreadyExist () {
+
+                when(playerMapper.toEntity(any(PlayerRequestDto.class)))
+                        .thenReturn(testPlayer);
+
+                when(playerRepository.existsByPlayerName("player1")).thenReturn(true);
+
+                Assertions.assertThrows(DuplicateResourceFoundException.class,
+                                        () -> playerService.savePlayerData(testPlayerRequest));
+
+                verify(playerRepository, never()).save(any());
+            }
 
             @Test
             @DisplayName("Should fail update when player name already exist")
@@ -247,7 +261,7 @@ public class PlayerServiceUnitTests {
                 when(playerRepository.findById(testPlayer2Id))
                         .thenReturn(Optional.of(testPlayer2));
 
-                when(playerRepository.existByPlayerName("player1"))
+                when(playerRepository.existsByPlayerName("player1"))
                         .thenReturn(true);
 
                 Assertions.assertThrows(DuplicateResourceFoundException.class,

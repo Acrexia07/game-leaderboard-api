@@ -17,8 +17,9 @@ public class PlayerService {
     private final PlayerRepository playerRepository;
     private final PlayerInfoMapper playerMapper;
 
-    public PlayerService(PlayerRepository playerRepository,
-                         PlayerInfoMapper playerMapper) {
+
+    public PlayerService (PlayerRepository playerRepository,
+                          PlayerInfoMapper playerMapper) {
         this.playerRepository = playerRepository;
         this.playerMapper = playerMapper;
     }
@@ -28,7 +29,15 @@ public class PlayerService {
     public PlayerResponseDto savePlayerData (@Valid @RequestBody
                                                     PlayerRequestDto createRequest) {
 
+        final String DUPLICATE_RESOURCE_FOUND = "Player name '%s' already exist!";
+
         PlayerEntity createPlayer = playerMapper.toEntity(createRequest);
+
+        if(playerRepository.existsByPlayerName(createPlayer.getPlayerName())) {
+            throw new DuplicateResourceFoundException
+                    (String.format(DUPLICATE_RESOURCE_FOUND, createPlayer.getPlayerName()));
+        }
+
         playerRepository.save(createPlayer);
         return playerMapper.toResponse(createPlayer);
     }
@@ -61,7 +70,7 @@ public class PlayerService {
         PlayerEntity foundPlayer = findPlayerId(id);
         playerMapper.toUpdateFromEntity(foundPlayer, playerUpdateDto);
 
-        if(playerRepository.existByPlayerName(playerUpdateDto.getPlayerName()) &&
+        if(playerRepository.existsByPlayerName(playerUpdateDto.getPlayerName()) &&
                 !foundPlayer.getPlayerName().equalsIgnoreCase(playerUpdateDto.getPlayerName())) {
             throw new DuplicateResourceFoundException
                     (String.format(DUPLICATE_RESOURCE_FOUND, playerUpdateDto.getPlayerName()));
