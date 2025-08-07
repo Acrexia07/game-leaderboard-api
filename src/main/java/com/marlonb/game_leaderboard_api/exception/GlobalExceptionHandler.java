@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.exception;
 
+import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,19 @@ public class GlobalExceptionHandler {
                                     Map.of("server", List.of(GENERIC_ERROR_MESSAGE))));
     }
 
+    // HTTP STATUS 409 - CONFLICT
+    @ExceptionHandler(DuplicateResourceFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handlesDuplicateResourceException (DuplicateResourceFoundException ex) {
+
+        final String DUPLICATE_RESOURCE_FOUND_MESSAGE = "Resource duplication occurred!";
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                             .body(new ErrorResponseDto
+                                   (LocalDateTime.now(),
+                                    HttpStatus.CONFLICT.value(),
+                                    DUPLICATE_RESOURCE_FOUND_MESSAGE,
+                                    Map.of("conflict", List.of(ex.getMessage()))));
+    }
 
     // HTTP STATUS 404 - NOT FOUND
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -43,7 +57,7 @@ public class GlobalExceptionHandler {
                                    (LocalDateTime.now(),
                                     HttpStatus.NOT_FOUND.value(),
                                     RESOURCE_NOT_FOUND_MESSAGE,
-                                    Map.of("resource", List.of(ex.getMessage()))));
+                                    Map.of("notFound", List.of(ex.getMessage()))));
     }
 
     // HTTP STATUS 400 - BAD REQUEST
