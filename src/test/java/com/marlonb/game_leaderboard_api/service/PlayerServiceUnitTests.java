@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.marlonb.game_leaderboard_api.test_assertions.PlayerTestAssertions.playerAssertRecursionComparisons;
+import static com.marlonb.game_leaderboard_api.test_assertions.PlayerTestAssertions.assertServiceReturnedExpectedResponse;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -72,7 +72,7 @@ public class PlayerServiceUnitTests {
 
             PlayerResponseDto actualResponse = playerService.savePlayerData(testPlayerRequest);
 
-            playerAssertRecursionComparisons(testPlayer, actualResponse, expectedResponse);
+            assertServiceReturnedExpectedResponse(actualResponse, expectedResponse);
         }
 
         @Test
@@ -95,7 +95,7 @@ public class PlayerServiceUnitTests {
 
             List<PlayerResponseDto> actualResponse = playerService.retrieveAllPlayersData();
 
-            playerAssertRecursionComparisons(testPlayer1, testPlayer2, actualResponse, expectedResponse);
+            assertServiceReturnedExpectedResponse(actualResponse, expectedResponse);
         }
 
         @Test
@@ -110,7 +110,7 @@ public class PlayerServiceUnitTests {
 
             PlayerResponseDto actualResponse = playerService.retrieveSpecificPlayerData(testPlayerId);
 
-            playerAssertRecursionComparisons(testPlayer, actualResponse, expectedResponse);
+            assertServiceReturnedExpectedResponse(actualResponse, expectedResponse);
         }
 
         @Test
@@ -134,7 +134,7 @@ public class PlayerServiceUnitTests {
 
             PlayerResponseDto actualResponse = playerService.updateSpecificPlayerData(testPlayerId, playerUpdateDto);
 
-            playerAssertRecursionComparisons(testPlayer, actualResponse, expectedResponse);
+            assertServiceReturnedExpectedResponse(actualResponse, expectedResponse);
         }
 
         @Test
