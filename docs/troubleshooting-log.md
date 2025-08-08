@@ -17,3 +17,8 @@
 - **🧪 Solution:** update the variable declared in the parameter of the custom query method from `name` to `playerName` 
 that matches the player entity attribute `playerName`.
 - **✅ Result:** CI pipeline restored to successful build status.
+
+### Issue 3 (August 8, 2025): Failed to load ApplicationContext for WebMergedContextConfiguration
+- **🐞 Issue:** Failed to load ApplicationContext for WebMergedContextConfiguration.
+- **🧪 Solution:** Changed the annotation of the playerService declared from `@Autowired` to `@MockitoBean`.
+- **✅ Result:** No issue related to this occurred.
