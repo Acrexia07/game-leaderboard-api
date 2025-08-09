@@ -1,6 +1,8 @@
 package com.marlonb.game_leaderboard_api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.marlonb.game_leaderboard_api.model.PlayerEntity;
 import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
@@ -31,6 +33,8 @@ public class PlayerControllerUnitTests {
     @MockitoBean
     private PlayerService playerService;
 
+    private ObjectMapper mapper;
+
     @TestConfiguration
     static class TestConfig {
 
@@ -42,6 +46,10 @@ public class PlayerControllerUnitTests {
 
     @BeforeEach
     void initSetup () {
+        mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS);
+
         reset(playerService);
     }
 
@@ -58,7 +66,7 @@ public class PlayerControllerUnitTests {
 
             when(playerService.savePlayerData(any())).thenReturn(playerResponseDto);
 
-            String jsonPlayerRequest = new ObjectMapper().writeValueAsString(playerRequestDto);
+            String jsonPlayerRequest = mapper.writeValueAsString(playerRequestDto);
 
             mockMvc.perform(post("/api/players")
                             .with(csrf())
@@ -67,10 +75,9 @@ public class PlayerControllerUnitTests {
                             .content(jsonPlayerRequest))
                    .andExpectAll(
                            status().isCreated(),
-                           header().exists("Location"),
-                           header().string("Location", "/api/players"),
-                           jsonPath("$.message").value("Player created successfully!"),
-                           jsonPath("$.data.playerName").value(playerRequestDto.getPlayerName()));
+                           header().exists("location"),
+                           header().string("location", "/api/players/" + playerResponseDto.id()),
+                           jsonPath("$.apiMessage").value("Player created successfully!"));
         }
     }
 

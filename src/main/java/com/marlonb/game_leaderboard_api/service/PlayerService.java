@@ -38,8 +38,8 @@ public class PlayerService {
                     (String.format(DUPLICATE_RESOURCE_FOUND, createPlayer.getPlayerName()));
         }
 
-        playerRepository.save(createPlayer);
-        return playerMapper.toResponse(createPlayer);
+        PlayerEntity savedPlayer = playerRepository.save(createPlayer);
+        return playerMapper.toResponse(savedPlayer);
     }
 
     // READ: Retrieve all players data

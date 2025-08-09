@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
                                    (LocalDateTime.now(),
                                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
                                     INTERNAL_SERVER_ERROR_MESSAGE,
-                                    Map.of("server", List.of(GENERIC_ERROR_MESSAGE))));
+                                    Map.of("server", List.of(ex.getMessage()))));
     }
 
     // HTTP STATUS 409 - CONFLICT
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
                                    (LocalDateTime.now(),
                                     HttpStatus.CONFLICT.value(),
                                     DUPLICATE_RESOURCE_FOUND_MESSAGE,
-                                    Map.of("conflict", List.of(ex.getMessage()))));
+                                    Map.of("resource", List.of(ex.getMessage()))));
     }
 
     // HTTP STATUS 404 - NOT FOUND
@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
                                    (LocalDateTime.now(),
                                     HttpStatus.NOT_FOUND.value(),
                                     RESOURCE_NOT_FOUND_MESSAGE,
-                                    Map.of("notFound", List.of(ex.getMessage()))));
+                                    Map.of("resource", List.of(ex.getMessage()))));
     }
 
     // HTTP STATUS 400 - BAD REQUEST
