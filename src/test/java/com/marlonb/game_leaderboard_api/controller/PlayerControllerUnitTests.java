@@ -7,6 +7,7 @@ import com.marlonb.game_leaderboard_api.model.PlayerEntity;
 import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
 import com.marlonb.game_leaderboard_api.service.PlayerService;
+import com.marlonb.game_leaderboard_api.test_data.Player2TestData;
 import com.marlonb.game_leaderboard_api.test_data.PlayerTestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +20,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -78,6 +82,36 @@ public class PlayerControllerUnitTests {
                            header().exists("location"),
                            header().string("location", "/api/players/" + playerResponseDto.id()),
                            jsonPath("$.apiMessage").value("Player created successfully!"));
+        }
+
+        @Test
+        @DisplayName("Should pass when retrieve all player resource")
+        void shouldPassWhenRetrieveAllPlayerResource () throws Exception {
+
+            PlayerEntity testPlayer1 = PlayerTestData.samplePlayerData();
+            PlayerResponseDto testPlayerResponse1 = PlayerTestData.samplePlayerResponse(testPlayer1);
+
+            PlayerEntity testPlayer2 = Player2TestData.samplePlayerData2();
+            PlayerResponseDto testPlayerResponse2 = Player2TestData.samplePlayerResponse2(testPlayer2);
+
+            List<PlayerResponseDto> expectedResponses = List.of(testPlayerResponse1, testPlayerResponse2);
+
+            when(playerService.retrieveAllPlayersData()).thenReturn(expectedResponses);
+
+            String jsonListOfPlayerResponses = mapper.writeValueAsString(expectedResponses);
+
+            mockMvc.perform(get("/api/players")
+                        .with(csrf())
+                        .with(httpBasic("acrexia", "dummy"))
+                        .contentType("application/json")
+                        .content(jsonListOfPlayerResponses))
+                    .andExpectAll(
+                            status().isOk(),
+                            jsonPath("$.apiMessage").value("Retrieved all players successfully!"),
+                            jsonPath("$.Response").isArray(),
+                            jsonPath("$.Response[*].playerName",
+                                     hasItems(testPlayerResponse1.playerName(), testPlayerResponse2.playerName())),
+                            jsonPath("$.Response.length()").value(2));
         }
     }
 
