@@ -8,5 +8,5 @@ public record ErrorResponseDto(
         LocalDateTime timestamp,
         int httpStatusErrorCode,
         String generalErrorMessage,
-        Map<String, List<String>> listOfErrors
+        Map<String, List<String>> ErrorList
 ) {}

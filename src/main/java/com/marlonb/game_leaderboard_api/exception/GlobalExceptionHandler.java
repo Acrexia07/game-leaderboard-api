@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.marlonb.game_leaderboard_api.exception.ErrorHeaders.*;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -21,14 +23,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handlesServerRelatedExceptions (Exception ex) {
 
-        final String INTERNAL_SERVER_ERROR_MESSAGE = "Internal server issue found!";
-        final String GENERIC_ERROR_MESSAGE = "An unexpected error occurred";
-
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                              .body(new ErrorResponseDto
                                    (LocalDateTime.now(),
                                     HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                                    INTERNAL_SERVER_ERROR_MESSAGE,
+                                    INTERNAL_SERVER_ERROR_MESSAGE.getErrorMessage(),
                                     Map.of("server", List.of(ex.getMessage()))));
     }
 
@@ -36,13 +35,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateResourceFoundException.class)
     public ResponseEntity<ErrorResponseDto> handlesDuplicateResourceException (DuplicateResourceFoundException ex) {
 
-        final String DUPLICATE_RESOURCE_FOUND_MESSAGE = "Resource duplication occurred!";
-
         return ResponseEntity.status(HttpStatus.CONFLICT)
                              .body(new ErrorResponseDto
                                    (LocalDateTime.now(),
                                     HttpStatus.CONFLICT.value(),
-                                    DUPLICATE_RESOURCE_FOUND_MESSAGE,
+                                    DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage(),
                                     Map.of("resource", List.of(ex.getMessage()))));
     }
 
@@ -50,13 +47,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handlesResourceNotFoundExceptions (ResourceNotFoundException ex) {
 
-        final String RESOURCE_NOT_FOUND_MESSAGE = "Resource not found!";
-
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                              .body(new ErrorResponseDto
                                    (LocalDateTime.now(),
                                     HttpStatus.NOT_FOUND.value(),
-                                    RESOURCE_NOT_FOUND_MESSAGE,
+                                    RESOURCE_NOT_FOUND_MESSAGE.getErrorMessage(),
                                     Map.of("resource", List.of(ex.getMessage()))));
     }
 
@@ -65,7 +60,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handlesAttributeValidationExceptions (MethodArgumentNotValidException ex) {
 
         Map<String, List<String>> fieldErrors = new HashMap<>();
-        final String VALIDATION_ERROR_MESSAGE = "Validation error/s found!";
 
         ex.getBindingResult()
           .getFieldErrors()
@@ -81,7 +75,7 @@ public class GlobalExceptionHandler {
                              .body(new ErrorResponseDto
                                   (LocalDateTime.now(),
                                    HttpStatus.BAD_REQUEST.value(),
-                                   VALIDATION_ERROR_MESSAGE,
+                                   VALIDATION_ERROR_MESSAGE.getErrorMessage(),
                                    fieldErrors));
     }
 
