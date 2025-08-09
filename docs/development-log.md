@@ -228,13 +228,37 @@ Also, I was able to recall on how to configure basic authentication with spring 
 - **✅ Result:** CI pipeline restored to successful build status.
 
 **🧠 Technical Learning:**
-- **Repositories' Custom Query Method Realization:** 
+- **🤯 Repositories' Custom Query Method Realization:** 
 I was able to understand the implementation of custom query abstract method in the repository wherein
 the parameter that is used to be declared in the query method must be an entity attribute.
-- 🧪 **TDD Value Recognition:** Service layer development driven by tests enhanced design appreciation
+- **🧪 TDD Value Recognition:** Service layer development driven by tests enhanced design appreciation
 
 📌 **Next Step:** Test Case Development for controller
 
+---
+
+## Day 9: Test Case Development continuation (Negative Test for update operation)
+**📅 Date:** August 9, 2025
+
+**🎯 Objectives:**
+- Develop test case for preparation to implement controller-layer function for retrieve all player data (GET).
+- Implement controller-layer function for retrieve all player data.
+
+**🛠️ Implementation Summary:**
+- Developed test case for controller-layer function that retrieves all players data (GET).
+- Implement controller-layer function that retrieves all player data.
+- Refactor general error message of exception by implementing ENUMS.
+- Fixed issue about UUID generation when creating a player resource.
+
+**🐞 Technical Challenge Resolved:**
+- **🐞 Issue:** Could not execute statement due to `uuid` is null.
+- **Cause:** UUID was not being generated because it wasn’t set in the entity.
+- **🧪 Solution:** Implement `@PrePersist` method in the `PlayerEntity` so it’s always generate UUID if null.
+
+**🧠 Technical Learning:**
+- **🤯 UUID generation realization:**
+I was able to be aware of the usage of `PrePersist` which is helpful when I need to randomly generate a UUID.
+- **🧪 TDD Value Recognition:** I was able to recall firmly the logic implementation of controller unit testing.
 ---
 
 *Development continues with focus on building resilient, well-tested service architecture*

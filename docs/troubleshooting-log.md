@@ -51,25 +51,25 @@ objects
 ### Issue 5 (August 9, 2025): Create resource issue due to UUID being null
 - **🐞 Issue:** Could not execute statement due to `uuid` is null.
 - **Cause:** UUID was not being generated because it wasn’t set in the entity or service.
-  - **🧪 Solution:** Generate UUID in the entity’s `@PrePersist` method so it’s always created before insert.
-    ````java
-    @PrePersist
-    public void generateUuid() {
-        if (uuid == null) {
-            uuid = UUID.randomUUID();
-        }
-    }
-    ````
-  - **✅ Result:** No issue related to this occurred again.
-    ````json
-    {
-      "apiMessage": "Player created successfully!",
-      "Response": {
-          "id": 1,
-          "uuid": "3f46fcb3-3abc-4623-af0a-af51b8a24a39",
-          "username": null,
-          "scores": 1000,
-          "timestamp": "2025-08-08T14:00:00"
+- **🧪 Solution:** Implement `@PrePersist` method in the `PlayerEntity` so it’s always generate UUID if null.
+  ````java
+  @PrePersist
+  public void generateUuid() {
+      if (uuid == null) {
+          uuid = UUID.randomUUID();
       }
+  }
+  ````
+- **✅ Result:** No issue related to this occurred again.
+  ````json
+  {
+    "apiMessage": "Player created successfully!",
+    "Response": {
+        "id": 1,
+        "uuid": "3f46fcb3-3abc-4623-af0a-af51b8a24a39",
+        "username": "JohnDoe",
+        "scores": 1000,
+        "timestamp": "2025-08-08T14:00:00"
     }
-    ````
+  }
+  ````
