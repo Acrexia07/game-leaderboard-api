@@ -28,7 +28,7 @@ public class PlayerController {
                                                                    PlayerRequestDto playerRequest) {
 
         PlayerResponseDto playerResponseForCreate = playerService.savePlayerData(playerRequest);
-        URI location = URI.create("/api/players" + playerResponseForCreate.id());
+        URI location = URI.create("/api/players/" + playerResponseForCreate.id());
 
         return ResponseEntity.created(location).body(new ApiMessageResponseDto<>
                                                     ("Player created successfully!",

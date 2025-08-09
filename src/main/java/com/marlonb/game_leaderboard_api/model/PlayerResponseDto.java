@@ -6,7 +6,7 @@ import java.util.UUID;
 public record PlayerResponseDto(
    Long id,
    UUID uuid,
-   String username,
+   String playerName,
    Integer scores,
    LocalDateTime timestamp
 ) {}

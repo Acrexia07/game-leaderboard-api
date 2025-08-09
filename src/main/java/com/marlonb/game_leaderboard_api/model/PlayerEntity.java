@@ -19,7 +19,7 @@ public class PlayerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, updatable = false)
     private UUID uuid;
 
     private String playerName;
@@ -27,4 +27,11 @@ public class PlayerEntity {
     private Integer scores;
 
     private LocalDateTime timestamp;
+
+    @PrePersist
+    public void generateUuid() {
+        if (uuid == null) {
+            uuid = UUID.randomUUID();
+        }
+    }
 }
