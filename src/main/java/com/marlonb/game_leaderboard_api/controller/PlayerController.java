@@ -42,4 +42,14 @@ public class PlayerController {
                                        ("Retrieved all players successfully!",
                                         listOfPlayers));
     }
+
+    @GetMapping("/players/{id}")
+    public ResponseEntity<ApiMessageResponseDto<PlayerResponseDto>> retrieveSpecificPlayerResource
+                                                    (@PathVariable long id) {
+
+        PlayerResponseDto foundResponse = playerService.retrieveSpecificPlayerData(id);
+
+        return ResponseEntity.ok().body(new ApiMessageResponseDto<>
+                                        ("Specific player data retrieved successfully!", foundResponse));
+    }
 }

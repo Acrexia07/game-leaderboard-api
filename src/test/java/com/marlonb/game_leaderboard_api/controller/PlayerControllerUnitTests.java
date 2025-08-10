@@ -108,10 +108,35 @@ public class PlayerControllerUnitTests {
                     .andExpectAll(
                             status().isOk(),
                             jsonPath("$.apiMessage").value("Retrieved all players successfully!"),
-                            jsonPath("$.Response").isArray(),
-                            jsonPath("$.Response[*].playerName",
+                            jsonPath("$.response").isArray(),
+                            jsonPath("$.response[*].playerName",
                                      hasItems(testPlayerResponse1.playerName(), testPlayerResponse2.playerName())),
-                            jsonPath("$.Response.length()").value(2));
+                            jsonPath("$.response.length()").value(2));
+        }
+
+        @Test
+        @DisplayName("Should pass when retrieve specific player resource")
+        void shouldPassWhenRetrieveSpecificPlayerResource () throws  Exception {
+
+            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
+            final long testPlayerId = testPlayer.getId();
+
+            PlayerResponseDto expectedResponse = PlayerTestData.samplePlayerResponse(testPlayer);
+
+            when(playerService.retrieveSpecificPlayerData(testPlayerId)).thenReturn(expectedResponse);
+
+            String jsonPlayerResponse = mapper.writeValueAsString(expectedResponse);
+
+            mockMvc.perform(get("/api/players/{id}", testPlayerId)
+                            .with(csrf())
+                            .with(httpBasic("acrexia", "dummy"))
+                            .contentType("application/json")
+                            .content(jsonPlayerResponse))
+                    .andExpectAll(
+                            status().isOk(),
+                            jsonPath("$.apiMessage")
+                                    .value("Specific player data retrieved successfully!"),
+                            jsonPath("$.response.playerName").value(testPlayer.getPlayerName()));
         }
     }
 
