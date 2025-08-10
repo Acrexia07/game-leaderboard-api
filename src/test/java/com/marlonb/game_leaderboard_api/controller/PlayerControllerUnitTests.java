@@ -168,6 +168,21 @@ public class PlayerControllerUnitTests {
                             jsonPath("$.response.id").exists(),
                             jsonPath("$.response.playerName").value(playerUpdateDto.getPlayerName()));
         }
+
+        @Test
+        @DisplayName("Should pass when delete specific player resource")
+        void shouldPassWhenDeleteSpecificPlayerResource () throws Exception {
+
+            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
+            final long testPlayerId = testPlayer.getId();
+
+            doNothing().when(playerService).deleteSpecificPlayerData(testPlayerId);
+
+            mockMvc.perform(delete("/api/players/{id}", testPlayerId)
+                            .with(csrf())
+                            .with(httpBasic("acrexia", "dummy")))
+                   .andExpectAll(status().isNoContent());
+        }
     }
 
 //    @Nested

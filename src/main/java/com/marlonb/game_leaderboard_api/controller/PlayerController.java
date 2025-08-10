@@ -64,4 +64,11 @@ public class PlayerController {
                                         ("Specific player updated successfully!",
                                          response));
     }
+
+    @DeleteMapping("/players/{id}")
+    public ResponseEntity<Void> deleteSpecificPlayerResource (@PathVariable long id) {
+
+        playerService.deleteSpecificPlayerData(id);
+        return ResponseEntity.noContent().build();
+    }
 }
