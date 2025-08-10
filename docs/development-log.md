@@ -259,6 +259,29 @@ the parameter that is used to be declared in the query method must be an entity 
 - **🤯 UUID generation realization:**
 I was able to be aware of the usage of `PrePersist` which is helpful when I need to randomly generate a UUID.
 - **🧪 TDD Value Recognition:** I was able to recall firmly the logic implementation of controller unit testing.
+
+📌 **Next Step:** Test Case Development for controller continuation
+
+---
+
+## Day 11: Test Case Development for controller continuation
+**📅 Date:** August 10, 2025
+
+**🎯 Objectives:**
+- Developed test case for controller-layer function that retrieves specific players data (GET).
+- Developed test case for controller-layer function that updates specific players data (PUT).
+- Developed test case for controller-layer function that deletes specific players data (DELETE).
+
+**🛠️ Implementation Summary:**
+- Implements test cases in every crud operations for controller-layer functions.
+- Develops other controller-layer functions that passes the test cases created.
+
+**🧠 Technical Learning:**
+- **🧪 TDD Value Recognition:** I was able to recall firmly the logic implementation of controller unit testing.
+
+📌 **Next Step:** Negative test case development for Controller layer
+
+
 ---
 
 *Development continues with focus on building resilient, well-tested service architecture*
