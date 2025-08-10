@@ -2,6 +2,7 @@ package com.marlonb.game_leaderboard_api.controller;
 
 import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
+import com.marlonb.game_leaderboard_api.model.PlayerUpdateDto;
 import com.marlonb.game_leaderboard_api.service.PlayerService;
 import com.marlonb.game_leaderboard_api.utils.ApiMessageResponseDto;
 import jakarta.validation.Valid;
@@ -51,5 +52,16 @@ public class PlayerController {
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
                                         ("Specific player data retrieved successfully!", foundResponse));
+    }
+
+    @PutMapping("/players/{id}")
+    public ResponseEntity<ApiMessageResponseDto<PlayerResponseDto>> updateSpecificPlayerResource
+            (@PathVariable long id, @Valid @RequestBody PlayerUpdateDto updateDto) {
+
+        PlayerResponseDto response = playerService.updateSpecificPlayerData(id, updateDto);
+
+        return ResponseEntity.ok().body(new ApiMessageResponseDto<>
+                                        ("Specific player updated successfully!",
+                                         response));
     }
 }

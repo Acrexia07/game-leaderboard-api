@@ -68,7 +68,6 @@ public class PlayerService {
         final String DUPLICATE_RESOURCE_FOUND = "Player name '%s' already exist!";
 
         PlayerEntity foundPlayer = findPlayerId(id);
-        playerMapper.toUpdateFromEntity(foundPlayer, playerUpdateDto);
 
         if(playerRepository.existsByPlayerName(playerUpdateDto.getPlayerName()) &&
                 !foundPlayer.getPlayerName().equalsIgnoreCase(playerUpdateDto.getPlayerName())) {
@@ -76,6 +75,7 @@ public class PlayerService {
                     (String.format(DUPLICATE_RESOURCE_FOUND, playerUpdateDto.getPlayerName()));
         }
 
+        playerMapper.toUpdateFromEntity(foundPlayer, playerUpdateDto);
         PlayerEntity savedUpdatedPlayer = playerRepository.save(foundPlayer);
 
         return playerMapper.toResponse(savedUpdatedPlayer);

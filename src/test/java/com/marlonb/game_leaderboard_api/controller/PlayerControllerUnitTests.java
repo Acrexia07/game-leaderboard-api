@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.marlonb.game_leaderboard_api.model.PlayerEntity;
 import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
+import com.marlonb.game_leaderboard_api.model.PlayerUpdateDto;
 import com.marlonb.game_leaderboard_api.service.PlayerService;
 import com.marlonb.game_leaderboard_api.test_data.Player2TestData;
 import com.marlonb.game_leaderboard_api.test_data.PlayerTestData;
@@ -121,11 +122,11 @@ public class PlayerControllerUnitTests {
             PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
             final long testPlayerId = testPlayer.getId();
 
-            PlayerResponseDto expectedResponse = PlayerTestData.samplePlayerResponse(testPlayer);
+            PlayerResponseDto playerResponseDto = PlayerTestData.samplePlayerResponse(testPlayer);
 
-            when(playerService.retrieveSpecificPlayerData(testPlayerId)).thenReturn(expectedResponse);
+            when(playerService.retrieveSpecificPlayerData(testPlayerId)).thenReturn(playerResponseDto);
 
-            String jsonPlayerResponse = mapper.writeValueAsString(expectedResponse);
+            String jsonPlayerResponse = mapper.writeValueAsString(playerResponseDto);
 
             mockMvc.perform(get("/api/players/{id}", testPlayerId)
                             .with(csrf())
@@ -136,7 +137,36 @@ public class PlayerControllerUnitTests {
                             status().isOk(),
                             jsonPath("$.apiMessage")
                                     .value("Specific player data retrieved successfully!"),
+                            jsonPath("$.response.id").exists(),
                             jsonPath("$.response.playerName").value(testPlayer.getPlayerName()));
+        }
+
+        @Test
+        @DisplayName("Should pass when update specific player resource")
+        void shouldPassWhenUpdateSpecificPlayerResource () throws Exception {
+
+            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
+            final long testPlayerId = testPlayer.getId();
+
+            PlayerUpdateDto playerUpdateDto = PlayerTestData.samplePlayerUpdate();
+            PlayerResponseDto playerResponseDto = PlayerTestData.samplePlayerResponse(testPlayer);
+
+            when(playerService.updateSpecificPlayerData(testPlayerId, playerUpdateDto))
+                    .thenReturn(playerResponseDto);
+
+            String jsonPlayerResponse = mapper.writeValueAsString(playerUpdateDto);
+
+            mockMvc.perform(put("/api/players/{id}", testPlayerId)
+                            .with(csrf())
+                            .with(httpBasic("acrexia", "dummy"))
+                            .contentType("application/json")
+                            .content(jsonPlayerResponse))
+                    .andExpectAll(
+                            status().isOk(),
+                            jsonPath("$.apiMessage")
+                                    .value("Specific player updated successfully!"),
+                            jsonPath("$.response.id").exists(),
+                            jsonPath("$.response.playerName").value(playerUpdateDto.getPlayerName()));
         }
     }
 

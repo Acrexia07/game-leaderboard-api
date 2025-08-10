@@ -237,7 +237,7 @@ the parameter that is used to be declared in the query method must be an entity 
 
 ---
 
-## Day 9: Test Case Development continuation (Negative Test for update operation)
+## Day 10: Test Case Development continuation (Negative Test for update operation)
 **📅 Date:** August 9, 2025
 
 **🎯 Objectives:**
