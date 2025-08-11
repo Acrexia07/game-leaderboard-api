@@ -277,10 +277,28 @@ I was able to be aware of the usage of `PrePersist` which is helpful when I need
 - Develops other controller-layer functions that passes the test cases created.
 
 **🧠 Technical Learning:**
-- **🧪 TDD Value Recognition:** I was able to recall firmly the logic implementation of controller unit testing.
+- **🧪 Unit Testing Recall:** I was able to recall firmly the logic implementation of controller unit testing.
 
 📌 **Next Step:** Negative test case development for Controller layer
 
+## Day 12: Negative test case development for Controller layer
+**📅 Date:** August 11, 2025
+
+**🎯 Objectives:**
+- Develop negative test case for `player name` duplication on save operations.
+- Develop negative test case for missing or null input(s).
+- Develop negative test case for player's `id` that does not exist.
+
+**🛠️ Implementation Summary:**
+- Implemented negative test case for `player name` duplication on save operations.
+- Implemented negative test case for missing or null input(s).
+- Implemented negative test case for player's `id` that does not exist.
+
+**🧠 Technical Learning:**
+- **🧪 Unit Negative Testing Recall:** I was able to recall firmly the logic implementation of controller unit negative 
+testing.
+
+📌 **Next Step:** Negative test case development for Controller layer continuation for DateTime attribute
 
 ---
 
