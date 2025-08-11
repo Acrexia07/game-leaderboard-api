@@ -192,8 +192,8 @@ public class PlayerControllerUnitTests {
     class NegativeTests {
 
         @Test
-        @DisplayName("Should return 409 status on create when Player name already exists")
-        void shouldReturn409StatusOnCreateWhenPlayerNameAlreadyExist () throws Exception {
+        @DisplayName("Should return error status when Player name already exists")
+        void shouldReturnErrorStatusWhenPlayerNameAlreadyExist () throws Exception {
 
             PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
 
@@ -211,13 +211,12 @@ public class PlayerControllerUnitTests {
                     .andExpectAll(
                             status().isConflict(),
                             jsonPath("$.generalErrorMessage")
-                                    .value(DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage())
-                    );
+                                    .value(DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage()));
         }
 
         @Test
-        @DisplayName("Should return 404 status on read when player id does not exist")
-        void shouldReturn404StatusOnReadWhenPlayerIdDoesNotExist () throws Exception {
+        @DisplayName("Should return error status on read when player id does not exist")
+        void shouldReturnErrorStatusOnReadWhenPlayerIdDoesNotExist () throws Exception {
 
             final long nonExistentId = 50L;
 
@@ -230,8 +229,28 @@ public class PlayerControllerUnitTests {
                    .andExpectAll(
                            status().isNotFound(),
                            jsonPath("$.generalErrorMessage")
-                                   .value(RESOURCE_NOT_FOUND_MESSAGE.getErrorMessage())
-                   );
+                                   .value(RESOURCE_NOT_FOUND_MESSAGE.getErrorMessage()));
         }
+
+        @Test
+        @DisplayName("Should return error status when there is a null or missing input")
+        void shouldReturnErrorStatusWhenThereIsANullOrMissingInput () throws Exception {
+
+            PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
+            testPlayerRequest.setPlayerName(null);
+
+            String jsonPlayerRequest = mapper.writeValueAsString(testPlayerRequest);
+
+            mockMvc.perform(post("/api/players")
+                            .with(csrf())
+                            .with(httpBasic("acrexia", "dummy"))
+                            .contentType("application/json")
+                            .content(jsonPlayerRequest))
+                    .andExpectAll(
+                            status().isBadRequest(),
+                            jsonPath("$.generalErrorMessage")
+                                    .value(VALIDATION_ERROR_MESSAGE.getErrorMessage()));
+        }
+
     }
 }
