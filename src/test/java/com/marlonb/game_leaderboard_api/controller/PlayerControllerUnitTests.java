@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
+import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.PlayerEntity;
 import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
@@ -26,11 +27,9 @@ import java.util.List;
 
 import static com.marlonb.game_leaderboard_api.exception.ErrorHeaders.*;
 import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PlayerController.class)
@@ -193,11 +192,10 @@ public class PlayerControllerUnitTests {
     class NegativeTests {
 
         @Test
-        @DisplayName("Should return 409 conflict on create when Player name already exists")
-        void shouldReturn409ConflictOnCreateWhenPlayerNameAlreadyExist () throws Exception {
+        @DisplayName("Should return 409 status on create when Player name already exists")
+        void shouldReturn409StatusOnCreateWhenPlayerNameAlreadyExist () throws Exception {
 
             PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
-            final String RESOURCE_ERROR_CONTENT = "Player name '%s' already exist!";
 
             when(playerService.savePlayerData(any()))
                     .thenThrow(new DuplicateResourceFoundException
@@ -215,6 +213,25 @@ public class PlayerControllerUnitTests {
                             jsonPath("$.generalErrorMessage")
                                     .value(DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage())
                     );
+        }
+
+        @Test
+        @DisplayName("Should return 404 status on read when player id does not exist")
+        void shouldReturn404StatusOnReadWhenPlayerIdDoesNotExist () throws Exception {
+
+            final long nonExistentId = 50L;
+
+            when(playerService.retrieveSpecificPlayerData(nonExistentId))
+                    .thenThrow(new ResourceNotFoundException
+                                   (RESOURCE_NOT_FOUND_MESSAGE.getErrorMessage()));
+
+            mockMvc.perform(get("/api/players/{id}", nonExistentId)
+                        .with(httpBasic("acrexia", "dummy")))
+                   .andExpectAll(
+                           status().isNotFound(),
+                           jsonPath("$.generalErrorMessage")
+                                   .value(RESOURCE_NOT_FOUND_MESSAGE.getErrorMessage())
+                   );
         }
     }
 }
