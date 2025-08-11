@@ -3,6 +3,7 @@ package com.marlonb.game_leaderboard_api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
 import com.marlonb.game_leaderboard_api.model.PlayerEntity;
 import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
@@ -23,10 +24,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static com.marlonb.game_leaderboard_api.exception.ErrorHeaders.*;
 import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PlayerController.class)
@@ -185,8 +189,32 @@ public class PlayerControllerUnitTests {
         }
     }
 
-//    @Nested
-//    class NegativeTests {
-//
-//    }
+    @Nested
+    class NegativeTests {
+
+        @Test
+        @DisplayName("Should return 409 conflict on create when Player name already exists")
+        void shouldReturn409ConflictOnCreateWhenPlayerNameAlreadyExist () throws Exception {
+
+            PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
+            final String RESOURCE_ERROR_CONTENT = "Player name '%s' already exist!";
+
+            when(playerService.savePlayerData(any()))
+                    .thenThrow(new DuplicateResourceFoundException
+                                   (DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage()));
+
+            String jsonPlayerRequest = mapper.writeValueAsString(testPlayerRequest);
+
+            mockMvc.perform(post("/api/players")
+                            .with(csrf())
+                            .with(httpBasic("acrexia", "dummy"))
+                            .contentType("application/json")
+                            .content(jsonPlayerRequest))
+                    .andExpectAll(
+                            status().isConflict(),
+                            jsonPath("$.generalErrorMessage")
+                                    .value(DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage())
+                    );
+        }
+    }
 }
