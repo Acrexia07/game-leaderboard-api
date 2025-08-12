@@ -16,17 +16,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.*;
-import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -252,5 +256,35 @@ public class PlayerControllerUnitTests {
                                     .value(VALIDATION_ERROR_MESSAGE.getErrorMessage()));
         }
 
+        @ParameterizedTest
+        @ValueSource(strings = {
+                "2023-05-10",
+                "2023-05-10T25:00:00",
+                "2023-05-10T23:60:00",
+                "2023-05-10T23:59:60",
+                "2023/05/10 10:15:30",
+                "10-05-2023T10:15:30",
+                "2023-5-1T2:3:4",
+                "not-a-date",
+                "2023-AB-CDT10:15:30",
+                ""
+        })
+        @DisplayName("Should return error status on create when there is an unreadable http message")
+        void shouldReturnErrorStatusOnCreateWhenThereIsAnUnreadableHttpMessage (String invalidDateTime) throws Exception {
+
+            var testJson = mapper.createObjectNode();
+            testJson.put("name", "Test Player");
+            testJson.put("score", 100);
+            testJson.put("timestamp", invalidDateTime);
+
+            String jsonTestRequest = mapper.writeValueAsString(testJson);
+
+            mockMvc.perform(post("/api/players")
+                            .with(csrf())
+                            .with(httpBasic("acrexia", "dummy"))
+                            .contentType("application/json")
+                            .content(jsonTestRequest))
+                    .andExpect(status().isBadRequest());
+        }
     }
 }
