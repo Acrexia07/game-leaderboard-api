@@ -119,3 +119,28 @@ DateTimeParseException only catches direct Java datetime parsing, not JSON deser
 
 ---
 
+### Issue 7 (August 12, 2025): Parameterize test for controller negative testing not working
+- **🐞 Issue:** Invalid timestamp used are not well tested with parameterized tests.
+- **Cause:** In parameterized testing in controller layer for invalid formats, updating DTOs with invalid date strings 
+is not possible because it requires parsing.
+- **🧪 Solution:** Instantiate an `ObjectMapper` via `createObjectNode()` method and execute put like this:
+  ```java
+  var testJson = mapper.createObjectNode();
+  testJson.put("name", "Test Player");
+  testJson.put("score", 100);
+  testJson.put("timestamp", invalidDateTime);
+
+  String jsonTestRequest = mapper.writeValueAsString(testJson);
+  
+  mockMvc.perform(post("/api/players")
+                  .with(csrf())
+                  .with(httpBasic("acrexia", "dummy"))
+                  .contentType("application/json")
+                  .content(jsonTestRequest))
+          .andExpect(status().isBadRequest());
+
+- **✅ Result:** Parameterized testing works properly in controller layer.
+- **📝 Lesson Learned:** If there's a parsing needed in an attribute when testing, instead of updating DTOs, instantiate
+an ObjectMapper.
+
+
