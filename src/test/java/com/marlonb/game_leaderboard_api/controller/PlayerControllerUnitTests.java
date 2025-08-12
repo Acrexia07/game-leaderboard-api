@@ -269,8 +269,8 @@ public class PlayerControllerUnitTests {
                 "2023-AB-CDT10:15:30",
                 ""
         })
-        @DisplayName("Should return error status on create when there is an unreadable http message")
-        void shouldReturnErrorStatusOnCreateWhenThereIsAnUnreadableHttpMessage (String invalidDateTime) throws Exception {
+        @DisplayName("Should return error status on save when there is an invalid timestamp format")
+        void shouldReturnErrorStatusOnSaveWhenThereIsAnInvalidTimestampFormat (String invalidDateTime) throws Exception {
 
             var testJson = mapper.createObjectNode();
             testJson.put("name", "Test Player");
