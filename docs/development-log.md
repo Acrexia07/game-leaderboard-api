@@ -274,7 +274,7 @@ I was able to be aware of the usage of `PrePersist` which is helpful when I need
 
 **🛠️ Implementation Summary:**
 - Implements test cases in every crud operations for controller-layer functions.
-- Develops other controller-layer functions that passes the test cases created.
+- Develop other controller-layer functions that pass the test cases created.
 
 **🧠 Technical Learning:**
 - **🧪 Unit Testing Recall:** I was able to recall firmly the logic implementation of controller unit testing.
@@ -309,15 +309,35 @@ testing.
 
 **🎯 Objectives:**
 - Create a custom exception handlers for java date time entity attribute.
-- create negative test case that catches those custom exceptions.
+- create the negative test case that catches those custom exceptions.
 
 **🛠️ Implementation Summary:**
-- 
+- Developed a custom exception handling for checking JSON especially `timestamp` attribute using 
+`HttpMessageNotReadableException` class.
+- Implement negative testing that captures invalid timestamp formats.
+
+**🐞 Technical Challenge Resolved:**
+
+- **Issue 1: DateTime format validation not working in JSON requests**
+  - **🐞 Issue:** Expected `@ExceptionHandler(DateTimeParseException.class)` to catch invalid datetime formats in JSON
+      requests, but handler wasn't triggering.
+  - **Cause:** JSON parsing happens at Jackson level first. `HttpMessageNotReadableException` wraps all JSON deserialization errors before they reach `DateTimeParseException`.****
+  - **🧪 Solution:** Use `HttpMessageNotReadableException` handler with message inspection to customize error responses
+
+- Issue 2: Parameterize test for controller negative testing not working
+  - **🐞 Issue:** Invalid timestamp used are not well tested with parameterized tests.
+  - **Cause:** In parameterized testing in controller layer for invalid formats, updating DTOs with invalid date strings
+    is not possible because it requires parsing.
+  - **🧪 Solution:** Instantiate an `ObjectMapper` via `createObjectNode()` method and execute `put()`
 
 **🧠 Technical Learning:**
-- 
+- **📝 Lesson Learned:** 
+  - Always check the exception hierarchy when dealing with JSON request validation.
+    DateTimeParseException only catches direct Java datetime parsing, not JSON deserialization errors.
+  - If there's a parsing needed in an attribute when testing, instead of updating DTOs, instantiate
+    an ObjectMapper.
 
-📌 **Next Step:**
+📌 **Next Step:** Refactor all tests
 
 ---
 

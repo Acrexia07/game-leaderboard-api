@@ -123,7 +123,7 @@ DateTimeParseException only catches direct Java datetime parsing, not JSON deser
 - **🐞 Issue:** Invalid timestamp used are not well tested with parameterized tests.
 - **Cause:** In parameterized testing in controller layer for invalid formats, updating DTOs with invalid date strings 
 is not possible because it requires parsing.
-- **🧪 Solution:** Instantiate an `ObjectMapper` via `createObjectNode()` method and execute put like this:
+- **🧪 Solution:** Instantiate an `ObjectMapper` via `createObjectNode()` method and execute `put()` like this:
   ```java
   var testJson = mapper.createObjectNode();
   testJson.put("name", "Test Player");
