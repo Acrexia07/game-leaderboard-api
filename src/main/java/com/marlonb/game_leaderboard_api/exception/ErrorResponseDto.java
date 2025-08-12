@@ -6,7 +6,7 @@ import java.util.Map;
 
 public record ErrorResponseDto(
         LocalDateTime timestamp,
-        int httpStatusErrorCode,
-        String generalErrorMessage,
-        Map<String, List<String>> errorList
+        int statusCode,
+        String message,
+        Map<String, List<String>> error
 ) {}

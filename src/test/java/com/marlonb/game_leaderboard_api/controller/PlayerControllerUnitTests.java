@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.marlonb.game_leaderboard_api.exception.ErrorHeaders.*;
+import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.*;
 import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
@@ -210,7 +210,7 @@ public class PlayerControllerUnitTests {
                             .content(jsonPlayerRequest))
                     .andExpectAll(
                             status().isConflict(),
-                            jsonPath("$.generalErrorMessage")
+                            jsonPath("$.message")
                                     .value(DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage()));
         }
 
@@ -228,7 +228,7 @@ public class PlayerControllerUnitTests {
                         .with(httpBasic("acrexia", "dummy")))
                    .andExpectAll(
                            status().isNotFound(),
-                           jsonPath("$.generalErrorMessage")
+                           jsonPath("$.message")
                                    .value(RESOURCE_NOT_FOUND_MESSAGE.getErrorMessage()));
         }
 
@@ -248,7 +248,7 @@ public class PlayerControllerUnitTests {
                             .content(jsonPlayerRequest))
                     .andExpectAll(
                             status().isBadRequest(),
-                            jsonPath("$.generalErrorMessage")
+                            jsonPath("$.message")
                                     .value(VALIDATION_ERROR_MESSAGE.getErrorMessage()));
         }
 
