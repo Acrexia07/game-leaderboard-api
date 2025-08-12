@@ -281,6 +281,8 @@ I was able to be aware of the usage of `PrePersist` which is helpful when I need
 
 📌 **Next Step:** Negative test case development for Controller layer
 
+---
+
 ## Day 12: Negative test case development for Controller layer
 **📅 Date:** August 11, 2025
 
@@ -298,7 +300,24 @@ I was able to be aware of the usage of `PrePersist` which is helpful when I need
 - **🧪 Unit Negative Testing Recall:** I was able to recall firmly the logic implementation of controller unit negative 
 testing.
 
-📌 **Next Step:** Negative test case development for Controller layer continuation for DateTime attribute
+📌 **Next Step:** Custom exception handler development intended for java date time entity attribute
+
+---
+
+## Day 13: Custom exception handler development intended for java date time entity attribute
+**📅 Date:** August 12, 2025
+
+**🎯 Objectives:**
+- Create a custom exception handlers for java date time entity attribute.
+- create negative test case that catches those custom exceptions.
+
+**🛠️ Implementation Summary:**
+- 
+
+**🧠 Technical Learning:**
+- 
+
+📌 **Next Step:**
 
 ---
 
