@@ -22,11 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.*;
@@ -46,6 +44,9 @@ public class PlayerControllerUnitTests {
     private PlayerService playerService;
 
     private ObjectMapper mapper;
+    private PlayerEntity testPlayer;
+    private PlayerResponseDto playerResponseDto;
+    private PlayerRequestDto playerRequestDto;
 
     @TestConfiguration
     static class TestConfig {
@@ -63,6 +64,10 @@ public class PlayerControllerUnitTests {
         mapper.disable(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS);
 
         reset(playerService);
+
+        testPlayer = PlayerTestData.samplePlayerData();
+        playerResponseDto = PlayerTestData.samplePlayerResponse(testPlayer);
+        playerRequestDto = PlayerTestData.samplePlayerRequest();
     }
 
     @Nested
@@ -71,10 +76,6 @@ public class PlayerControllerUnitTests {
         @Test
         @DisplayName("Should pass when create new player")
         void shouldPassWhenCreateNewPlayer () throws Exception {
-
-            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
-            PlayerResponseDto playerResponseDto = PlayerTestData.samplePlayerResponse(testPlayer);
-            PlayerRequestDto playerRequestDto = PlayerTestData.samplePlayerRequest();
 
             when(playerService.savePlayerData(any())).thenReturn(playerResponseDto);
 
@@ -126,10 +127,7 @@ public class PlayerControllerUnitTests {
         @DisplayName("Should pass when retrieve specific player resource")
         void shouldPassWhenRetrieveSpecificPlayerResource () throws  Exception {
 
-            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
             final long testPlayerId = testPlayer.getId();
-
-            PlayerResponseDto playerResponseDto = PlayerTestData.samplePlayerResponse(testPlayer);
 
             when(playerService.retrieveSpecificPlayerData(testPlayerId)).thenReturn(playerResponseDto);
 
@@ -152,11 +150,9 @@ public class PlayerControllerUnitTests {
         @DisplayName("Should pass when update specific player resource")
         void shouldPassWhenUpdateSpecificPlayerResource () throws Exception {
 
-            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
             final long testPlayerId = testPlayer.getId();
 
             PlayerUpdateDto playerUpdateDto = PlayerTestData.samplePlayerUpdate();
-            PlayerResponseDto playerResponseDto = PlayerTestData.samplePlayerResponse(testPlayer);
 
             when(playerService.updateSpecificPlayerData(testPlayerId, playerUpdateDto))
                     .thenReturn(playerResponseDto);
@@ -180,7 +176,6 @@ public class PlayerControllerUnitTests {
         @DisplayName("Should pass when delete specific player resource")
         void shouldPassWhenDeleteSpecificPlayerResource () throws Exception {
 
-            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
             final long testPlayerId = testPlayer.getId();
 
             doNothing().when(playerService).deleteSpecificPlayerData(testPlayerId);
@@ -199,13 +194,11 @@ public class PlayerControllerUnitTests {
         @DisplayName("Should return error status when Player name already exists")
         void shouldReturnErrorStatusWhenPlayerNameAlreadyExist () throws Exception {
 
-            PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
-
             when(playerService.savePlayerData(any()))
                     .thenThrow(new DuplicateResourceFoundException
                                    (DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage()));
 
-            String jsonPlayerRequest = mapper.writeValueAsString(testPlayerRequest);
+            String jsonPlayerRequest = mapper.writeValueAsString(playerRequestDto);
 
             mockMvc.perform(post("/api/players")
                             .with(csrf())
@@ -240,10 +233,9 @@ public class PlayerControllerUnitTests {
         @DisplayName("Should return error status when there is a null or missing input")
         void shouldReturnErrorStatusWhenThereIsANullOrMissingInput () throws Exception {
 
-            PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
-            testPlayerRequest.setPlayerName(null);
+            playerRequestDto.setPlayerName(null);
 
-            String jsonPlayerRequest = mapper.writeValueAsString(testPlayerRequest);
+            String jsonPlayerRequest = mapper.writeValueAsString(playerRequestDto);
 
             mockMvc.perform(post("/api/players")
                             .with(csrf())
