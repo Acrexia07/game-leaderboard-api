@@ -343,15 +343,12 @@ testing.
 **📅 Date:** August 14, 2025
 
 **🎯 Objectives:**
-
+- Refactor all the tests.
 
 **🛠️ Implementation Summary:**
+- Restructuring all of test
 
-
-**🐞 Technical Challenge Resolved:**
-
-
-**🧠 Technical Learning:**
+📌 **Next Step:** Implementation of leaderboard logic in service layer
 
 ---
 
