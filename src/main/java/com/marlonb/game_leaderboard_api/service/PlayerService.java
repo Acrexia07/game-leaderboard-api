@@ -42,6 +42,15 @@ public class PlayerService {
         return playerMapper.toResponse(savedPlayer);
     }
 
+    @Transactional(readOnly = true)
+    public List<PlayerResponseDto> retrieveTop3Players () {
+
+        return playerRepository.findTop3PlayerByOrderByScoresDescAndTimestampAsc()
+                               .stream()
+                               .map(playerMapper::toResponse)
+                               .toList();
+    }
+
     // READ: Retrieve all players data
     @Transactional(readOnly = true)
     public List<PlayerResponseDto> retrieveAllPlayersData () {
