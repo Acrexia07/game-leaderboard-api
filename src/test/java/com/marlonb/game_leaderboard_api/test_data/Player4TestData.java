@@ -13,11 +13,11 @@ public class Player4TestData {
         var samplePlayer4Data = new PlayerEntity();
         final UUID player4UID = UUID.randomUUID();
 
-        samplePlayer4Data.setId(3L);
+        samplePlayer4Data.setId(4L);
         samplePlayer4Data.setUuid(player4UID);
         samplePlayer4Data.setPlayerName("apollo35");
-        samplePlayer4Data.setScores(99900);
-        samplePlayer4Data.setTimestamp(LocalDateTime.now());
+        samplePlayer4Data.setScores(10900);
+        samplePlayer4Data.setTimestamp(LocalDateTime.now().minusMinutes(30));
 
         return  samplePlayer4Data;
     }
