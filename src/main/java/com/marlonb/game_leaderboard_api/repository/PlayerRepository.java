@@ -12,5 +12,5 @@ public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
     boolean existsByPlayerName (String playerName);
 
     @Query("SELECT p FROM player_data p ORDER BY p.scores DESC LIMIT 3")
-    List<PlayerEntity> findTop3PlayersByScores ();
+    List<PlayerEntity> findTop3PlayerDataByScores ();
 }
