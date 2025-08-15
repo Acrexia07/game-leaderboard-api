@@ -19,7 +19,7 @@ public class Player2TestData {
         samplePlayerData2.setUuid(player2UID);
         samplePlayerData2.setPlayerName("player2");
         samplePlayerData2.setScores(62300);
-        samplePlayerData2.setTimestamp(LocalDateTime.now().plusMinutes(30));
+        samplePlayerData2.setTimestamp(LocalDateTime.now().minusMinutes(30));
 
         return  samplePlayerData2;
     }
