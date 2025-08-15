@@ -15,9 +15,9 @@ public class Player3TestData {
 
         samplePlayer3Data.setId(3L);
         samplePlayer3Data.setUuid(player3UID);
-        samplePlayer3Data.setPlayerName("apollo35");
+        samplePlayer3Data.setPlayerName("speedRun07");
         samplePlayer3Data.setScores(99900);
-        samplePlayer3Data.setTimestamp(LocalDateTime.now());
+        samplePlayer3Data.setTimestamp(LocalDateTime.now().minusMinutes(10));
 
         return  samplePlayer3Data;
     }

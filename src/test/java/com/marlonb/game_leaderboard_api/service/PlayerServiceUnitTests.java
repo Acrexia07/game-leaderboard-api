@@ -5,6 +5,7 @@ import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundExcepti
 import com.marlonb.game_leaderboard_api.model.*;
 import com.marlonb.game_leaderboard_api.repository.PlayerRepository;
 import com.marlonb.game_leaderboard_api.test_data.Player2TestData;
+import com.marlonb.game_leaderboard_api.test_data.Player3TestData;
 import com.marlonb.game_leaderboard_api.test_data.PlayerTestData;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -73,6 +74,40 @@ public class PlayerServiceUnitTests {
             PlayerResponseDto actualResponse = playerService.savePlayerData(testPlayerRequest);
 
             assertServiceReturnedExpectedResponse(actualResponse, expectedResponse);
+        }
+
+        @Test
+        @DisplayName("Should return mapped top players when repository returns entities")
+        void shouldReturnMappedTopPlayersWhenRepositoryReturnsEntities () {
+
+            PlayerEntity testPlayer2 = Player2TestData.samplePlayerData2();
+            PlayerEntity testPlayer3 = Player3TestData.samplePlayer3Data();
+
+            List<PlayerEntity> listOfEntities =
+                    List.of(testPlayer, testPlayer2, testPlayer3);
+
+            PlayerResponseDto playerResponse1 = PlayerTestData.samplePlayerResponse(testPlayer);
+            PlayerResponseDto playerResponse2 = Player2TestData.samplePlayerResponse2(testPlayer2);
+            PlayerResponseDto playerResponse3 = Player3TestData.samplePlayer3Response(testPlayer3);
+
+            when(playerRepository.findTop3PlayerByOrderByScoresDescAndTimestampAsc())
+                    .thenReturn(listOfEntities);
+
+            when(playerMapper.toResponse(testPlayer)).thenReturn(playerResponse1);
+            when(playerMapper.toResponse(testPlayer2)).thenReturn(playerResponse2);
+            when(playerMapper.toResponse(testPlayer3)).thenReturn(playerResponse3);
+
+            List<PlayerResponseDto> actualResponse = playerService.retrieveTop3Players();
+
+            assertThat(actualResponse)
+                    .containsExactly(playerResponse1, playerResponse2, playerResponse3);
+
+            verify(playerRepository, times(1))
+                    .findTop3PlayerByOrderByScoresDescAndTimestampAsc();
+
+            verify(playerMapper).toResponse(testPlayer);
+            verify(playerMapper).toResponse(testPlayer2);
+            verify(playerMapper).toResponse(testPlayer3);
         }
 
         @Test

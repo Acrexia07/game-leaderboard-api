@@ -11,6 +11,7 @@ import java.util.List;
 public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
     boolean existsByPlayerName (String playerName);
 
-    @Query("SELECT p FROM player_data p ORDER BY p.scores DESC LIMIT 3, p.timestamp ASC LIMIT 3")
+    @Query(value = "SELECT * FROM player_data p ORDER BY p.scores DESC, p.timestamp ASC LIMIT 3",
+           nativeQuery = true)
     List<PlayerEntity> findTop3PlayerByOrderByScoresDescAndTimestampAsc ();
 }

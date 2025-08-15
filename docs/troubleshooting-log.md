@@ -143,4 +143,18 @@ is not possible because it requires parsing.
 - **📝 Lesson Learned:** If there's a parsing needed in an attribute when testing, instead of updating DTOs, instantiate
 an ObjectMapper.
 
+---
+
+### Issue 7 (August 15, 2025): Custom Query abstract method failure with the exception `UnsatisfiedDependencyException`
+- **🐞 Issue:** Error occurred after adding custom query method in PlayerRepository
+  ```java   
+  @Query("SELECT p FROM player_data p ORDER BY p.scores DESC LIMIT 3, p.timestamp ASC LIMIT 3")
+  List<PlayerEntity> findTop3PlayerByOrderByScoresDescAndTimestampAsc ();
+- **Cause:** Query value is not recognized as native SQL
+- **🧪 Solution:** Add `nativeQuery = true` inside the query annotation just like this
+  ```java
+  @Query(value = "SELECT * FROM player_data p ORDER BY p.scores DESC LIMIT 3, p.timestamp ASC LIMIT 3",
+         nativeQuery = true)
+  List<PlayerEntity> findTop3PlayerByOrderByScoresDescAndTimestampAsc ();
+- **✅ Result:** No issue related to this occurred again.
 
