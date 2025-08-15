@@ -339,6 +339,8 @@ testing.
 
 📌 **Next Step:** Refactor all tests
 
+---
+
 ## Day 14: Refactor all test
 **📅 Date:** August 14, 2025
 
@@ -348,7 +350,48 @@ testing.
 **🛠️ Implementation Summary:**
 - Restructuring all of test
 
-📌 **Next Step:** Implementation of leaderboard logic in service layer
+📌 **Next Step:** Top 3 player repository implementation - Query and Test
+
+---
+
+## Day 14: Top 3 player repository implementation - Query and Test
+**📅 Date:** August 15, 2025
+
+**🎯 Objectives:**
+- Develop custom query method to retrieve top 3 players in terms of their scores.
+- Implement test case that check if mapped top players return successfully when the repository returns entities.
+
+**🛠️ Implementation Summary:**
+- Created custom query method that retrieves top 3 player as required by the objectives:
+  ```java
+  @Query(value = "SELECT * FROM player_data p ORDER BY p.scores DESC, p.timestamp ASC LIMIT 3",
+         nativeQuery = true)
+  List<PlayerEntity> findTop3PlayerByOrderByScoresDescAndTimestampAsc ();
+- Implemented that required positive test case based on the objective.
+
+**🐞 Technical Challenge Resolved:**
+
+- **Custom Query abstract method failure with the exception `UnsatisfiedDependencyException`**
+  - **🐞 Issue:** Error occurred after adding custom query method in PlayerRepository
+    ```java   
+    @Query("SELECT p FROM player_data p ORDER BY p.scores DESC LIMIT 3, p.timestamp ASC LIMIT 3")
+    List<PlayerEntity> findTop3PlayerByOrderByScoresDescAndTimestampAsc ();
+  - **Cause:** Query value is not recognized as native SQL
+  - **🧪 Solution:** Add `nativeQuery = true` inside the query annotation just like this
+    ```java
+    @Query(value = "SELECT * FROM player_data p ORDER BY p.scores DESC LIMIT 3, p.timestamp ASC LIMIT 3",
+           nativeQuery = true)
+    List<PlayerEntity> findTop3PlayerByOrderByScoresDescAndTimestampAsc ();
+  - **✅ Result:** No issue related to this occurred again.
+
+**🧠 Technical Learning:**
+- **🧘‍♂️ Self reflection:** 
+  - I was able to understand the importance of activating the `nativeSQL` when developing custom query method in 
+  repository. 
+  - I was able to understand the test strategy on implementing test for retrieving top 3 players data in implementing 
+  leaderboard logic.
+
+📌 **Next Step:** Integration test implementation - Repository query methods
 
 ---
 
