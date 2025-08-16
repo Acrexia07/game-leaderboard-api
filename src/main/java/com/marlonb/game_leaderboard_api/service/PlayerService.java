@@ -42,6 +42,7 @@ public class PlayerService {
         return playerMapper.toResponse(savedPlayer);
     }
 
+    // READ: Retrieve top 3 players
     @Transactional(readOnly = true)
     public List<PlayerResponseDto> retrieveTop3Players () {
 

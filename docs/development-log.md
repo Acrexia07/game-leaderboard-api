@@ -391,7 +391,7 @@ testing.
   - I was able to understand the test strategy on implementing test for retrieving top 3 players data in implementing 
   leaderboard logic.
 
-📌 **Next Step:** Integration test implementation - Repository query methods
+📌 **Next Step:** Controller function for leaderboard
 
 ---
 
