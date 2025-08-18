@@ -1,6 +1,5 @@
 package com.marlonb.game_leaderboard_api.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -128,8 +127,7 @@ public class PlayerControllerUnitTests {
                                     hasItems(testPlayer1.getPlayerName(),
                                              testPlayer2.getPlayerName(),
                                              testPlayer3.getPlayerName())),
-                            jsonPath("$.response.length()").value(3)
-                    );
+                            jsonPath("$.response.length()").value(3));
         }
 
         @Test

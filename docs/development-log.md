@@ -354,7 +354,7 @@ testing.
 
 ---
 
-## Day 14: Top 3 player repository implementation - Query and Test
+## Day 15: Top 3 player repository implementation - Query and Test
 **📅 Date:** August 15, 2025
 
 **🎯 Objectives:**
@@ -393,6 +393,29 @@ testing.
 
 📌 **Next Step:** Controller function for leaderboard
 
+---
+
+## Day 16: Top 3 player controller and service implementation
+**📅 Date:** August 18, 2025
+
+**🎯 Objectives:**
+- Develop test case that should pass when retrieve top 3 players.
+- Implement service function based on the test case developed.
+- Develop test case that return appropriate response entity after executing service function under `GET` mapping.
+- Implement controller function based on the test case developed.
+
+**🛠️ Implementation Summary:**
+- Developed test case that checks the retrieval of top 3 players.
+- Implemented service function via `Streams` that executes repository query method and mapped with `toResponse()` method of 
+the `playerMapper`.
+- Developed test case that returns appropriate response entity after executing service function under `GET` mapping.
+- Implemented controller function based on the developed test case.
+
+**🧠 Technical Learning:**
+- **🧘‍♂️ Controller Unit test familiarization:** I was able to familiar further more about controller 
+unit test case development.
+
+📌 **Next Step:** Implementation of Websocket for real-time leaderboard implementation
 ---
 
 *Development continues with focus on building resilient, well-tested service architecture*
