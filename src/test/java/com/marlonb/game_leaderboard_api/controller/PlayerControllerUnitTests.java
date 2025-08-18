@@ -96,6 +96,43 @@ public class PlayerControllerUnitTests {
         }
 
         @Test
+        @DisplayName("Should pass when retrieve top 3 players")
+        void shouldPassWhenRetrieveTop3Players () throws Exception {
+
+            PlayerEntity testPlayer1 = PlayerTestData.samplePlayerData();
+            PlayerEntity testPlayer2 = Player2TestData.samplePlayerData2();
+            PlayerEntity testPlayer3 = Player3TestData.samplePlayer3Data();
+
+            PlayerResponseDto testPlayerResponse1 = PlayerTestData.samplePlayerResponse(testPlayer1);
+            PlayerResponseDto testPlayerResponse2 = Player2TestData.samplePlayerResponse2(testPlayer2);
+            PlayerResponseDto testPlayerResponse3 = Player3TestData.samplePlayer3Response(testPlayer3);
+
+            List<PlayerResponseDto> expectedResponses =
+                    List.of(testPlayerResponse1, testPlayerResponse2, testPlayerResponse3);
+
+            when(playerService.retrieveTop3Players()).thenReturn(expectedResponses);
+
+            String jsonPlayerResponses = mapper.writeValueAsString(expectedResponses);
+
+            mockMvc.perform(get("/api/leaderboards")
+                            .with(csrf())
+                            .with(httpBasic("acrexia", "dummy"))
+                            .contentType("application/json")
+                            .content(jsonPlayerResponses))
+                    .andExpectAll(
+                            status().isOk(),
+                            jsonPath("$.apiMessage")
+                                    .value("Retrieve top 3 players successfully!"),
+                            jsonPath("$.response").isArray(),
+                            jsonPath("$.response[*].playerName",
+                                    hasItems(testPlayer1.getPlayerName(),
+                                             testPlayer2.getPlayerName(),
+                                             testPlayer3.getPlayerName())),
+                            jsonPath("$.response.length()").value(3)
+                    );
+        }
+
+        @Test
         @DisplayName("Should pass when retrieve all player resource")
         void shouldPassWhenRetrieveAllPlayerResource () throws Exception {
 

@@ -54,6 +54,16 @@ public class PlayerController {
                                         ("Specific player data retrieved successfully!", foundResponse));
     }
 
+    @GetMapping("/leaderboards")
+    public ResponseEntity<ApiMessageResponseDto<List<PlayerResponseDto>>> retrieveTop3Players () {
+
+        List<PlayerResponseDto> listOfTopPlayers = playerService.retrieveTop3Players();
+
+        return ResponseEntity.ok().body(new ApiMessageResponseDto<>
+                                       ("Retrieve top 3 players successfully!",
+                                        listOfTopPlayers));
+    }
+
     @PutMapping("/players/{id}")
     public ResponseEntity<ApiMessageResponseDto<PlayerResponseDto>> updateSpecificPlayerResource
             (@PathVariable long id, @Valid @RequestBody PlayerUpdateDto updateDto) {
