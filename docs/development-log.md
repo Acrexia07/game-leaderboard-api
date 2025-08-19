@@ -415,7 +415,22 @@ the `playerMapper`.
 - **🧘‍♂️ Controller Unit test familiarization:** I was able to familiar further more about controller 
 unit test case development.
 
-📌 **Next Step:** Implementation of Websocket for real-time leaderboard implementation
+📌 **Next Step:** WebSocket Learning Phase
+
+---
+
+## Day 16: Top 3 player controller and service implementation
+**📅 Date:** August 19, 2025
+
+**🎯 Objectives:**
+- Know the overview of websocket
+- Apply it by creating simple app
+
+**🧠 Technical Learning:**
+- **📖 New Knowledge Acquired: **
+
+📌 **Next Step:** Implementation of websocket - Planning phase
+
 ---
 
 *Development continues with focus on building resilient, well-tested service architecture*
