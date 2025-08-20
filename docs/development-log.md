@@ -419,7 +419,7 @@ unit test case development.
 
 ---
 
-## Day 16: Top 3 player controller and service implementation
+## Day 16: WebSocket Learning Phase
 **📅 Date:** August 19, 2025
 
 **🎯 Objectives:**
@@ -427,14 +427,33 @@ unit test case development.
 - Apply it by creating simple app
 
 **🧠 Technical Learning:**
-- **📖 New Knowledge Acquired: **
+- **📖 New Knowledge Acquired: ** I was able to learn the usage and implementation of websocket theoretically.
 
 📌 **Next Step:** Refactor instantiation of `timestamp` attributes
+
+---
+
+## Day 17: Refactor instantiation of `timestamp` attributes
 **📅 Date:** August 19, 2025
 
 **🎯 Objectives:**
 - Implement `timestamp` attribute annotated with `@PrePersist` and `@PreUpdate` on entity.
 - Remove `timestamp` attribute on request and update DTOs.
+- Refactor all classes affected by the `timestamp` implementation changes.
+
+**🛠️ Implementation Summary:**
+- Implemented `timestamp` attribute annotated with `@PrePersist` and `@PreUpdate` on entity.
+- Removed `timestamp` attribute on request and update DTOs.
+- Refactored all classes affected by the `timestamp` implementation changes.
+
+📌 **Next Step:** Studying Websocket implementation by basic project
+
+**🎯 Objectives:**
+- Learn the structure of websocket implementation.
+- Learn the pattern of building this concept in every project that requires it.
+- Plan on how to implement Websocket in `Game Leaderboard API`.
+
+---
 
 
 ---
