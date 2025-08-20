@@ -33,5 +33,12 @@ public class PlayerEntity {
         if (uuid == null) {
             uuid = UUID.randomUUID();
         }
+        this.timestamp = LocalDateTime.now();
     }
+
+    @PreUpdate
+    public void onUpdate() {
+        this.timestamp = LocalDateTime.now();
+    }
+
 }
