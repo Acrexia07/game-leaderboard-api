@@ -21,7 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
+//import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -214,31 +214,6 @@ public class PlayerServiceUnitTests {
             void shouldFailWhenPlayerScoreIsNotValid (Integer invalidScores) {
 
                 testPlayerRequest.setScores(invalidScores);
-
-                ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-                Validator validator = factory.getValidator();
-
-                Set<ConstraintViolation<PlayerRequestDto>> requestViolations =
-                        validator.validate(testPlayerRequest);
-
-                assertThat(requestViolations).isNotEmpty();
-            }
-
-            @ParameterizedTest
-            @NullSource
-            @ValueSource(strings = {
-                    "2026-08-03T10:00:00",
-                    "2026-08-02T15:00:00",
-                    "2026-12-25T12:00:00",
-                    "2026-01-01T00:00:00"
-            })
-            @DisplayName("Should fail when player timestamp is not valid")
-            void shouldFailWhenPlayerTimestampIsNotValid (String dateTimeStrings) {
-
-                LocalDateTime invalidDateTime = dateTimeStrings != null ?
-                        LocalDateTime.parse(dateTimeStrings) : null;
-
-                testPlayerRequest.setTimestamp(invalidDateTime);
 
                 ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
                 Validator validator = factory.getValidator();

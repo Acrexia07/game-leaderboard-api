@@ -39,8 +39,7 @@ public class Player2TestData {
 
         return new PlayerUpdateDto(
                 samplePlayerData2().getPlayerName(),
-                7200,
-                samplePlayerData2().getTimestamp()
+                7200
         );
     }
 
@@ -48,8 +47,7 @@ public class Player2TestData {
 
         return new PlayerRequestDto(
                 samplePlayerData2().getPlayerName(),
-                samplePlayerData2().getScores(),
-                samplePlayerData2().getTimestamp()
+                samplePlayerData2().getScores()
         );
     }
 }

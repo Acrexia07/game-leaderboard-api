@@ -429,7 +429,13 @@ unit test case development.
 **🧠 Technical Learning:**
 - **📖 New Knowledge Acquired: **
 
-📌 **Next Step:** Implementation of websocket - Planning phase
+📌 **Next Step:** Refactor instantiation of `timestamp` attributes
+**📅 Date:** August 19, 2025
+
+**🎯 Objectives:**
+- Implement `timestamp` attribute annotated with `@PrePersist` and `@PreUpdate` on entity.
+- Remove `timestamp` attribute on request and update DTOs.
+
 
 ---
 

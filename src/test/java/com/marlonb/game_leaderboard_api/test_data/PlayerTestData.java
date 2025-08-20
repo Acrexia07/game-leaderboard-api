@@ -51,8 +51,7 @@ public class PlayerTestData {
 
         return new PlayerUpdateDto(
                 samplePlayerData().getPlayerName(),
-                60000,
-                samplePlayerData().getTimestamp()
+                60000
         );
     }
 
@@ -60,8 +59,7 @@ public class PlayerTestData {
 
         return new PlayerRequestDto(
                 samplePlayerData().getPlayerName(),
-                samplePlayerData().getScores(),
-                samplePlayerData().getTimestamp()
+                samplePlayerData().getScores()
         );
     }
 }

@@ -88,9 +88,7 @@ public class GlobalExceptionHandler {
 
         Map<String, List<String>> customError;
 
-        if (ex.getMessage().contains("LocalDateTime")) {
-            customError = Map.of("timestamp", List.of(DATE_TIME_FORMAT_ERROR_MESSAGE.getErrorMessage()));
-        } else if (ex.getMessage().contains("JSON")) {
+        if (ex.getMessage().contains("JSON")) {
             customError = Map.of("json", List.of(JSON_ERROR_MESSAGE.getErrorMessage()));
         } else {
             customError = Map.of("request", List.of(FORMAT_REQUEST_ERROR_MESSAGE.getErrorMessage()));
