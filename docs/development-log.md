@@ -424,7 +424,7 @@ unit test case development.
 
 **🎯 Objectives:**
 - Know the overview of websocket
-- Apply it by creating simple app
+- Apply it by creating the simple app
 
 **🧠 Technical Learning:**
 - **📖 New Knowledge Acquired: ** I was able to learn the usage and implementation of websocket theoretically.
@@ -452,15 +452,20 @@ unit test case development.
 - Learn deeper about spring security.
 - Plan on how to implement JWT on this project.
 
-_"Note: The project will be halt for more days to study the concept"_
+_"Note: The project will be halted for more days to study the WebSocket concept"_
 
-## Day 18: JWT Implementation Preparation - `UserEntity` creation
+_"After learning Websocket concept theoretically, I conclude that I need to implement JWT first in the project"_
+
+---
+
+## Day 18: JWT Implementation Preparation 
 
 **🎯 Objectives:**
 - Create a `UserEntity` with provided attributes.
+- Create a `UserRepository` that extends `JpaRepository`.
 
 **🛠️ Implementation Summary:**
-- Provided a structured entity in preparation for JWT implementation.
+- Implemented a structured entity in preparation for JWT implementation.
   ```java
   @Entity
   @Table(name = "users_data")
@@ -490,8 +495,11 @@ _"Note: The project will be halt for more days to study the concept"_
       }
   }
 
-📌 **Next Step:** JWT Implementation  - `UserEntity` creation
- 
+- Implemented `UserRepository` that extends `JpaRepository`.
+
+📌 **Next Step:** JWT Implementation preparation - DTOs creation
+
+
 ---
 
 *Development continues with focus on building resilient, well-tested service architecture*
