@@ -47,8 +47,6 @@ public class BasicAuthenticationConfig {
         );
     }
 
-
-
     @Bean
     public PasswordEncoder passwordEncoder () {
         return new BCryptPasswordEncoder();

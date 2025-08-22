@@ -454,6 +454,44 @@ unit test case development.
 
 _"Note: The project will be halt for more days to study the concept"_
 
+## Day 18: JWT Implementation Preparation - `UserEntity` creation
+
+**🎯 Objectives:**
+- Create a `UserEntity` with provided attributes.
+
+**🛠️ Implementation Summary:**
+- Provided a structured entity in preparation for JWT implementation.
+  ```java
+  @Entity
+  @Table(name = "users_data")
+  @AllArgsConstructor
+  @NoArgsConstructor
+  @Data
+  public class UserEntity {
+  
+      @Id
+      @GeneratedValue(strategy = GenerationType.IDENTITY)
+      private Long id;
+  
+      @Column(unique = true, nullable = false)
+      private String username;
+  
+      @Column(nullable = false)
+      private String password;
+  
+      @Enumerated(EnumType.STRING)
+      private UserRoles role = UserRoles.PLAYER;
+  
+      private LocalDateTime createdAt;
+  
+      @PrePersist
+      public void onCreate () {
+          this.createdAt = LocalDateTime.now();
+      }
+  }
+
+📌 **Next Step:** JWT Implementation  - `UserEntity` creation
+ 
 ---
 
 *Development continues with focus on building resilient, well-tested service architecture*
