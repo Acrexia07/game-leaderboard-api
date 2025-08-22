@@ -446,15 +446,13 @@ unit test case development.
 - Removed `timestamp` attribute on request and update DTOs.
 - Refactored all classes affected by the `timestamp` implementation changes.
 
-📌 **Next Step:** Studying Websocket implementation by basic project
+📌 **Next Step:** Implementation of JWT - Learning phase
 
 **🎯 Objectives:**
-- Learn the structure of websocket implementation.
-- Learn the pattern of building this concept in every project that requires it.
-- Plan on how to implement Websocket in `Game Leaderboard API`.
+- Learn deeper about spring security.
+- Plan on how to implement JWT on this project.
 
----
-
+_"Note: The project will be halt for more days to study the concept"_
 
 ---
 
