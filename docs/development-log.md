@@ -459,6 +459,7 @@ _"After learning Websocket concept theoretically, I conclude that I need to impl
 ---
 
 ## Day 18: JWT Implementation Preparation 
+**📅 Date:** August 23, 2025
 
 **🎯 Objectives:**
 - Create a `UserEntity` with provided attributes.
@@ -499,6 +500,39 @@ _"After learning Websocket concept theoretically, I conclude that I need to impl
 
 📌 **Next Step:** JWT Implementation preparation - DTOs creation
 
+---
+
+## Day 19: JWT Implementation Preparation - DTOs creation
+**📅 Date:** August 23, 2025
+
+**🎯 Objectives:**
+- Create data transfer objects for `userEntity`.
+- Provide sample test data based on the developed DTOs.
+- Implement mapper that will map DTOs as per request.
+
+**🛠️ Implementation Summary:**
+- Created data transfer objects for `userEntity`.
+- Provided sample test data based on the developed DTOs.
+- Implemented mapper that will map DTOs as per request.
+
+**🐞 Technical Challenge Resolved:**
+- **🐞 Issue:** Error creating bean with name `userRepository`.
+- **Cause:** Having Optional on the custom query method in the `userRepository` class.
+  ```
+  @Repository
+  public interface UserRepository extends JpaRepository<UserEntity, Long> {
+  Optional<UserEntity> findByUsername (String username);
+  }
+
+- **🧪 Solution:** Removed `Optional` defined in the custom query method.
+  ```
+  @Repository
+  public interface UserRepository extends JpaRepository<UserEntity, Long> {
+  UserEntity findByUsername (String username);
+  }
+- **✅ Result:** No issue related to this occurred again.
+
+📌 **Next Step:** JWT Implementation preparation - connecting `playerEntity` to `userEntity`
 
 ---
 
