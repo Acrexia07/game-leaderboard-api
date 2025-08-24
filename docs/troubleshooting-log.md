@@ -8,7 +8,9 @@
 - [Issue 4 (August 9, 2025): Exception related to the Java * Date Time occurred](#issue-4-august-8-2025-exception-related-to-the-java--date-time-occurred)
 - [Issue 5 (August 10, 2025): Create resource issue due to UUID being null](#issue-5-august-9-2025-create-resource-issue-due-to-uuid-being-null)
 - [Issue 6 (August 12, 2025): DateTime format validation not working in JSON requests](#issue-6-august-12-2025-datetime-format-validation-not-working-in-json-requests)
-
+- [Issue 7 (August 12, 2025): Parameterize test for controller negative testing not working](#issue-7-august-12-2025-parameterize-test-for-controller-negative-testing-not-working)
+- [Issue 8 (August 15, 2025): Custom Query abstract method failure with the exception `UnsatisfiedDependencyException`](#issue-8-august-15-2025-custom-query-abstract-method-failure-with-the-exception-unsatisfieddependencyexception)
+- [Issue 9 (August 24, 2025): Issue on `userRepository`](#issue-9-august-24-2025-issue-on-userrepository)
 ---
 ## Technical issues encountered
 
@@ -139,13 +141,13 @@ is not possible because it requires parsing.
                   .content(jsonTestRequest))
           .andExpect(status().isBadRequest());
 
-- **✅ Result:** Parameterized testing works properly in controller layer.
+- **✅ Result:** Parameterized testing works properly in the controller layer.
 - **📝 Lesson Learned:** If there's a parsing needed in an attribute when testing, instead of updating DTOs, instantiate
 an ObjectMapper.
 
 ---
 
-### Issue 7 (August 15, 2025): Custom Query abstract method failure with the exception `UnsatisfiedDependencyException`
+### Issue 8 (August 15, 2025): Custom Query abstract method failure with the exception `UnsatisfiedDependencyException`
 - **🐞 Issue:** Error occurred after adding custom query method in PlayerRepository
   ```java   
   @Query("SELECT p FROM player_data p ORDER BY p.scores DESC LIMIT 3, p.timestamp ASC LIMIT 3")
@@ -156,5 +158,24 @@ an ObjectMapper.
   @Query(value = "SELECT * FROM player_data p ORDER BY p.scores DESC LIMIT 3, p.timestamp ASC LIMIT 3",
          nativeQuery = true)
   List<PlayerEntity> findTop3PlayerByOrderByScoresDescAndTimestampAsc ();
+- **✅ Result:** No issue related to this occurred again.
+
+---
+
+### Issue 9 (August 24, 2025): Issue on `userRepository`
+- **🐞 Issue:** Error creating bean with name `userRepository`.
+- **Cause:** Having Optional on the custom query method in the `userRepository` class.
+  ```
+  @Repository
+  public interface UserRepository extends JpaRepository<UserEntity, Long> {
+  Optional<UserEntity> findByUsername (String username);
+  }
+
+- **🧪 Solution:** Removed `Optional` defined in the custom query method.
+  ```
+  @Repository
+  public interface UserRepository extends JpaRepository<UserEntity, Long> {
+  UserEntity findByUsername (String username);
+  }
 - **✅ Result:** No issue related to this occurred again.
 

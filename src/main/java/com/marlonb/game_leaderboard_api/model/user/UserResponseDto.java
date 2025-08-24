@@ -1,0 +1,11 @@
+package com.marlonb.game_leaderboard_api.model.user;
+
+import java.time.LocalDateTime;
+
+public record UserResponseDto(
+   long id,
+   String username,
+   String password,
+   UserRoles roles,
+   LocalDateTime createdAt
+) {}
