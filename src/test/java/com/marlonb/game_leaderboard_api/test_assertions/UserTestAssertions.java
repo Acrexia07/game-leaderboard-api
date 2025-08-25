@@ -10,13 +10,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserTestAssertions {
 
     public static void assertUserServiceReturnedExpectedResponse (UserResponseDto actualResponse,
-                                                              UserResponseDto expectedResponse) {
+                                                                  UserResponseDto expectedResponse) {
 
         assertThat(actualResponse).usingRecursiveAssertion().isEqualTo(expectedResponse);
     }
 
     public static void assertUserServiceReturnedExpectedResponse (List<UserResponseDto> actualResponse,
-                                                              List<UserResponseDto> expectedResponse) {
+                                                                  List<UserResponseDto> expectedResponse) {
 
         assertThat(actualResponse).usingRecursiveAssertion().isEqualTo(expectedResponse);
     }

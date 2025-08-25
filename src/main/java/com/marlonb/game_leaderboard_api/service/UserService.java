@@ -8,6 +8,8 @@ import com.marlonb.game_leaderboard_api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -21,5 +23,14 @@ public class UserService {
         UserEntity savedUser = userRepository.save(createdUser);
 
         return userMapper.toResponse(savedUser);
+    }
+
+    public List<UserResponseDto> retrieveAllUsers () {
+
+        List<UserEntity> listOfUsers = userRepository.findAll();
+
+        return listOfUsers.stream()
+                          .map(userMapper::toResponse)
+                          .toList();
     }
 }
