@@ -5,6 +5,7 @@ import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundExcepti
 import com.marlonb.game_leaderboard_api.model.*;
 import com.marlonb.game_leaderboard_api.repository.PlayerRepository;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,17 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PlayerService {
 
     private final PlayerRepository playerRepository;
     private final PlayerInfoMapper playerMapper;
-
-
-    public PlayerService (PlayerRepository playerRepository,
-                          PlayerInfoMapper playerMapper) {
-        this.playerRepository = playerRepository;
-        this.playerMapper = playerMapper;
-    }
 
     // CREATE: Add new player data
     @Transactional

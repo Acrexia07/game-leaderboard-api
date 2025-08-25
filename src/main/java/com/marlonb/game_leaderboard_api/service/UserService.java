@@ -6,11 +6,12 @@ import com.marlonb.game_leaderboard_api.model.user.UserMapper;
 import com.marlonb.game_leaderboard_api.model.user.UserRequestDto;
 import com.marlonb.game_leaderboard_api.model.user.UserResponseDto;
 import com.marlonb.game_leaderboard_api.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public UserResponseDto createUser (UserRequestDto userRequest) {
+    public UserResponseDto createUser (@Valid @RequestBody UserRequestDto userRequest) {
 
         UserEntity createdUser = userMapper.toEntity(userRequest);
         UserEntity savedUser = userRepository.save(createdUser);
