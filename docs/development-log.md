@@ -534,8 +534,20 @@ _"After learning Websocket concept theoretically, I conclude that I need to impl
 
 📌 **Next Step:** JWT Implementation preparation - `UserService` implementation
 
+## Day 20: JWT Implementation preparation - `UserService` implementation
+**📅 Date:** August 25, 2025
 
+**🎯 Objectives:**
+- Implement Test-Driven Development approach for core functionality
+- Create `UserEntity` with comprehensive validation for user management
+- Develop service layer function for user data persistence
 
+**🛠️ Implementation Summary:**
+- Created `UserEntity` with corresponding DTOs and validation constraints
+- Developed test data helper methods and comprehensive test cases
+- Implemented `createUser` service function with full test coverage
+
+📌 **Next Step:** Expand service layer with additional CRUD operations
 
 ---
 

@@ -14,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static com.marlonb.game_leaderboard_api.test_assertions.PlayerTestAssertions.assertServiceReturnedExpectedResponse;
 import static com.marlonb.game_leaderboard_api.test_assertions.UserTestAssertions.assertUserServiceReturnedExpectedResponse;
 import static org.mockito.Mockito.*;
 
