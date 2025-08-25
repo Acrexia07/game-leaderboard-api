@@ -24,8 +24,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private UserRoles role = UserRoles.PLAYER;
+    private final String roles = "USER";
 
     private LocalDateTime createdAt;
 

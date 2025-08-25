@@ -532,7 +532,9 @@ _"After learning Websocket concept theoretically, I conclude that I need to impl
   }
 - **✅ Result:** No issue related to this occurred again.
 
-📌 **Next Step:** JWT Implementation preparation - connecting `playerEntity` to `userEntity`
+📌 **Next Step:** JWT Implementation 
+
+
 
 ---
 
