@@ -1,9 +1,6 @@
 package com.marlonb.game_leaderboard_api.service;
 
-import com.marlonb.game_leaderboard_api.model.user.UserEntity;
-import com.marlonb.game_leaderboard_api.model.user.UserMapper;
-import com.marlonb.game_leaderboard_api.model.user.UserRequestDto;
-import com.marlonb.game_leaderboard_api.model.user.UserResponseDto;
+import com.marlonb.game_leaderboard_api.model.user.*;
 import com.marlonb.game_leaderboard_api.repository.UserRepository;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User2TestData;
@@ -97,6 +94,35 @@ public class UserDetailServiceUnitTests {
                     .thenReturn(expectedResponse);
 
             UserResponseDto actualResponse = userService.retrieveSpecificUser(testUserId);
+
+            assertUserServiceReturnedExpectedResponse(actualResponse, expectedResponse);
+        }
+
+        @Test
+        @DisplayName("Should update specific user successfully")
+        void shouldUpdateSpecificUserSuccessfully () {
+
+            UserEntity testUser = User1TestData.sampleUser1Data();
+            final long testUserId = testUser.getId();
+
+            UserUpdateDto testUserUpdate = User1TestData.sampleUser1Update();
+            UserEntity testUserAfterUpdate = User1TestData.sampleUserDataAfterUpdate();
+
+            UserResponseDto expectedResponse = User1TestData.sampleUser1Response();
+
+            when(userRepository.findById(testUserId))
+                    .thenReturn(Optional.of(testUser));
+
+            doNothing().when(userMapper)
+                    .toUpdateFromEntity(testUser, testUserUpdate);
+
+            when(userRepository.save(any(UserEntity.class)))
+                    .thenReturn(testUserAfterUpdate);
+
+            when(userMapper.toResponse(any(UserEntity.class)))
+                    .thenReturn(expectedResponse);
+
+            UserResponseDto actualResponse = userService.updateSpecificUser(testUserId, testUserUpdate);
 
             assertUserServiceReturnedExpectedResponse(actualResponse, expectedResponse);
         }

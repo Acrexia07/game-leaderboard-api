@@ -1,10 +1,7 @@
 package com.marlonb.game_leaderboard_api.service;
 
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
-import com.marlonb.game_leaderboard_api.model.user.UserEntity;
-import com.marlonb.game_leaderboard_api.model.user.UserMapper;
-import com.marlonb.game_leaderboard_api.model.user.UserRequestDto;
-import com.marlonb.game_leaderboard_api.model.user.UserResponseDto;
+import com.marlonb.game_leaderboard_api.model.user.*;
 import com.marlonb.game_leaderboard_api.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +36,17 @@ public class UserService {
 
         UserEntity foundUser = checkUserId(id);
         return userMapper.toResponse(foundUser);
+    }
+
+    public UserResponseDto updateSpecificUser(long id,
+                                              @Valid @RequestBody UserUpdateDto userUpdate) {
+
+        UserEntity foundUser = checkUserId(id);
+
+        userMapper.toUpdateFromEntity(foundUser, userUpdate);
+        UserEntity savedUser = userRepository.save(foundUser);
+
+        return userMapper.toResponse(savedUser);
     }
 
     public UserEntity checkUserId (long id) {

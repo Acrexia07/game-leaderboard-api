@@ -15,6 +15,15 @@ public class User1TestData {
         return user1;
     }
 
+    public static UserEntity sampleUserDataAfterUpdate () {
+
+        var updatedUser = new UserEntity();
+        updatedUser.setId(1L);
+        updatedUser.setUsername("user1");
+        updatedUser.setPassword("User#456");
+        return updatedUser;
+    }
+
     public static UserResponseDto sampleUser1Response () {
 
         return new UserResponseDto(
