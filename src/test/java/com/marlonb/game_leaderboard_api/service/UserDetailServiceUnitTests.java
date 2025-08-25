@@ -126,5 +126,20 @@ public class UserDetailServiceUnitTests {
 
             assertUserServiceReturnedExpectedResponse(actualResponse, expectedResponse);
         }
+
+        @Test
+        @DisplayName("Should delete specific user successfully")
+        void shouldDeleteSpecificUserSuccessfully () {
+
+            UserEntity testUser = User1TestData.sampleUser1Data();
+            final long testUserId = testUser.getId();
+
+            when(userRepository.findById(testUserId))
+                    .thenReturn(Optional.of(testUser));
+
+            userService.deleteSpecificUser(testUserId);
+
+            verify(userRepository).deleteById(testUserId);
+        }
     }
 }

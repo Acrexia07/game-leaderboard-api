@@ -34,14 +34,14 @@ public class UserService {
 
     public UserResponseDto retrieveSpecificUser(long id) {
 
-        UserEntity foundUser = checkUserId(id);
+        UserEntity foundUser = findUserId(id);
         return userMapper.toResponse(foundUser);
     }
 
     public UserResponseDto updateSpecificUser(long id,
                                               @Valid @RequestBody UserUpdateDto userUpdate) {
 
-        UserEntity foundUser = checkUserId(id);
+        UserEntity foundUser = findUserId(id);
 
         userMapper.toUpdateFromEntity(foundUser, userUpdate);
         UserEntity savedUser = userRepository.save(foundUser);
@@ -49,7 +49,13 @@ public class UserService {
         return userMapper.toResponse(savedUser);
     }
 
-    public UserEntity checkUserId (long id) {
+    public void deleteSpecificUser(long id) {
+
+        findUserId(id);
+        userRepository.deleteById(id);
+    }
+
+    public UserEntity findUserId (long id) {
 
         return userRepository.findById(id)
                              .orElseThrow(() -> new ResourceNotFoundException
