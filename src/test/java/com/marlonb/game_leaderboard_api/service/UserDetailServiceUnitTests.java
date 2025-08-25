@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.marlonb.game_leaderboard_api.test_assertions.UserTestAssertions.assertUserServiceReturnedExpectedResponse;
 import static org.mockito.Mockito.*;
@@ -75,9 +76,29 @@ public class UserDetailServiceUnitTests {
             when(userMapper.toResponse(testUser1)).thenReturn(testUserResponse1);
             when(userMapper.toResponse(testUser2)).thenReturn(testUserResponse2);
 
-            List<UserResponseDto> actualResponse = userService.retrieveAllUsers();
+            List<UserResponseDto> actualResponses = userService.retrieveAllUsers();
 
-            assertUserServiceReturnedExpectedResponse(actualResponse, expectedResponses);
+            assertUserServiceReturnedExpectedResponse(actualResponses, expectedResponses);
+        }
+
+        @Test
+        @DisplayName("Should retrieve specific user successfully")
+        void shouldRetrieveSpecificUserSuccessfully () {
+
+            UserEntity testUser = User1TestData.sampleUser1Data();
+            final long testUserId = testUser.getId();
+
+            UserResponseDto expectedResponse = User1TestData.sampleUser1Response();
+
+            when(userRepository.findById(testUserId))
+                    .thenReturn(Optional.of(testUser));
+
+            when(userMapper.toResponse(testUser))
+                    .thenReturn(expectedResponse);
+
+            UserResponseDto actualResponse = userService.retrieveSpecificUser(testUserId);
+
+            assertUserServiceReturnedExpectedResponse(actualResponse, expectedResponse);
         }
     }
 }
