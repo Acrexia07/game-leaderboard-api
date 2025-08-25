@@ -547,7 +547,26 @@ _"After learning Websocket concept theoretically, I conclude that I need to impl
 - Developed test data helper methods and comprehensive test cases
 - Implemented `createUser` service function with full test coverage
 
-📌 **Next Step:** Expand service layer with additional CRUD operations
+📌 **Next Step:** Expand service layer functions with additional CRUD operations
+
+---
+
+## Day 21: Expand service layer functions with additional CRUD operations
+**📅 Date:** August 26, 2025
+
+**🎯 Objectives:**
+- Implement Test-Driven Development approach on other service functions.
+- Develop other service layer functions for user data persistence.
+
+**🛠️ Implementation Summary:**
+- Implemented Test-Driven Development approach on other service functions and has no issues on GitHub Actions CI.
+- Developed other service layer functions for user data persistence.
+
+**🧠 Technical Learning:**
+- **📖 New Knowledge Acquired: ** I was able to learn that by using `@RequiredArgsConstructor`, I was able to reduce 
+boilerplate in implementing constructor-based dependency injection.
+
+📌 **Next Step:** TDD Continuation - Negative Test Case Development for `UserService`
 
 ---
 
