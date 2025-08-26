@@ -7,6 +7,24 @@
 - [Day 3: Database Configuration & JWT Foundation](#day-3-database-configuration--jwt-foundation)
 - [Day 4: Entity Development & TDD Implementation](#day-4-entity-development--tdd-implementation)
 - [Day 5: Service Layer Expansion - Read Operations](#day-5-service-layer-expansion---read-operations)
+- [Day 6: Test Case Development extension — Negative Test for create operation](#day-6-test-case-development-extension--negative-test-for-create-operation)
+- [Day 7: Continuation of TDD development with other Service layer functions and some custom exception handling](#day-7-continuation-of-tdd-development-with-other-service-layer-functions-and-some-custom-exception-handling)
+- [Day 8: Test Case Development extension (Negative Test) and Basic Auth Implementation](#day-8-test-case-development-extension-negative-test-and-basic-auth-implementation)
+- [Day 9: Test Case Development continuation (Negative Test for update operation)](#day-9-test-case-development-continuation-negative-test-for-update-operation)
+- [Day 10: Test Case Development continuation (Negative Test for update operation)](#day-10-test-case-development-continuation-negative-test-for-update-operation)
+- [Day 11: Test Case Development for controller continuation](#day-11-test-case-development-for-controller-continuation)
+- [Day 12: Negative test case development for Controller layer](#day-12-negative-test-case-development-for-controller-layer)
+- [Day 13: Custom exception handler development intended for java date time entity attribute](#day-13-custom-exception-handler-development-intended-for-java-date-time-entity-attribute)
+- [Day 14: Refactor all `PlayerService`-related tests](#day-14-refactor-all-playerservice-related-tests)
+- [Day 15: Top 3 player repository implementation - Query and Test](#day-15-top-3-player-repository-implementation---query-and-test)
+- [Day 16: Top 3 player controller and service implementation](#day-16-top-3-player-controller-and-service-implementation)
+- [Day 17: WebSocket Learning Phase](#day-17-websocket-learning-phase)
+- [Day 18: Refactor instantiation of `timestamp` attributes](#day-18-refactor-instantiation-of-timestamp-attributes)
+- [Day 19: JWT Implementation Preparation](#day-19-jwt-implementation-preparation)
+- [Day 20: JWT Implementation Preparation - DTOs creation](#day-20-jwt-implementation-preparation---dtos-creation)
+- [Day 21: JWT Implementation preparation - `UserService` implementation](#day-21-jwt-implementation-preparation---userservice-implementation)
+- [Day 22: Expand `UserService` functions with additional CRUD operations](#day-22-expand-userservice-functions-with-additional-crud-operations)
+- [Day 23: TDD Continuation - Negative Test Case Development for `UserService`](#day-23-tdd-continuation---negative-test-case-development-for-userservice)
 ---
 
 ## Day 1: Project Setup and CI Integration
@@ -341,7 +359,7 @@ testing.
 
 ---
 
-## Day 14: Refactor all test
+## Day 14: Refactor all `PlayerService`-related tests
 **📅 Date:** August 14, 2025
 
 **🎯 Objectives:**
@@ -419,7 +437,7 @@ unit test case development.
 
 ---
 
-## Day 16: WebSocket Learning Phase
+## Day 17: WebSocket Learning Phase
 **📅 Date:** August 19, 2025
 
 **🎯 Objectives:**
@@ -433,7 +451,7 @@ unit test case development.
 
 ---
 
-## Day 17: Refactor instantiation of `timestamp` attributes
+## Day 18: Refactor instantiation of `timestamp` attributes
 **📅 Date:** August 19, 2025
 
 **🎯 Objectives:**
@@ -458,7 +476,7 @@ _"After learning Websocket concept theoretically, I conclude that I need to impl
 
 ---
 
-## Day 18: JWT Implementation Preparation 
+## Day 19: JWT Implementation Preparation
 **📅 Date:** August 23, 2025
 
 **🎯 Objectives:**
@@ -502,7 +520,7 @@ _"After learning Websocket concept theoretically, I conclude that I need to impl
 
 ---
 
-## Day 19: JWT Implementation Preparation - DTOs creation
+## Day 20: JWT Implementation Preparation - DTOs creation
 **📅 Date:** August 23, 2025
 
 **🎯 Objectives:**
@@ -534,7 +552,7 @@ _"After learning Websocket concept theoretically, I conclude that I need to impl
 
 📌 **Next Step:** JWT Implementation preparation - `UserService` implementation
 
-## Day 20: JWT Implementation preparation - `UserService` implementation
+## Day 21: JWT Implementation preparation - `UserService` implementation
 **📅 Date:** August 25, 2025
 
 **🎯 Objectives:**
@@ -551,7 +569,7 @@ _"After learning Websocket concept theoretically, I conclude that I need to impl
 
 ---
 
-## Day 21: Expand service layer functions with additional CRUD operations
+## Day 22: Expand `UserService` functions with additional CRUD operations
 **📅 Date:** August 26, 2025
 
 **🎯 Objectives:**
@@ -570,7 +588,7 @@ boilerplate in implementing constructor-based dependency injection.
 
 ---
 
-## Day 22: TDD Continuation - Negative Test Case Development for `UserService`
+## Day 23: TDD Continuation - Negative Test Case Development for `UserService`
 **📅 Date:** August 27, 2025
 
 **🎯 Objectives:**
@@ -587,6 +605,7 @@ boilerplate in implementing constructor-based dependency injection.
 - **📖 Knowledge Recall: ** I was able to recall all the procedures when developing a negative test case.
 
 📌 **Next Step:** TDD Continuation - Positive test case development of the controller layer functions
+
 ---
 
 *Development continues with focus on building resilient, well-tested service architecture*
