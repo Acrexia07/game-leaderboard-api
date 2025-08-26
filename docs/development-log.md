@@ -570,4 +570,23 @@ boilerplate in implementing constructor-based dependency injection.
 
 ---
 
+## Day 22: TDD Continuation - Negative Test Case Development for `UserService`
+**📅 Date:** August 27, 2025
+
+**🎯 Objectives:**
+- Implement Test-Driven Development approach on other service functions with negative testing.
+- Develop implementation logic that satisfies negative testing.
+
+**🛠️ Implementation Summary:**
+- Implemented Test-Driven Development approach on other service functions with negative testing.
+- Developed implementation logic that satisfies negative testing.
+- Refactored service error messages by inserting them all in an enumerated class.
+- Implemented `@Transactional` on each user service functions for rollback in case of issues.
+
+**🧠 Technical Learning:**
+- **📖 Knowledge Recall: ** I was able to recall all the procedures when developing a negative test case.
+
+📌 **Next Step:** TDD Continuation - Positive test case development of the controller layer functions
+---
+
 *Development continues with focus on building resilient, well-tested service architecture*
