@@ -24,13 +24,13 @@ public class PlayerService {
     public PlayerResponseDto savePlayerData (@Valid @RequestBody
                                                     PlayerRequestDto createRequest) {
 
-        final String DUPLICATE_RESOURCE_FOUND = "Player name '%s' already exist!";
+        final String DUPLICATE_PLAYER_NAME_FOUND = "Player name '%s' already exist!";
 
         PlayerEntity createPlayer = playerMapper.toEntity(createRequest);
 
         if(playerRepository.existsByPlayerName(createPlayer.getPlayerName())) {
             throw new DuplicateResourceFoundException
-                    (String.format(DUPLICATE_RESOURCE_FOUND, createPlayer.getPlayerName()));
+                    (String.format(DUPLICATE_PLAYER_NAME_FOUND, createPlayer.getPlayerName()));
         }
 
         PlayerEntity savedPlayer = playerRepository.save(createPlayer);

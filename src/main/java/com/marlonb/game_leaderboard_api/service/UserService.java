@@ -20,7 +20,15 @@ public class UserService {
 
     public UserResponseDto createUser (@Valid @RequestBody UserRequestDto userRequest) {
 
+        final String DUPLICATE_USERNAME_FOUND = "Username '%s' already exist!";
+
         UserEntity createdUser = userMapper.toEntity(userRequest);
+
+        if(userRepository.existsByUsername(createdUser.getUsername())) {
+            throw new DuplicateResourceFoundException
+                    (String.format(DUPLICATE_USERNAME_FOUND, createdUser.getUsername()));
+        }
+
         UserEntity savedUser = userRepository.save(createdUser);
         return userMapper.toResponse(savedUser);
     }

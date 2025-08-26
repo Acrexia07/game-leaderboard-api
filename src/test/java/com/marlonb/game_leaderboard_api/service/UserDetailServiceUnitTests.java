@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.service;
 
+import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.user.*;
 import com.marlonb.game_leaderboard_api.repository.UserRepository;
@@ -164,6 +165,25 @@ public class UserDetailServiceUnitTests {
                              () -> userService.findUserId(nonExistentId));
 
                 verify(userRepository).findById(nonExistentId);
+            }
+
+            @Test
+            @DisplayName("Should fail create when username already exist")
+            void shouldFailCreateWhenUsernameAlreadyExist () {
+
+                UserEntity testUser = User1TestData.sampleUser1Data();
+                UserRequestDto testUserRequest = User1TestData.sampleUser1Request();
+
+                when(userMapper.toEntity(any(UserRequestDto.class)))
+                        .thenReturn(testUser);
+
+                when(userRepository.existsByUsername("user1"))
+                        .thenReturn(true);
+
+                assertThrows(DuplicateResourceFoundException.class,
+                             () -> userService.createUser(testUserRequest));
+
+                verify(userRepository, never()).save(any());
             }
         }
     }
