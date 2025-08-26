@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+import static com.marlonb.game_leaderboard_api.service.ServiceErrorMessages.*;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -20,13 +22,11 @@ public class UserService {
 
     public UserResponseDto createUser (@Valid @RequestBody UserRequestDto userRequest) {
 
-        final String DUPLICATE_USERNAME_FOUND = "Username '%s' already exist!";
-
         UserEntity createdUser = userMapper.toEntity(userRequest);
 
         if(userRepository.existsByUsername(createdUser.getUsername())) {
             throw new DuplicateResourceFoundException
-                    (String.format(DUPLICATE_USERNAME_FOUND, createdUser.getUsername()));
+                    (String.format(createdUser.getUsername(), DUPLICATE_USERNAME_FOUND));
         }
 
         UserEntity savedUser = userRepository.save(createdUser);
@@ -50,14 +50,12 @@ public class UserService {
     public UserResponseDto updateSpecificUser(long id,
                                               @Valid @RequestBody UserUpdateDto userUpdate) {
 
-        final String DUPLICATE_USERNAME_FOUND = "Username '%s' already exist!";
-
         UserEntity foundUser = findUserId(id);
 
         if(userRepository.existsByUsername(foundUser.getUsername()) &&
            !foundUser.getUsername().equalsIgnoreCase(userUpdate.getUsername())) {
             throw new DuplicateResourceFoundException
-                    (String.format(DUPLICATE_USERNAME_FOUND, userUpdate.getUsername()));
+                    (String.format(userUpdate.getUsername(), DUPLICATE_USERNAME_FOUND));
         }
 
         userMapper.toUpdateFromEntity(foundUser, userUpdate);

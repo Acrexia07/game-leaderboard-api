@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+import static com.marlonb.game_leaderboard_api.service.ServiceErrorMessages.*;
+
 @Service
 @RequiredArgsConstructor
 public class PlayerService {
@@ -24,13 +26,11 @@ public class PlayerService {
     public PlayerResponseDto savePlayerData (@Valid @RequestBody
                                                     PlayerRequestDto createRequest) {
 
-        final String DUPLICATE_PLAYER_NAME_FOUND = "Player name '%s' already exist!";
-
         PlayerEntity createPlayer = playerMapper.toEntity(createRequest);
 
         if(playerRepository.existsByPlayerName(createPlayer.getPlayerName())) {
             throw new DuplicateResourceFoundException
-                    (String.format(DUPLICATE_PLAYER_NAME_FOUND, createPlayer.getPlayerName()));
+                    (String.format(createPlayer.getPlayerName(), DUPLICATE_PLAYER_NAME_FOUND));
         }
 
         PlayerEntity savedPlayer = playerRepository.save(createPlayer);
@@ -70,14 +70,12 @@ public class PlayerService {
     @Transactional
     public PlayerResponseDto updateSpecificPlayerData (long id, PlayerUpdateDto playerUpdateDto) {
 
-        final String DUPLICATE_PLAYER_NAME_FOUND = "Player name '%s' already exist!";
-
         PlayerEntity foundPlayer = findPlayerId(id);
 
         if(playerRepository.existsByPlayerName(playerUpdateDto.getPlayerName()) &&
                 !foundPlayer.getPlayerName().equalsIgnoreCase(playerUpdateDto.getPlayerName())) {
             throw new DuplicateResourceFoundException
-                    (String.format(DUPLICATE_PLAYER_NAME_FOUND, playerUpdateDto.getPlayerName()));
+                    (String.format(playerUpdateDto.getPlayerName(), DUPLICATE_PLAYER_NAME_FOUND));
         }
 
         playerMapper.toUpdateFromEntity(foundPlayer, playerUpdateDto);
