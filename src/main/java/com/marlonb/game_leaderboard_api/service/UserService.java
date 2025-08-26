@@ -7,6 +7,7 @@ import com.marlonb.game_leaderboard_api.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+    @Transactional
     public UserResponseDto createUser (@Valid @RequestBody UserRequestDto userRequest) {
 
         UserEntity createdUser = userMapper.toEntity(userRequest);
@@ -33,6 +35,7 @@ public class UserService {
         return userMapper.toResponse(savedUser);
     }
 
+    @Transactional(readOnly = true)
     public List<UserResponseDto> retrieveAllUsers () {
 
         List<UserEntity> listOfUsers = userRepository.findAll();
@@ -41,12 +44,14 @@ public class UserService {
                           .toList();
     }
 
+    @Transactional(readOnly = true)
     public UserResponseDto retrieveSpecificUser(long id) {
 
         UserEntity foundUser = findUserId(id);
         return userMapper.toResponse(foundUser);
     }
 
+    @Transactional
     public UserResponseDto updateSpecificUser(long id,
                                               @Valid @RequestBody UserUpdateDto userUpdate) {
 
@@ -64,6 +69,7 @@ public class UserService {
         return userMapper.toResponse(savedUser);
     }
 
+    @Transactional
     public void deleteSpecificUser(long id) {
 
         findUserId(id);
