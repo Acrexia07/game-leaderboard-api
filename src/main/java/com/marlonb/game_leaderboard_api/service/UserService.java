@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.service;
 
+import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.user.*;
 import com.marlonb.game_leaderboard_api.repository.UserRepository;

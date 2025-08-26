@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.service;
 
+import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.user.*;
 import com.marlonb.game_leaderboard_api.repository.UserRepository;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.marlonb.game_leaderboard_api.test_assertions.UserTestAssertions.assertUserServiceReturnedExpectedResponse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -140,6 +142,29 @@ public class UserDetailServiceUnitTests {
             userService.deleteSpecificUser(testUserId);
 
             verify(userRepository).deleteById(testUserId);
+        }
+    }
+
+    @Nested
+    class NegativeTests {
+
+        @Nested
+        class CrudOperations {
+
+            @Test
+            @DisplayName("Should fail when user id does not exist")
+            void shouldFailWhenUserIdDoesNotExist () {
+
+                final long nonExistentId = 100L;
+
+                when(userRepository.findById(nonExistentId))
+                        .thenReturn(Optional.empty());
+
+                assertThrows(ResourceNotFoundException.class,
+                             () -> userService.findUserId(nonExistentId));
+
+                verify(userRepository).findById(nonExistentId);
+            }
         }
     }
 }
