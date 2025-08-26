@@ -70,14 +70,14 @@ public class PlayerService {
     @Transactional
     public PlayerResponseDto updateSpecificPlayerData (long id, PlayerUpdateDto playerUpdateDto) {
 
-        final String DUPLICATE_RESOURCE_FOUND = "Player name '%s' already exist!";
+        final String DUPLICATE_PLAYER_NAME_FOUND = "Player name '%s' already exist!";
 
         PlayerEntity foundPlayer = findPlayerId(id);
 
         if(playerRepository.existsByPlayerName(playerUpdateDto.getPlayerName()) &&
                 !foundPlayer.getPlayerName().equalsIgnoreCase(playerUpdateDto.getPlayerName())) {
             throw new DuplicateResourceFoundException
-                    (String.format(DUPLICATE_RESOURCE_FOUND, playerUpdateDto.getPlayerName()));
+                    (String.format(DUPLICATE_PLAYER_NAME_FOUND, playerUpdateDto.getPlayerName()));
         }
 
         playerMapper.toUpdateFromEntity(foundPlayer, playerUpdateDto);

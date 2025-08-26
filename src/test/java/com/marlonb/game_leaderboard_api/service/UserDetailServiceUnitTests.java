@@ -185,6 +185,28 @@ public class UserDetailServiceUnitTests {
 
                 verify(userRepository, never()).save(any());
             }
+
+            @Test
+            @DisplayName("Should fail update when username already exist")
+            void shouldFailUpdateWhenUsernameAlreadyExist () {
+
+                UserEntity testUser2 = User2TestData.sampleUser2Data();
+                final long testUserId = testUser2.getId();
+
+                UserUpdateDto testUserUpdate = User2TestData.sampleUser2Update();
+                testUser2.setUsername("user1");
+
+                when(userRepository.findById(testUserId))
+                        .thenReturn(Optional.of(testUser2));
+
+                when(userRepository.existsByUsername("user1"))
+                        .thenReturn(true);
+
+                assertThrows(DuplicateResourceFoundException.class,
+                             () -> userService.updateSpecificUser(testUserId, testUserUpdate));
+
+                verify(userRepository, never()).save(any());
+            }
         }
     }
 }

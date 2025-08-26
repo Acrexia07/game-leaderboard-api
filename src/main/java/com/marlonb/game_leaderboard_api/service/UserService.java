@@ -50,7 +50,15 @@ public class UserService {
     public UserResponseDto updateSpecificUser(long id,
                                               @Valid @RequestBody UserUpdateDto userUpdate) {
 
+        final String DUPLICATE_USERNAME_FOUND = "Username '%s' already exist!";
+
         UserEntity foundUser = findUserId(id);
+
+        if(userRepository.existsByUsername(foundUser.getUsername()) &&
+           !foundUser.getUsername().equalsIgnoreCase(userUpdate.getUsername())) {
+            throw new DuplicateResourceFoundException
+                    (String.format(DUPLICATE_USERNAME_FOUND, userUpdate.getUsername()));
+        }
 
         userMapper.toUpdateFromEntity(foundUser, userUpdate);
         UserEntity savedUser = userRepository.save(foundUser);
