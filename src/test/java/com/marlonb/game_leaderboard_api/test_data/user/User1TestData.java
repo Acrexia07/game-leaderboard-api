@@ -11,7 +11,8 @@ public class User1TestData {
         var user1 = new UserEntity();
         user1.setId(1L);
         user1.setUsername("user1");
-        user1.setPassword("$2a$10$encoded.password.hash");
+        user1.setPassword("User@456");
+        user1.setCreatedAt(LocalDateTime.now());
         return user1;
     }
 
@@ -21,6 +22,7 @@ public class User1TestData {
         updatedUser.setId(1L);
         updatedUser.setUsername("user1");
         updatedUser.setPassword("User#456");
+        updatedUser.setCreatedAt(LocalDateTime.now());
         return updatedUser;
     }
 

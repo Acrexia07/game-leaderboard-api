@@ -24,15 +24,15 @@ public class BasicAuthenticationConfig {
     public SecurityFilterChain filterChain (HttpSecurity http) throws  Exception {
 
         return http.authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/api/**")
-                                .hasRole("ADMIN")
-                                .anyRequest()
-                                .permitAll())
-                    .csrf(AbstractHttpConfigurer::disable)
-                    .httpBasic(Customizer.withDefaults())
-                    .sessionManagement(session ->
-                                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                    .build();
+                auth -> auth
+                                    .requestMatchers("/api/users/register").permitAll()
+                                    .requestMatchers("/api/players/**", "/api/leaderboards").hasRole("ADMIN")
+                                    .anyRequest().authenticated())
+            .csrf(AbstractHttpConfigurer::disable)
+            .httpBasic(Customizer.withDefaults())
+            .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .build();
     }
 
     @Bean
