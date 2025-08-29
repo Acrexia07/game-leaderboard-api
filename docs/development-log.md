@@ -25,6 +25,8 @@
 - [Day 21: JWT Implementation preparation - `UserService` implementation](#day-21-jwt-implementation-preparation---userservice-implementation)
 - [Day 22: Expand `UserService` functions with additional CRUD operations](#day-22-expand-userservice-functions-with-additional-crud-operations)
 - [Day 23: TDD Continuation - Negative Test Case Development for `UserService`](#day-23-tdd-continuation---negative-test-case-development-for-userservice)
+-[]
+
 ---
 
 ## Day 1: Project Setup and CI Integration
@@ -605,6 +607,38 @@ boilerplate in implementing constructor-based dependency injection.
 - **📖 Knowledge Recall: ** I was able to recall all the procedures when developing a negative test case.
 
 📌 **Next Step:** TDD Continuation - Positive test case development of the controller layer functions
+
+---
+
+## Day 24: TDD Continuation - Positive test case development of the controller layer functions
+**📅 Date:** August 28, 2025
+
+---
+
+## Day 25: Security Planning – JWT & Endpoint Authorization Design
+📅 Date: August 29, 2025
+
+🎯 Objectives:
+- Focus solely on planning and documentation (no coding today).
+- Define how JWT authentication will be integrated into the project.
+- Establish endpoint authorization rules (Public, Authenticated User, Admin).
+- Clarify the distinction between UserEntity (security accounts) and potential GameAccountEntity (game feature).
+
+🛠️ Implementation Summary:
+- No implementation today; only brainstorming and planning.
+- Documented endpoint security mapping:
+    ```
+    POST /api/users/register → Public
+    GET /api/users/{id}, PUT /api/users/{id}, DELETE /api/users/{id} → Authenticated User (self)
+    GET /api/users → Admin only
+
+- Outlined JWT flow: registration → login → token issuance → access protected endpoints.
+
+🧠 Technical Learning:
+- Recognized that planning is as important as coding for scalable security design.
+- Identified separation of concerns: security users vs in-game player accounts.
+
+📌 Next Step: Begin JWT implementation (authentication filter, token provider, login endpoint).
 
 ---
 
