@@ -613,6 +613,20 @@ boilerplate in implementing constructor-based dependency injection.
 ## Day 24: TDD Continuation - Positive test case development of the controller layer functions
 **📅 Date:** August 28, 2025
 
+**🎯 Objectives:**
+- Implement Test-Driven Development approach on controller layer functions with positive testing.
+- Develop implementation logic that satisfies the test created.
+
+**🛠️ Implementation Summary:**
+- Implemented Test-Driven Development approach on controller layer functions of registration of user account with positive testing.
+- Developed implementation logic that satisfies the test created.
+
+**🧠 Technical Learning:**
+- **📖 Knowledge Recall: ** I was able to recall all the procedures when developing a positive test case on
+controller layer functions.
+
+📌 **Next Step:** Security Planning – JWT & Endpoint Authorization Design
+
 ---
 
 ## Day 25: Security Planning – JWT & Endpoint Authorization Design
@@ -638,7 +652,27 @@ boilerplate in implementing constructor-based dependency injection.
 - Recognized that planning is as important as coding for scalable security design.
 - Identified separation of concerns: security users vs in-game player accounts.
 
-📌 Next Step: Begin JWT implementation (authentication filter, token provider, login endpoint).
+📌 Next Step: JWT preparation - Continuation of implementing controller layer function for retrieve all user data.
+
+---
+
+## Day 26: TDD Continuation - Positive test case development of the other controller layer functions
+**📅 Date:** August 30, 2025
+
+**🎯 Objectives:**
+- Implement Test-Driven Development approach on the other controller layer functions with positive testing.
+- Develop implementation logic that satisfies the test created.
+
+**🛠️ Implementation Summary:**
+- Implemented Test-Driven Development approach on controller layer functions that retrieve all user data through admin permissions only
+with positive testing.
+- Developed implementation logic that satisfies the test created.
+
+**🧠 Technical Learning:**
+- **📖 Knowledge Recall: ** I was able to recall all the procedures when developing a positive test case on
+controller layer functions.
+
+📌 **Next Step:** Security Planning – JWT & Endpoint Authorization Design
 
 ---
 
