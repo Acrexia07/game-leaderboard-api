@@ -2,6 +2,7 @@ package com.marlonb.game_leaderboard_api.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -27,6 +28,7 @@ public class BasicAuthenticationConfig {
                 auth -> auth
                                     .requestMatchers("/api/users/register").permitAll()
                                     .requestMatchers("/api/players/**", "/api/leaderboards").hasRole("ADMIN")
+                                    .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
                                     .anyRequest().authenticated())
             .csrf(AbstractHttpConfigurer::disable)
             .httpBasic(Customizer.withDefaults())

@@ -9,6 +9,7 @@ import com.marlonb.game_leaderboard_api.model.user.UserResponseDto;
 import com.marlonb.game_leaderboard_api.security.BasicAuthenticationConfig;
 import com.marlonb.game_leaderboard_api.service.UserService;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
+import com.marlonb.game_leaderboard_api.test_data.user.User2TestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -21,7 +22,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -78,6 +83,37 @@ public class UserDetailsControllerUnitTests {
                            header().exists("location"),
                            header().string("location", "/api/users/register/" + testUserResponse.id()),
                            jsonPath("$.apiMessage").value("User created successfully!"));
+        }
+
+        @Test
+        @DisplayName("Should pass when retrieve all user data successfully")
+        void shouldPassWhenRetrieveAllUserDataSuccessfully () throws Exception {
+
+            UserEntity testUser1 = User1TestData.sampleUser1Data();
+            UserEntity testUser2 = User2TestData.sampleUser2Data();
+
+            List<UserEntity> listOfEntities = List.of(testUser1, testUser2);
+
+            UserResponseDto testUser1Response = User1TestData.sampleUser1Response();
+            UserResponseDto testUser2Response = User2TestData.sampleUser2Response();
+
+            List<UserResponseDto> expectedResponse = List.of(testUser1Response, testUser2Response);
+
+            when(userService.retrieveAllUsers()).thenReturn(expectedResponse);
+
+            String jsonListOfUserResponse = mapper.writeValueAsString(expectedResponse);
+
+            mockMvc.perform(get("/api/users")
+                            .with(httpBasic("acrexia", "dummy"))
+                            .contentType("application/json")
+                            .content(jsonListOfUserResponse))
+                    .andExpectAll(
+                            status().isOk(),
+                            jsonPath("$.apiMessage").value("Retrieved all users successfully!"),
+                            jsonPath("$.response").isArray(),
+                            jsonPath("$.response[*].username",
+                                    hasItems(testUser1Response.username(), testUser2Response.username())),
+                            jsonPath("$.response.length()").value(2));
         }
     }
 }
