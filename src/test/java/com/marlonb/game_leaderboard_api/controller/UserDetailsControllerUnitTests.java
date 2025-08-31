@@ -163,5 +163,19 @@ public class UserDetailsControllerUnitTests {
                            jsonPath("$.apiMessage").value("Updated specific user successfully!"),
                            jsonPath("$.response.username").value(testUserResponse.username()));
         }
+
+        @Test
+        @DisplayName("Should pass when delete specific user")
+        void shouldPassWhenDeleteSpecificUser () throws Exception {
+
+            UserEntity testUser = User1TestData.sampleUser1Data();
+            final long testUserId = testUser.getId();
+
+            doNothing().when(userService).deleteSpecificUser(testUserId);
+
+            mockMvc.perform(delete("/api/users/{id}", testUserId)
+                            .with(httpBasic("acrexia", "dummy")))
+                    .andExpect(status().isNoContent());
+        }
     }
 }

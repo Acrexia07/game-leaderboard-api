@@ -60,4 +60,12 @@ public class UserController {
                                         ("Updated specific user successfully!",
                                          updatedUser));
     }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Void> deleteSpecificUserData (@PathVariable long id) {
+
+        userService.deleteSpecificUser(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }
