@@ -23,6 +23,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Mockito.*;
@@ -92,8 +93,6 @@ public class UserDetailsControllerUnitTests {
             UserEntity testUser1 = User1TestData.sampleUser1Data();
             UserEntity testUser2 = User2TestData.sampleUser2Data();
 
-            List<UserEntity> listOfEntities = List.of(testUser1, testUser2);
-
             UserResponseDto testUser1Response = User1TestData.sampleUser1Response();
             UserResponseDto testUser2Response = User2TestData.sampleUser2Response();
 
@@ -114,6 +113,30 @@ public class UserDetailsControllerUnitTests {
                             jsonPath("$.response[*].username",
                                     hasItems(testUser1Response.username(), testUser2Response.username())),
                             jsonPath("$.response.length()").value(2));
+        }
+
+        @Test
+        @DisplayName("Should pass when retrieve specific user data successfully")
+        void shouldPassWhenRetrieveSpecificUserDataSuccessfully () throws Exception {
+
+            UserEntity testUser = User1TestData.sampleUser1Data();
+            final long testUserId = testUser.getId();
+
+            UserResponseDto expectedResponse = User1TestData.sampleUser1Response();
+
+            when(userService.retrieveSpecificUser(testUserId))
+                    .thenReturn(expectedResponse);
+
+            String jsonUserResponse = mapper.writeValueAsString(expectedResponse);
+
+            mockMvc.perform(get("/api/users/{id}", testUserId)
+                            .with(httpBasic("acrexia", "dummy"))
+                            .contentType("application/json")
+                            .content(jsonUserResponse))
+                   .andExpectAll(
+                           status().isOk(),
+                           jsonPath("$.apiMessage").value("Retrieved specific user successfully!"),
+                           jsonPath("$.response.username").value(expectedResponse.username()));
         }
     }
 }

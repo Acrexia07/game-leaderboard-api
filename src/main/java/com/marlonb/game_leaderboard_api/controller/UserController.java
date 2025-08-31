@@ -42,4 +42,14 @@ public class UserController {
                                         ("Retrieved all users successfully!",
                                          listOfUsers));
     }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<ApiMessageResponseDto<UserResponseDto>> retrieveSpecificUserData (@PathVariable long id) {
+
+        UserResponseDto retrievedUser = userService.retrieveSpecificUser(id);
+
+        return ResponseEntity.ok().body(new ApiMessageResponseDto<>
+                                        ("Retrieved specific user successfully!",
+                                         retrievedUser));
+    }
 }
