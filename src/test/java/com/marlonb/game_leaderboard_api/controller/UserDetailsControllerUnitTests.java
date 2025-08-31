@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.marlonb.game_leaderboard_api.model.user.UserEntity;
 import com.marlonb.game_leaderboard_api.model.user.UserRequestDto;
 import com.marlonb.game_leaderboard_api.model.user.UserResponseDto;
+import com.marlonb.game_leaderboard_api.model.user.UserUpdateDto;
 import com.marlonb.game_leaderboard_api.security.BasicAuthenticationConfig;
 import com.marlonb.game_leaderboard_api.service.UserService;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
@@ -23,7 +24,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Mockito.*;
@@ -87,7 +87,7 @@ public class UserDetailsControllerUnitTests {
         }
 
         @Test
-        @DisplayName("Should pass when retrieve all user data successfully")
+        @DisplayName("Should pass when retrieve all user data")
         void shouldPassWhenRetrieveAllUserDataSuccessfully () throws Exception {
 
             UserEntity testUser1 = User1TestData.sampleUser1Data();
@@ -116,18 +116,18 @@ public class UserDetailsControllerUnitTests {
         }
 
         @Test
-        @DisplayName("Should pass when retrieve specific user data successfully")
+        @DisplayName("Should pass when retrieve specific user data")
         void shouldPassWhenRetrieveSpecificUserDataSuccessfully () throws Exception {
 
             UserEntity testUser = User1TestData.sampleUser1Data();
             final long testUserId = testUser.getId();
 
-            UserResponseDto expectedResponse = User1TestData.sampleUser1Response();
+            UserResponseDto testUserResponse = User1TestData.sampleUser1Response();
 
             when(userService.retrieveSpecificUser(testUserId))
-                    .thenReturn(expectedResponse);
+                    .thenReturn(testUserResponse);
 
-            String jsonUserResponse = mapper.writeValueAsString(expectedResponse);
+            String jsonUserResponse = mapper.writeValueAsString(testUserResponse);
 
             mockMvc.perform(get("/api/users/{id}", testUserId)
                             .with(httpBasic("acrexia", "dummy"))
@@ -136,7 +136,32 @@ public class UserDetailsControllerUnitTests {
                    .andExpectAll(
                            status().isOk(),
                            jsonPath("$.apiMessage").value("Retrieved specific user successfully!"),
-                           jsonPath("$.response.username").value(expectedResponse.username()));
+                           jsonPath("$.response.username").value(testUserResponse.username()));
+        }
+
+        @Test
+        @DisplayName("Should pass when update specific user")
+        void shouldPassWhenUpdateSpecificUser () throws Exception {
+
+            UserEntity testUser = User1TestData.sampleUser1Data();
+            final long testUserId = testUser.getId();
+
+            UserUpdateDto testUserUpdate = User1TestData.sampleUser1Update();
+            UserResponseDto testUserResponse = User1TestData.sampleUser1Response();
+
+            when(userService.updateSpecificUser(testUserId, testUserUpdate))
+                    .thenReturn(testUserResponse);
+
+            String jsonUserUpdate = mapper.writeValueAsString(testUserUpdate);
+
+            mockMvc.perform(put("/api/users/{id}", testUserId)
+                            .with(httpBasic("acrexia", "dummy"))
+                            .content(jsonUserUpdate)
+                            .contentType("application/json"))
+                   .andExpectAll(
+                           status().isOk(),
+                           jsonPath("$.apiMessage").value("Updated specific user successfully!"),
+                           jsonPath("$.response.username").value(testUserResponse.username()));
         }
     }
 }

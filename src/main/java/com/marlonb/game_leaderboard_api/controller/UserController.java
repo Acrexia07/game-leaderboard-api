@@ -1,9 +1,6 @@
 package com.marlonb.game_leaderboard_api.controller;
 
-import com.marlonb.game_leaderboard_api.model.user.UserEntity;
-import com.marlonb.game_leaderboard_api.model.user.UserMapper;
-import com.marlonb.game_leaderboard_api.model.user.UserRequestDto;
-import com.marlonb.game_leaderboard_api.model.user.UserResponseDto;
+import com.marlonb.game_leaderboard_api.model.user.*;
 import com.marlonb.game_leaderboard_api.service.UserService;
 import com.marlonb.game_leaderboard_api.utils.ApiMessageResponseDto;
 import jakarta.validation.Valid;
@@ -51,5 +48,16 @@ public class UserController {
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
                                         ("Retrieved specific user successfully!",
                                          retrievedUser));
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<ApiMessageResponseDto<UserResponseDto>>
+                    updateSpecificUserData (@PathVariable long id, @Valid @RequestBody UserUpdateDto userUpdate) {
+
+        UserResponseDto updatedUser = userService.updateSpecificUser(id, userUpdate);
+
+        return ResponseEntity.ok().body(new ApiMessageResponseDto<>
+                                        ("Updated specific user successfully!",
+                                         updatedUser));
     }
 }
