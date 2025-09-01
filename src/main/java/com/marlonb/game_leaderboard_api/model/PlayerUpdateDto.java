@@ -19,8 +19,4 @@ public class PlayerUpdateDto {
     @NotNull(message = "Score is required!")
     @Min(value = 0, message = "Score must be positive number!")
     private Integer scores;
-
-//    @NotNull(message = "Timestamp cannot be null")
-//    @PastOrPresent(message = "Timestamp cannot be in the future")
-//    private LocalDateTime timestamp;
 }

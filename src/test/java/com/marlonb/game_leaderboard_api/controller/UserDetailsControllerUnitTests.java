@@ -3,6 +3,7 @@ package com.marlonb.game_leaderboard_api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
 import com.marlonb.game_leaderboard_api.model.user.UserEntity;
 import com.marlonb.game_leaderboard_api.model.user.UserRequestDto;
 import com.marlonb.game_leaderboard_api.model.user.UserResponseDto;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.*;
 import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
@@ -177,5 +179,31 @@ public class UserDetailsControllerUnitTests {
                             .with(httpBasic("acrexia", "dummy")))
                     .andExpect(status().isNoContent());
         }
+    }
+
+    @Nested
+    class NegativeTesting {
+
+        @Test
+        @DisplayName("Should return an error status on create request when username already exist")
+        void shouldReturnAnErrorStatusOnCreateRequestWhenUsernameAlreadyExist () throws Exception {
+
+            UserResponseDto testUserResponse = User1TestData.sampleUser1Response();
+
+            when(userService.createUser(any()))
+                    .thenThrow(new DuplicateResourceFoundException
+                               (DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage()));
+
+            String jsonUserResponse = mapper.writeValueAsString(testUserResponse);
+
+            mockMvc.perform(post("/api/users/register")
+                            .contentType("application/json")
+                            .content(jsonUserResponse))
+                    .andExpectAll(
+                            status().isConflict(),
+                            jsonPath("$.message")
+                                    .value(DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage()));
+        }
+
     }
 }
