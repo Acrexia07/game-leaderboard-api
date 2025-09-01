@@ -30,7 +30,6 @@ import java.util.List;
 import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.*;
 import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -247,8 +246,26 @@ public class UserDetailsControllerUnitTests {
                     .andExpectAll(
                         status().isNotFound(),
                         jsonPath("$.message")
-                                .value(RESOURCE_NOT_FOUND_MESSAGE.getErrorMessage())
-                    );
+                                .value(RESOURCE_NOT_FOUND_MESSAGE.getErrorMessage()));
         }
+
+        @Test
+        @DisplayName("Should return error status on create request when there is a null or missing input")
+        void shouldReturnStatusOnCreateRequestWhenThereIsANullOrMissingInput () throws Exception {
+
+            UserRequestDto testUserRequest = User1TestData.sampleUser1Request();
+            testUserRequest.setPassword(null);
+
+            String jsonUserRequest = mapper.writeValueAsString(testUserRequest);
+
+            mockMvc.perform(post("/api/users/register")
+                            .contentType("application/json")
+                            .content(jsonUserRequest))
+                    .andExpectAll(
+                            status().isBadRequest(),
+                            jsonPath("$.message")
+                                    .value(VALIDATION_ERROR_MESSAGE.getErrorMessage()));
+        }
+
     }
 }
