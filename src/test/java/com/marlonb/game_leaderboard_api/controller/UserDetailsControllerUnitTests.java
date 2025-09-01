@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
+import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.user.UserEntity;
 import com.marlonb.game_leaderboard_api.model.user.UserRequestDto;
 import com.marlonb.game_leaderboard_api.model.user.UserResponseDto;
@@ -231,5 +232,23 @@ public class UserDetailsControllerUnitTests {
                                     .value(DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage()));
         }
 
+        @Test
+        @DisplayName("Should return an error status on read request when user id does not exist")
+        void shouldReturnAnErrorStatusOnReadRequestWhenUserIdDoesNotExist () throws Exception {
+
+            final long nonExistentId = 100L;
+
+            when(userService.retrieveSpecificUser(eq(nonExistentId)))
+                    .thenThrow(new ResourceNotFoundException
+                               (RESOURCE_NOT_FOUND_MESSAGE.getErrorMessage()));
+
+            mockMvc.perform(get("/api/users/{id}", nonExistentId)
+                            .with(httpBasic("acrexia", "dummy")))
+                    .andExpectAll(
+                        status().isNotFound(),
+                        jsonPath("$.message")
+                                .value(RESOURCE_NOT_FOUND_MESSAGE.getErrorMessage())
+                    );
+        }
     }
 }
