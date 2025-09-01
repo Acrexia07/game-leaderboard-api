@@ -672,7 +672,31 @@ with positive testing.
 - **📖 Knowledge Recall: ** I was able to recall all the procedures when developing a positive test case on
 controller layer functions.
 
-📌 **Next Step:** Security Planning – JWT & Endpoint Authorization Design
+📌 **Next Step:** JWT Implementation Preparation - Test-Driven Development of Controller layer via Positive Testing
+
+---
+
+## Day 27: JWT Implementation Preparation - Test-Driven Development of Controller layer via Positive Testing
+**📅 Date:** August 31, 2025
+
+**🎯 Objectives:**
+- Implement test case development with positive testing to be use as anchor when developing the controller layer functions.
+- Develop controller layer functions based on the created test cases.
+
+**🛠️ Implementation Summary:**
+- Implemented test case development to be use as anchor when developing the controller layer functions.
+- Developed controller layer functions based on the created test cases.
+
+📌 **Next Step:** JWT Implementation Preparation - Test-Driven Development continuation of Controller layer 
+via Negative Testing
+
+---
+
+## Day 27: JWT Implementation Preparation - Test-Driven Development of Controller layer via Positive Testing
+**📅 Date:** September 1, 2025
+
+**🎯 Objectives:**
+
 
 ---
 
