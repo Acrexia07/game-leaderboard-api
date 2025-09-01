@@ -46,6 +46,11 @@ public class UserDetailsControllerUnitTests {
 
     private ObjectMapper mapper;
 
+    long testUserId;
+    private UserResponseDto testUserResponse;
+    private UserRequestDto testUserRequest;
+    private UserUpdateDto testUserUpdate;
+
     @TestConfiguration
     static class TestConfig {
 
@@ -62,6 +67,12 @@ public class UserDetailsControllerUnitTests {
         mapper.disable(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS);
 
         reset(userService);
+
+        UserEntity testUser = User1TestData.sampleUser1Data();
+        final long testUserId = testUser.getId();
+        testUserResponse = User1TestData.sampleUser1Response();
+        testUserRequest = User1TestData.sampleUser1Request();
+        testUserUpdate = User1TestData.sampleUser1Update();
     }
 
     @Nested
@@ -70,9 +81,6 @@ public class UserDetailsControllerUnitTests {
         @Test
         @DisplayName("Should pass when create new user")
         void shouldPassWhenCreateNewUser () throws Exception {
-
-            UserResponseDto testUserResponse = User1TestData.sampleUser1Response();
-            UserRequestDto testUserRequest = User1TestData.sampleUser1Request();
 
             when(userService.createUser(any()))
                     .thenReturn(testUserResponse);
@@ -122,11 +130,6 @@ public class UserDetailsControllerUnitTests {
         @DisplayName("Should pass when retrieve specific user data")
         void shouldPassWhenRetrieveSpecificUserDataSuccessfully () throws Exception {
 
-            UserEntity testUser = User1TestData.sampleUser1Data();
-            final long testUserId = testUser.getId();
-
-            UserResponseDto testUserResponse = User1TestData.sampleUser1Response();
-
             when(userService.retrieveSpecificUser(testUserId))
                     .thenReturn(testUserResponse);
 
@@ -145,12 +148,6 @@ public class UserDetailsControllerUnitTests {
         @Test
         @DisplayName("Should pass when update specific user")
         void shouldPassWhenUpdateSpecificUser () throws Exception {
-
-            UserEntity testUser = User1TestData.sampleUser1Data();
-            final long testUserId = testUser.getId();
-
-            UserUpdateDto testUserUpdate = User1TestData.sampleUser1Update();
-            UserResponseDto testUserResponse = User1TestData.sampleUser1Response();
 
             when(userService.updateSpecificUser(testUserId, testUserUpdate))
                     .thenReturn(testUserResponse);
@@ -171,9 +168,6 @@ public class UserDetailsControllerUnitTests {
         @DisplayName("Should pass when delete specific user")
         void shouldPassWhenDeleteSpecificUser () throws Exception {
 
-            UserEntity testUser = User1TestData.sampleUser1Data();
-            final long testUserId = testUser.getId();
-
             doNothing().when(userService).deleteSpecificUser(testUserId);
 
             mockMvc.perform(delete("/api/users/{id}", testUserId)
@@ -188,8 +182,6 @@ public class UserDetailsControllerUnitTests {
         @Test
         @DisplayName("Should return an error status on create request when username already exist")
         void shouldReturnAnErrorStatusOnCreateRequestWhenUsernameAlreadyExist () throws Exception {
-
-            UserResponseDto testUserResponse = User1TestData.sampleUser1Response();
 
             when(userService.createUser(any()))
                     .thenThrow(new DuplicateResourceFoundException
@@ -209,11 +201,6 @@ public class UserDetailsControllerUnitTests {
         @Test
         @DisplayName("Should return an error status on update request when username already exist")
         void shouldReturnAnErrorStatusOnUpdateRequestWhenUsernameAlreadyExist () throws Exception {
-
-            UserEntity testUser = User1TestData.sampleUser1Data();
-            final long testUserId = testUser.getId();
-
-            UserResponseDto testUserResponse = User1TestData.sampleUser1Response();
 
             when(userService.updateSpecificUser(eq(testUserId), any(UserUpdateDto.class)))
                     .thenThrow(new DuplicateResourceFoundException
@@ -253,7 +240,6 @@ public class UserDetailsControllerUnitTests {
         @DisplayName("Should return error status on create request when there is a null or missing input")
         void shouldReturnStatusOnCreateRequestWhenThereIsANullOrMissingInput () throws Exception {
 
-            UserRequestDto testUserRequest = User1TestData.sampleUser1Request();
             testUserRequest.setPassword(null);
 
             String jsonUserRequest = mapper.writeValueAsString(testUserRequest);
@@ -271,10 +257,6 @@ public class UserDetailsControllerUnitTests {
         @DisplayName("Should return error status on update request when there is a null or missing input")
         void shouldReturnStatusOnUpdateRequestWhenThereIsANullOrMissingInput () throws Exception {
 
-            UserEntity testUser = User1TestData.sampleUser1Data();
-            final long testUserId = testUser.getId();
-
-            UserRequestDto testUserUpdate = User1TestData.sampleUser1Request();
             testUserUpdate.setPassword(null);
 
             String jsonUserUpdate = mapper.writeValueAsString(testUserUpdate);
