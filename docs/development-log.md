@@ -692,11 +692,17 @@ via Negative Testing
 
 ---
 
-## Day 27: JWT Implementation Preparation - Test-Driven Development of Controller layer via Positive Testing
+## Day 28: JWT Implementation Preparation - Test-Driven Development of Controller layer via Positive Testing
 **📅 Date:** September 1, 2025
 
 **🎯 Objectives:**
+- Implement test case development with negative testing for implemented controller layer functions.
 
+**🛠️ Implementation Summary:**
+- Implemented test case development with negative testing for implemented controller layer functions.
+- Refactor all controller unit test after test case development.
+
+📌 **Next Step:** JWT Implementation 
 
 ---
 
