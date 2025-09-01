@@ -267,5 +267,26 @@ public class UserDetailsControllerUnitTests {
                                     .value(VALIDATION_ERROR_MESSAGE.getErrorMessage()));
         }
 
+        @Test
+        @DisplayName("Should return error status on update request when there is a null or missing input")
+        void shouldReturnStatusOnUpdateRequestWhenThereIsANullOrMissingInput () throws Exception {
+
+            UserEntity testUser = User1TestData.sampleUser1Data();
+            final long testUserId = testUser.getId();
+
+            UserRequestDto testUserUpdate = User1TestData.sampleUser1Request();
+            testUserUpdate.setPassword(null);
+
+            String jsonUserUpdate = mapper.writeValueAsString(testUserUpdate);
+
+            mockMvc.perform(put("/api/users/{id}", testUserId)
+                            .with(httpBasic("acrexia", "dummy"))
+                            .contentType("application/json")
+                            .content(jsonUserUpdate))
+                    .andExpectAll(
+                            status().isBadRequest(),
+                            jsonPath("$.message")
+                                    .value(VALIDATION_ERROR_MESSAGE.getErrorMessage()));
+        }
     }
 }
