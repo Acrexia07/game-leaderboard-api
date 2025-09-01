@@ -28,6 +28,7 @@ public class BasicAuthenticationConfig {
                 auth -> auth
                                     .requestMatchers("/api/users/register").permitAll()
                                     .requestMatchers("/api/players/**", "/api/leaderboards").hasRole("ADMIN")
+                                    .requestMatchers("/api/users/**").authenticated()
                                     .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
                                     .anyRequest().authenticated())
             .csrf(AbstractHttpConfigurer::disable)

@@ -29,6 +29,7 @@ import java.util.List;
 import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.*;
 import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -197,6 +198,31 @@ public class UserDetailsControllerUnitTests {
             String jsonUserResponse = mapper.writeValueAsString(testUserResponse);
 
             mockMvc.perform(post("/api/users/register")
+                            .contentType("application/json")
+                            .content(jsonUserResponse))
+                    .andExpectAll(
+                            status().isConflict(),
+                            jsonPath("$.message")
+                                    .value(DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage()));
+        }
+
+        @Test
+        @DisplayName("Should return an error status on update request when username already exist")
+        void shouldReturnAnErrorStatusOnUpdateRequestWhenUsernameAlreadyExist () throws Exception {
+
+            UserEntity testUser = User1TestData.sampleUser1Data();
+            final long testUserId = testUser.getId();
+
+            UserResponseDto testUserResponse = User1TestData.sampleUser1Response();
+
+            when(userService.updateSpecificUser(eq(testUserId), any(UserUpdateDto.class)))
+                    .thenThrow(new DuplicateResourceFoundException
+                            (DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage()));
+
+            String jsonUserResponse = mapper.writeValueAsString(testUserResponse);
+
+            mockMvc.perform(put("/api/users/{id}", testUserId)
+                            .with(httpBasic("acrexia", "dummy"))
                             .contentType("application/json")
                             .content(jsonUserResponse))
                     .andExpectAll(
