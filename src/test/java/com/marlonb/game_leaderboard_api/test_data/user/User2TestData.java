@@ -28,8 +28,7 @@ public class User2TestData {
 
         return new UserRequestDto(
                 sampleUser2Data().getUsername(),
-                sampleUser2Data().getPassword(),
-                sampleUser2Data().getRoles()
+                sampleUser2Data().getPassword()
         );
     }
 
@@ -37,8 +36,7 @@ public class User2TestData {
 
         return new UserUpdateDto(
                 sampleUser2Data().getUsername(),
-                "User#789",
-                sampleUser2Data().getRoles()
+                "User#789"
         );
     }
 

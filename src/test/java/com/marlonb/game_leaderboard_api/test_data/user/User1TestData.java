@@ -42,9 +42,7 @@ public class User1TestData {
 
         return new UserRequestDto(
                 sampleUser1Data().getUsername(),
-                sampleUser1Data().getPassword(),
-                sampleUser1Data().getRoles()
-
+                sampleUser1Data().getPassword()
         );
     }
 
@@ -52,8 +50,7 @@ public class User1TestData {
 
         return new UserUpdateDto(
                 sampleUser1Data().getUsername(),
-                "User#456",
-                sampleUser1Data().getRoles()
+                "User#456"
         );
     }
 }
