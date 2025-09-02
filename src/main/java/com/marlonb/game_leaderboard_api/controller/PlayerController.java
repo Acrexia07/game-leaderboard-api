@@ -4,7 +4,6 @@ import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
 import com.marlonb.game_leaderboard_api.model.PlayerUpdateDto;
 import com.marlonb.game_leaderboard_api.service.PlayerService;
-import com.marlonb.game_leaderboard_api.utils.ApiMessageResponseDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

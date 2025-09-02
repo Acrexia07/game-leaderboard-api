@@ -1,4 +1,4 @@
-package com.marlonb.game_leaderboard_api.utils;
+package com.marlonb.game_leaderboard_api.controller;
 
 public record ApiMessageResponseDto<T> (
    String apiMessage,

@@ -2,7 +2,6 @@ package com.marlonb.game_leaderboard_api.controller;
 
 import com.marlonb.game_leaderboard_api.model.user.*;
 import com.marlonb.game_leaderboard_api.service.UserService;
-import com.marlonb.game_leaderboard_api.utils.ApiMessageResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
