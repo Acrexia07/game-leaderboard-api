@@ -680,11 +680,11 @@ controller layer functions.
 **📅 Date:** August 31, 2025
 
 **🎯 Objectives:**
-- Implement test case development with positive testing to be use as anchor when developing the controller layer functions.
+- Implement test case development with positive testing to be used as anchor when developing the controller layer functions.
 - Develop controller layer functions based on the created test cases.
 
 **🛠️ Implementation Summary:**
-- Implemented test case development to be use as anchor when developing the controller layer functions.
+- Implemented test case development to be used as anchor when developing the controller layer functions.
 - Developed controller layer functions based on the created test cases.
 
 📌 **Next Step:** JWT Implementation Preparation - Test-Driven Development continuation of Controller layer 
@@ -703,6 +703,26 @@ via Negative Testing
 - Refactor all controller unit test after test case development.
 
 📌 **Next Step:** JWT Implementation 
+
+---
+
+## Day 29: JWT Implementation Preparation - Implementing Admin user roles in the `UserEntity`
+**📅 Date:** September 2, 2025
+
+**🎯 Objectives:**
+- Develop Data Transfer objects for handling admin requests and response
+- Create test data in preparation for test-driven development of admin endpoints.
+
+**🛠️ Implementation Summary:**
+- Develop Data Transfer objects for handling admin requests and response
+- Create test data in preparation for test-driven development of admin endpoints.
+- Implemented other abstract methods via overloading methods that will handle mapping of admin dto with `UserMapper`.
+
+**🧠 Technical Learning:**
+- **📖 Realization: ** I was able to learn and understand the consideration of having the admin user roles as part of
+the user management for creation and implementation.
+
+📌 **Next Step:** JWT Implementation Preparation - Admin Service Layer Implementation
 
 ---
 
