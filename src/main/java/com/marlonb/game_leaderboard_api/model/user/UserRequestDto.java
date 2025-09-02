@@ -24,4 +24,5 @@ public class UserRequestDto {
     )
     private String password;
 
+    private UserRoles role;
 }

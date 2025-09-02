@@ -24,7 +24,8 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    private final String roles = "USER";
+    @Column(nullable = false)
+    private UserRoles roles;
 
     private LocalDateTime createdAt;
 

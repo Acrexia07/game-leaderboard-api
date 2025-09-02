@@ -12,6 +12,7 @@ public class User1TestData {
         user1.setId(1L);
         user1.setUsername("user1");
         user1.setPassword("User@456");
+        user1.setRoles(UserRoles.USER);
         user1.setCreatedAt(LocalDateTime.now());
         return user1;
     }
@@ -22,6 +23,7 @@ public class User1TestData {
         updatedUser.setId(1L);
         updatedUser.setUsername("user1");
         updatedUser.setPassword("User#456");
+        updatedUser.setRoles(UserRoles.USER);
         updatedUser.setCreatedAt(LocalDateTime.now());
         return updatedUser;
     }
@@ -32,7 +34,7 @@ public class User1TestData {
                 sampleUser1Data().getId(),
                 sampleUser1Data().getUsername(),
                 sampleUser1Data().getPassword(),
-                "USER",
+                sampleUser1Data().getRoles(),
                 sampleUser1Data().getCreatedAt()
         );
     }
@@ -41,7 +43,9 @@ public class User1TestData {
 
         return new UserRequestDto(
                 sampleUser1Data().getUsername(),
-                sampleUser1Data().getPassword()
+                sampleUser1Data().getPassword(),
+                sampleUser1Data().getRoles()
+
         );
     }
 
@@ -49,7 +53,8 @@ public class User1TestData {
 
         return new UserUpdateDto(
                 sampleUser1Data().getUsername(),
-                "User#456"
+                "User#456",
+                sampleUser1Data().getRoles()
         );
     }
 }
