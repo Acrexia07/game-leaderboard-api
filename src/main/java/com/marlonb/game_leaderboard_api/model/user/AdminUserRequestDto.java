@@ -23,5 +23,6 @@ public class AdminUserRequestDto {
     )
     private String password;
 
-    private UserRoles role = UserRoles.ADMIN;
+    @NotNull(message = "role is required!")
+    private UserRoles role;
 }
