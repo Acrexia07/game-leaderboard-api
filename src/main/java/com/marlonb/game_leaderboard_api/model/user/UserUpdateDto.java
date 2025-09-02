@@ -23,5 +23,5 @@ public class UserUpdateDto {
     )
     private String password;
 
-    private UserRoles role;
+    private UserRoles role = UserRoles.USER;
 }

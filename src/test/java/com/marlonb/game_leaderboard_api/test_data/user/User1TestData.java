@@ -34,7 +34,6 @@ public class User1TestData {
                 sampleUser1Data().getId(),
                 sampleUser1Data().getUsername(),
                 sampleUser1Data().getPassword(),
-                sampleUser1Data().getRoles(),
                 sampleUser1Data().getCreatedAt()
         );
     }

@@ -20,7 +20,6 @@ public class User2TestData {
                 sampleUser2Data().getId(),
                 sampleUser2Data().getUsername(),
                 sampleUser2Data().getPassword(),
-                sampleUser2Data().getRoles(),
                 sampleUser2Data().getCreatedAt()
         );
     }

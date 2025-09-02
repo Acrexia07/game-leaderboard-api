@@ -1,6 +1,5 @@
 package com.marlonb.game_leaderboard_api.model.user;
 
-
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequestDto {
+public class AdminUserRequestDto {
 
     @NotNull(message = "username is required!")
     private String username;
@@ -24,5 +23,5 @@ public class UserRequestDto {
     )
     private String password;
 
-    private UserRoles role = UserRoles.USER;
+    private UserRoles role = UserRoles.ADMIN;
 }

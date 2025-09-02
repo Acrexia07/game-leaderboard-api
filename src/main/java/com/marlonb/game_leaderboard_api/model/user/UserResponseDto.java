@@ -6,6 +6,5 @@ public record UserResponseDto(
    long id,
    String username,
    String password,
-   UserRoles roles,
    LocalDateTime createdAt
 ) {}

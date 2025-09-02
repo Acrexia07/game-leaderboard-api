@@ -14,6 +14,13 @@ public interface UserMapper {
     UserEntity toEntity (UserRequestDto userRequest);
 
     @Mapping(target = "id", ignore = true)
+    UserEntity toEntity (AdminUserRequestDto adminRequest);
+
+    @Mapping(target = "id", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void toUpdateFromEntity (@MappingTarget UserEntity user, UserUpdateDto userUpdate);
+
+    @Mapping(target = "id", ignore = true)
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void toUpdateFromEntity (@MappingTarget UserEntity user, AdminUserUpdateDto adminUpdate);
 }
