@@ -4,6 +4,7 @@ import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundE
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.user.*;
 import com.marlonb.game_leaderboard_api.repository.UserRepository;
+import com.marlonb.game_leaderboard_api.test_data.user.AdminUser1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User2TestData;
 import org.junit.jupiter.api.DisplayName;
@@ -56,6 +57,28 @@ public class UserDetailServiceUnitTests {
             UserResponseDto actualResponse = userService.createUser(testUserRequest);
 
             assertUserServiceReturnedExpectedResponse(actualResponse, expectedResponse);
+        }
+
+        @Test
+        @DisplayName("Should create admin user successfully")
+        void shouldCreateAdminUserSuccessfully () {
+
+            UserEntity testAdminUser = AdminUser1TestData.sampleAdminUser1Data();
+            AdminUserRequestDto testAdminUserRequest = AdminUser1TestData.sampleAdminUser1Request();
+            UserResponseDto testAdminUserResponse = AdminUser1TestData.sampleAdminUser1Response();
+
+            when(userMapper.toEntity(any(AdminUserRequestDto.class)))
+                    .thenReturn(testAdminUser);
+
+            when(userRepository.save(any(UserEntity.class)))
+                    .thenReturn(testAdminUser);
+
+            when(userMapper.toResponse(testAdminUser))
+                    .thenReturn(testAdminUserResponse);
+
+            UserResponseDto actualResponse = userService.createAdminUser(testAdminUserRequest);
+
+            assertUserServiceReturnedExpectedResponse(actualResponse, testAdminUserResponse);
         }
 
         @Test

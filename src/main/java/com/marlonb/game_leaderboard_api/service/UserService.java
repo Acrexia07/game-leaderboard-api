@@ -35,6 +35,15 @@ public class UserService {
         return userMapper.toResponse(savedUser);
     }
 
+    @Transactional
+    public UserResponseDto createAdminUser (@Valid @RequestBody AdminUserRequestDto adminRequest) {
+
+        UserEntity createdAdminUser = userMapper.toEntity(adminRequest);
+
+        UserEntity savedUser = userRepository.save(createdAdminUser);
+        return userMapper.toResponse(savedUser);
+    }
+
     @Transactional(readOnly = true)
     public List<UserResponseDto> retrieveAllUsers () {
 
