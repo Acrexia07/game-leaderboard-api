@@ -5,12 +5,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
-import com.marlonb.game_leaderboard_api.model.user.UserEntity;
-import com.marlonb.game_leaderboard_api.model.user.UserRequestDto;
-import com.marlonb.game_leaderboard_api.model.user.UserResponseDto;
-import com.marlonb.game_leaderboard_api.model.user.UserUpdateDto;
+import com.marlonb.game_leaderboard_api.model.user.*;
 import com.marlonb.game_leaderboard_api.security.BasicAuthenticationConfig;
 import com.marlonb.game_leaderboard_api.service.UserService;
+import com.marlonb.game_leaderboard_api.test_data.user.AdminUser1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User2TestData;
 import org.junit.jupiter.api.BeforeEach;
@@ -79,8 +77,8 @@ public class UserDetailsControllerUnitTests {
     class PositiveTests {
 
         @Test
-        @DisplayName("Should pass when create new user")
-        void shouldPassWhenCreateNewUser () throws Exception {
+        @DisplayName("Should pass when create new public user")
+        void shouldPassWhenCreateNewPublicUser () throws Exception {
 
             when(userService.createUser(any()))
                     .thenReturn(testUserResponse);
@@ -95,6 +93,29 @@ public class UserDetailsControllerUnitTests {
                            header().exists("location"),
                            header().string("location", "/api/users/register/" + testUserResponse.id()),
                            jsonPath("$.apiMessage").value("User created successfully!"));
+        }
+
+        @Test
+        @DisplayName("Should pass when create new admin user")
+        void shouldPassWhenCreateNewAdminUser () throws Exception {
+
+            UserResponseDto testAdminUserResponse = AdminUser1TestData.sampleAdminUser1Response();
+            AdminUserRequestDto testAdminUserRequest = AdminUser1TestData.sampleAdminUser1Request();
+
+            when(userService.createAdminUser(any()))
+                    .thenReturn(testAdminUserResponse);
+
+            String jsonAdminRequest = mapper.writeValueAsString(testAdminUserRequest);
+
+            mockMvc.perform(post("/api/users")
+                            .with(httpBasic("acrexia", "dummy"))
+                            .content(jsonAdminRequest)
+                            .contentType("application/json"))
+                    .andExpectAll(
+                            status().isCreated(),
+                            header().exists("location"),
+                            header().string("location", "/api/users/" + testAdminUserResponse.id()),
+                            jsonPath("$.apiMessage").value("Admin created successfully!"));
         }
 
         @Test

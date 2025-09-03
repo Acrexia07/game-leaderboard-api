@@ -19,7 +19,7 @@ public class UserController {
 
     @PostMapping("/users/register")
     public ResponseEntity<ApiMessageResponseDto<UserResponseDto>> createNewUser (@Valid @RequestBody
-                                                          UserRequestDto userRequest) {
+                                                                                 UserRequestDto userRequest) {
 
         UserResponseDto createUserRequest = userService.createUser(userRequest);
         URI location = URI.create("/api/users/register/" + createUserRequest.id());
@@ -27,6 +27,18 @@ public class UserController {
         return ResponseEntity.created(location).body(new ApiMessageResponseDto<>
                                                      ("User created successfully!",
                                                       createUserRequest));
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity<ApiMessageResponseDto<UserResponseDto>> createAdminUser (@Valid @RequestBody
+                                                                                   AdminUserRequestDto adminRequest) {
+
+        UserResponseDto createAdminRequest = userService.createAdminUser(adminRequest);
+        URI location = URI.create("/api/users/" + createAdminRequest.id());
+
+        return ResponseEntity.created(location).body(new ApiMessageResponseDto<>
+                                                     ("Admin created successfully!",
+                                                      createAdminRequest));
     }
 
     @GetMapping("/users")
