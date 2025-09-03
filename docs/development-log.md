@@ -722,7 +722,26 @@ via Negative Testing
 - **📖 Realization: ** I was able to learn and understand the consideration of having the admin user roles as part of
 the user management for creation and implementation.
 
-📌 **Next Step:** JWT Implementation Preparation - Admin Service Layer Implementation
+📌 **Next Step:** JWT Implementation Preparation - Admin Service Layer and Controller layer Implementation
+
+---
+
+## Day 30: JWT Implementation Preparation - Admin Service Layer and Controller layer Implementation
+**📅 Date:** September 3, 2025
+
+**🎯 Objectives:**
+- Develop service layer functions for admin using Test-driven Development approach.
+- Develop controller layer functions for admin using Test-driven Development approach.
+
+**🛠️ Implementation Summary:**
+- Developed service layer functions for admin using Test-driven Development approach.
+- Developed controller layer functions for admin using Test-driven Development approach.
+- Created negative test case on admin service layer function that checks username duplication.
+
+**🧠 Technical Learning:**
+- **📖 Realization: ** I was able to understand the importance of user management in spring security aspect.
+
+📌 **Next Step:** JWT Implementation 
 
 ---
 
