@@ -40,6 +40,11 @@ public class UserService {
 
         UserEntity createdAdminUser = userMapper.toEntity(adminRequest);
 
+        if(userRepository.existsByUsername(createdAdminUser.getUsername())) {
+            throw new DuplicateResourceFoundException
+                    (String.format(createdAdminUser.getUsername(), DUPLICATE_USERNAME_FOUND));
+        }
+
         UserEntity savedUser = userRepository.save(createdAdminUser);
         return userMapper.toResponse(savedUser);
     }

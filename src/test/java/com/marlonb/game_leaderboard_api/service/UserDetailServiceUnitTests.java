@@ -192,8 +192,8 @@ public class UserDetailServiceUnitTests {
             }
 
             @Test
-            @DisplayName("Should fail create when username already exist")
-            void shouldFailCreateWhenUsernameAlreadyExist () {
+            @DisplayName("Should fail to create public user when username already exist")
+            void shouldFailToCreatePublicUserWhenUsernameAlreadyExist () {
 
                 UserEntity testUser = User1TestData.sampleUser1Data();
                 UserRequestDto testUserRequest = User1TestData.sampleUser1Request();
@@ -206,6 +206,24 @@ public class UserDetailServiceUnitTests {
 
                 assertThrows(DuplicateResourceFoundException.class,
                              () -> userService.createUser(testUserRequest));
+
+                verify(userRepository, never()).save(any());
+            }
+
+            @Test
+            @DisplayName("Should fail to create admin user when username already exist")
+            void shouldFailToCreateAdminUserWhenUsernameAlreadyExist () {
+
+                UserEntity testAdminUser = AdminUser1TestData.sampleAdminUser1Data();
+                AdminUserRequestDto testAdminUserRequest = AdminUser1TestData.sampleAdminUser1Request();
+
+                when(userMapper.toEntity(any(AdminUserRequestDto.class)))
+                        .thenReturn(testAdminUser);
+
+                when(userRepository.existsByUsername("admin1")).thenReturn(true);
+
+                assertThrows(DuplicateResourceFoundException.class,
+                        () -> userService.createAdminUser(testAdminUserRequest));
 
                 verify(userRepository, never()).save(any());
             }
