@@ -11,6 +11,7 @@
 - [Issue 7 (August 12, 2025): Parameterize test for controller negative testing not working](#issue-7-august-12-2025-parameterize-test-for-controller-negative-testing-not-working)
 - [Issue 8 (August 15, 2025): Custom Query abstract method failure with the exception `UnsatisfiedDependencyException`](#issue-8-august-15-2025-custom-query-abstract-method-failure-with-the-exception-unsatisfieddependencyexception)
 - [Issue 9 (August 24, 2025): Issue on `userRepository`](#issue-9-august-24-2025-issue-on-userrepository)
+- [Issue 10 (September 5, 2025): WebMvcTest security configuration causing 403 Forbidden errors](#issue-10-september-5-2025-webmvctest-security-configuration-causing-403-forbidden-errors)
 ---
 ## Technical issues encountered
 
@@ -179,3 +180,40 @@ an ObjectMapper.
   }
 - **✅ Result:** No issue related to this occurred again.
 
+--- 
+
+### Issue 10 (September 5, 2025): WebMvcTest security configuration causing 403 Forbidden errors
+- **🐞 Issue:** Test method expecting 201 Created status but receiving 403 Forbidden for `/api/users/register` 
+endpoint that should be publicly accessible.
+  ```
+  java.lang.AssertionError: Multiple Exceptions (4):
+  Status expected:<201> but was:<403>
+  Response should contain header 'location'
+  Response header 'location' expected:</api/users/register/1> but was:<null>
+  No value at JSON path "$.apiMessage"
+
+- **Cause:** `@WebMvcTest` doesn't autoload main `@Configuration` classes like `BasicAuthenticationConfig`. 
+Without `SecurityFilterChain` bean, Spring Security defaults to requiring authentication for all endpoints.
+
+- **🧪 Solution:** Created separate `TestSecurityConfig` with proper `SecurityFilterChain` bean and fixed rule ordering:
+  ```java
+  @TestConfiguration
+  static class TestSecurityConfig {
+      @Bean
+      public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+          return http.authorizeHttpRequests(auth -> auth
+                  .requestMatchers("/api/users/register").permitAll()  // Must come BEFORE
+                  .requestMatchers(HttpMethod.POST, "/api/users").hasRole("ADMIN")
+                  .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN") 
+                  .requestMatchers("/api/users/**").authenticated()    // More general pattern
+                  .anyRequest().authenticated())
+              // ... rest of config
+              .build();
+      }
+  }
+  
+- ✅ Result: Tests pass with proper security behavior - public endpoints accessible, protected endpoints secured.
+- 📝 Lesson Learned:
+  - @WebMvcTest requires explicit @Import for security configurations.
+  - Security filter chain rule ordering is critical - specific patterns must come before general ones
+  - Separating test security configurations improves reusability across multiple test classes

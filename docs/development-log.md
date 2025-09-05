@@ -632,13 +632,13 @@ controller layer functions.
 ## Day 25: Security Planning – JWT & Endpoint Authorization Design
 📅 Date: August 29, 2025
 
-🎯 Objectives:
+**🎯 Objectives:**
 - Focus solely on planning and documentation (no coding today).
 - Define how JWT authentication will be integrated into the project.
 - Establish endpoint authorization rules (Public, Authenticated User, Admin).
 - Clarify the distinction between UserEntity (security accounts) and potential GameAccountEntity (game feature).
 
-🛠️ Implementation Summary:
+**🛠️ Implementation Summary:**
 - No implementation today; only brainstorming and planning.
 - Documented endpoint security mapping:
     ```
@@ -648,7 +648,7 @@ controller layer functions.
 
 - Outlined JWT flow: registration → login → token issuance → access protected endpoints.
 
-🧠 Technical Learning:
+**🧠 Technical Learning:**
 - Recognized that planning is as important as coding for scalable security design.
 - Identified separation of concerns: security users vs in-game player accounts.
 
@@ -702,7 +702,7 @@ via Negative Testing
 - Implemented test case development with negative testing for implemented controller layer functions.
 - Refactor all controller unit test after test case development.
 
-📌 **Next Step:** JWT Implementation 
+📌 **Next Step:** JWT Implementation Preparation - Implementing Admin user roles in the `UserEntity`
 
 ---
 
@@ -741,7 +741,34 @@ the user management for creation and implementation.
 **🧠 Technical Learning:**
 - **📖 Realization: ** I was able to understand the importance of user management in spring security aspect.
 
-📌 **Next Step:** JWT Implementation 
+📌 **Next Step:** Restructuring classes in preparation for JWT Implementation 
+
+---
+
+## Day 31: JWT Implementation Preparation - User Management Service & Security Testing Setup
+**📅 Date:** September 5, 2025
+
+**🎯 Objectives:**
+- Implement classes that configure the usage of `users_data` database table.
+- Restructure test classes affected by the new security configuration.
+- Prepare foundation for upcoming JWT implementation.
+- 
+**🛠️ Implementation Summary:**
+- Implemented `GameUserDetailsService` and related classes for database user management.
+- Restructured security configuration classes affected by the new user management setup.
+- Refactored test classes to work with Spring Security's `@WebMvcTest` limitations
+- Created separate `TestSecurityConfig.java` for reusable in-memory security configuration in tests.
+
+**🔄 Issues Encountered & Resolved:**
+- Fixed 403 Forbidden errors in tests due to security filter chain rule ordering
+- Resolved missing `SecurityFilterChain` bean in test context
+
+**🧠 Technical Learning:**
+- **📖 Key Realization:** Understanding the distinct usage of Spring profiles (local vs test) when creating separate 
+test configurations.
+- **⚡ Best Practice:** Separating test security configurations improves reusability across multiple test classes.
+
+📌 **Next Step:** JWT Implementation Preparation
 
 ---
 
