@@ -6,11 +6,11 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.user.*;
-import com.marlonb.game_leaderboard_api.security.BasicAuthenticationConfig;
 import com.marlonb.game_leaderboard_api.service.UserService;
 import com.marlonb.game_leaderboard_api.test_data.user.AdminUser1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User2TestData;
+import com.marlonb.game_leaderboard_api.test_securityConfig.TestSecurityConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -20,6 +20,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -33,7 +44,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
-@Import(BasicAuthenticationConfig.class)
+@Import(TestSecurityConfig.class)
 public class UserDetailsControllerUnitTests {
 
     @Autowired
@@ -48,15 +59,6 @@ public class UserDetailsControllerUnitTests {
     private UserResponseDto testUserResponse;
     private UserRequestDto testUserRequest;
     private UserUpdateDto testUserUpdate;
-
-    @TestConfiguration
-    static class TestConfig {
-
-        @Bean
-        public UserService userService () {
-            return mock(UserService.class);
-        }
-    }
 
     @BeforeEach
     void initSetup () {
@@ -74,6 +76,7 @@ public class UserDetailsControllerUnitTests {
     }
 
     @Nested
+    @DisplayName("Admin Only Endpoints Tests")
     class PositiveTests {
 
         @Test
@@ -93,6 +96,8 @@ public class UserDetailsControllerUnitTests {
                            header().exists("location"),
                            header().string("location", "/api/users/register/" + testUserResponse.id()),
                            jsonPath("$.apiMessage").value("User created successfully!"));
+
+            verify(userService).createUser(any());
         }
 
         @Test

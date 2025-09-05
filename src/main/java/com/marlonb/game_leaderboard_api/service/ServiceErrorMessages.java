@@ -8,7 +8,8 @@ import lombok.Getter;
 public enum ServiceErrorMessages {
 
     DUPLICATE_USERNAME_FOUND("Username '%s' already exist!"),
-    DUPLICATE_PLAYER_NAME_FOUND("Player name '%s' already exist!");
+    DUPLICATE_PLAYER_NAME_FOUND("Player name '%s' already exist!"),
+    USER_NOT_FOUND("User not found!");
 
     private final String errorMessage;
 }

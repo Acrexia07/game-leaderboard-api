@@ -1,9 +1,13 @@
 package com.marlonb.game_leaderboard_api.security;
 
+import com.marlonb.game_leaderboard_api.service.GameUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,7 +23,10 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @Configuration
+@RequiredArgsConstructor
 public class BasicAuthenticationConfig {
+
+    private final GameUserDetailsService gameUserDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws  Exception {
@@ -41,17 +48,21 @@ public class BasicAuthenticationConfig {
 
     @Bean
     public UserDetailsService userDetailsService () {
-        return new InMemoryUserDetailsManager(
-                User.builder()
-                    .username("acrexia")
-                    .password(passwordEncoder().encode("dummy"))
-                    .authorities("ROLE_ADMIN")
-                    .build()
-        );
+        return gameUserDetailsService;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder () {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider (UserDetailsService userDetailsService,
+                                                        PasswordEncoder passwordEncoder) {
+
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+
+        return provider;
     }
 }
