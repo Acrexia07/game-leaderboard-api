@@ -6,6 +6,7 @@ import com.marlonb.game_leaderboard_api.model.user.*;
 import com.marlonb.game_leaderboard_api.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
     @Transactional
     public UserResponseDto createUser (@Valid @RequestBody UserRequestDto userRequest) {
 
@@ -31,6 +34,7 @@ public class UserService {
                     (String.format(createdUser.getUsername(), DUPLICATE_USERNAME_FOUND));
         }
 
+        createdUser.setPassword(encoder.encode(createdUser.getPassword()));
         createdUser.setRole(UserRoles.USER);
         UserEntity savedUser = userRepository.save(createdUser);
         return userMapper.toResponse(savedUser);
@@ -46,6 +50,7 @@ public class UserService {
                     (String.format(createdAdminUser.getUsername(), DUPLICATE_USERNAME_FOUND));
         }
 
+        createdAdminUser.setPassword(encoder.encode(createdAdminUser.getPassword()));
         UserEntity savedUser = userRepository.save(createdAdminUser);
         return userMapper.toResponse(savedUser);
     }
