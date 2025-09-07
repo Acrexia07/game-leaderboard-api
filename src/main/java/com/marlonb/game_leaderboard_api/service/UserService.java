@@ -31,6 +31,7 @@ public class UserService {
                     (String.format(createdUser.getUsername(), DUPLICATE_USERNAME_FOUND));
         }
 
+        createdUser.setRole(UserRoles.USER);
         UserEntity savedUser = userRepository.save(createdUser);
         return userMapper.toResponse(savedUser);
     }
