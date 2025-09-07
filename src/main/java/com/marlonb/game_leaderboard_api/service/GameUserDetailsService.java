@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 import static com.marlonb.game_leaderboard_api.service.ServiceErrorMessages.USER_NOT_FOUND;
 
 @Service
