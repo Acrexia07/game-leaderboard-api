@@ -15,7 +15,7 @@ import static com.marlonb.game_leaderboard_api.service.ServiceErrorMessages.USER
 @RequiredArgsConstructor
 public class GameUserDetailsService implements UserDetailsService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

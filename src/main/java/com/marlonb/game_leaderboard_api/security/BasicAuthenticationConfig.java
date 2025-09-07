@@ -32,7 +32,7 @@ public class BasicAuthenticationConfig {
         return http.authorizeHttpRequests(
                 auth -> auth
                                     .requestMatchers("/api/users/register").permitAll()
-                                    .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                                    .requestMatchers(HttpMethod.POST, "/api/users").hasRole("ADMIN")
                                     .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
                                     .requestMatchers("/api/users/**").authenticated()
                                     .requestMatchers("/api/players/**", "/api/leaderboards").authenticated()
