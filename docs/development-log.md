@@ -772,4 +772,35 @@ test configurations.
 
 ---
 
+## Day 32: Authentication System Testing (Pre-JWT)
+**📅 Date:** September 7, 2025
+
+**🎯 Objectives:**
+- Test program's security authentication using API testing (Postman).
+- Fix issues encountered during testing.
+
+**🛠️ Implementation Summary:**
+- Tested program's security authentication using API testing (Postman).
+- Fixed issues encounter during testing.
+
+**🔄 Issues Encountered & Resolved:**
+- Fixed issues about having Admin users getting 401 Unauthorized despite correct credentials.
+- Resolved missing `final` keyword on the injected `UserRepository` dependency.
+
+**📊 Testing Results:**
+- ✅ Admin user creation: Working (201 Created)
+- ✅ Admin authentication: Fixed (was 401, now 200)
+- ✅ Role-based authorization: Functioning
+
+**🧠 Technical Learning:**
+- **Knowledge Reinforcement:** Remembered the importance of using `final` keyword with `@RequiredArgsConstructor` 
+for proper dependency injection.
+- **Design Insight:** Identified the need to establish User-Player entity relationships before JWT implementation 
+for better data integrity and security.
+
+📌 **Next Step:** JWT Implementation Preparation - Connecting `PlayerEntity` to `UserEntity`
+
+
+---
+
 *Development continues with focus on building resilient, well-tested service architecture*

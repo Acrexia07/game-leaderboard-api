@@ -12,6 +12,8 @@
 - [Issue 8 (August 15, 2025): Custom Query abstract method failure with the exception `UnsatisfiedDependencyException`](#issue-8-august-15-2025-custom-query-abstract-method-failure-with-the-exception-unsatisfieddependencyexception)
 - [Issue 9 (August 24, 2025): Issue on `userRepository`](#issue-9-august-24-2025-issue-on-userrepository)
 - [Issue 10 (September 5, 2025): WebMvcTest security configuration causing 403 Forbidden errors](#issue-10-september-5-2025-webmvctest-security-configuration-causing-403-forbidden-errors)
+- [**Issue 11 (September 7, 2025): Admin users getting 401 Unauthorized despite correct credentials**](#issue-11-september-7-2025-admin-users-getting-401-unauthorized-despite-correct-credentials)
+
 ---
 ## Technical issues encountered
 
@@ -217,3 +219,43 @@ Without `SecurityFilterChain` bean, Spring Security defaults to requiring authen
   - @WebMvcTest requires explicit @Import for security configurations.
   - Security filter chain rule ordering is critical - specific patterns must come before general ones
   - Separating test security configurations improves reusability across multiple test classes
+
+
+---
+
+### **Issue 11 (September 7, 2025): Admin users getting 401 Unauthorized despite correct credentials**
+
+- **🐞 Issue:** Created admin users successfully (201 response) but getting 401 Unauthorized when trying to access protected endpoints with correct Basic Auth credentials.
+  ```
+  Username: admin_config
+  Password: Dummy#11
+  Response: 401 Unauthorized
+
+- **Cause:** Missing final keyword in GameUserDetailsService field declaration. The @RequiredArgsConstructor annotation only works with final fields, so UserRepository was never injected and remained null.
+  ```
+  @Service
+  @RequiredArgsConstructor
+  public class GameUserDetailsService implements UserDetailsService {
+  private UserRepository userRepository;  // Missing 'final' keyword
+
+- **🧪 Solution:** Added final keyword to enable proper dependency injection:
+  ```
+  @Service
+  @RequiredArgsConstructor
+  public class GameUserDetailsService implements UserDetailsService {
+  private final UserRepository userRepository;  // Added 'final'
+  
+      @Override
+      public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+          UserEntity user = userRepository.findByUsername(username);
+          // ... rest of method
+      }
+  }
+
+- **✅ Result:** Admin users can now authenticate successfully and access protected endpoints with proper ADMIN role authorization.
+
+- **📝 Lesson Learned:**
+  - `@RequiredArgsConstructor` only generates constructor parameters for final fields
+  - Without final, the field remains null and causes NullPointerException during authentication
+  - Alternative solution: Use @Autowired annotation instead of @RequiredArgsConstructor
+  - Always verify dependency injection is working when authentication fails mysteriously
