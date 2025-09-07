@@ -12,7 +12,7 @@ public class AdminUser1TestData {
         admin1.setId(3L);
         admin1.setUsername("admin1");
         admin1.setPassword("Admin@123");
-        admin1.setRoles(UserRoles.ADMIN);
+        admin1.setRole(UserRoles.ADMIN);
         admin1.setCreatedAt(LocalDateTime.now());
         return admin1;
     }
@@ -23,7 +23,7 @@ public class AdminUser1TestData {
         updatedAdmin.setId(3L);
         updatedAdmin.setUsername("admin1");
         updatedAdmin.setPassword("Admin#456");
-        updatedAdmin.setRoles(UserRoles.ADMIN);
+        updatedAdmin.setRole(UserRoles.ADMIN);
         updatedAdmin.setCreatedAt(LocalDateTime.now());
         return updatedAdmin;
     }
@@ -43,7 +43,7 @@ public class AdminUser1TestData {
         return new AdminUserRequestDto(
                 sampleAdminUser1Data().getUsername(),
                 sampleAdminUser1Data().getPassword(),
-                sampleAdminUser1Data().getRoles()
+                sampleAdminUser1Data().getRole()
         );
     }
 
@@ -52,7 +52,7 @@ public class AdminUser1TestData {
         return new AdminUserUpdateDto(
                 sampleAdminUser1Data().getUsername(),
                 "Admin#789",
-                sampleAdminUser1Data().getRoles()
+                sampleAdminUser1Data().getRole()
         );
     }
 }

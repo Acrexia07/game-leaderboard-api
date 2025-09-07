@@ -12,7 +12,7 @@ public class AdminUser2TestData {
         admin2.setId(4L);
         admin2.setUsername("admin2");
         admin2.setPassword("Admin@abc1");
-        admin2.setRoles(UserRoles.ADMIN);
+        admin2.setRole(UserRoles.ADMIN);
         admin2.setCreatedAt(LocalDateTime.now());
         return admin2;
     }
@@ -23,7 +23,7 @@ public class AdminUser2TestData {
         updatedAdmin2.setId(4L);
         updatedAdmin2.setUsername("admin1");
         updatedAdmin2.setPassword("Admin#abc1");
-        updatedAdmin2.setRoles(UserRoles.ADMIN);
+        updatedAdmin2.setRole(UserRoles.ADMIN);
         updatedAdmin2.setCreatedAt(LocalDateTime.now());
         return updatedAdmin2;
     }
@@ -43,7 +43,7 @@ public class AdminUser2TestData {
         return new AdminUserRequestDto(
                 sampleAdminUser2Data().getUsername(),
                 sampleAdminUser2Data().getPassword(),
-                sampleAdminUser2Data().getRoles()
+                sampleAdminUser2Data().getRole()
         );
     }
 
@@ -52,7 +52,7 @@ public class AdminUser2TestData {
         return new AdminUserUpdateDto(
                 sampleAdminUser2Data().getUsername(),
                 "Admin#def2",
-                sampleAdminUser2Data().getRoles()
+                sampleAdminUser2Data().getRole()
         );
     }
 }

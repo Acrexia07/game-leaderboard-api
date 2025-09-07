@@ -26,7 +26,7 @@ public class UserEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserRoles roles;
+    private UserRoles role;
 
     private LocalDateTime createdAt;
 

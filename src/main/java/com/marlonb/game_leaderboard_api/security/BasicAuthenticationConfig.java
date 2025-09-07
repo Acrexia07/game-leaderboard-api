@@ -32,9 +32,9 @@ public class BasicAuthenticationConfig {
         return http.authorizeHttpRequests(
                 auth -> auth
                                     .requestMatchers("/api/users/register").permitAll()
-                                    .requestMatchers("/api/users/**").authenticated()
-                                    .requestMatchers(HttpMethod.POST, "/api/users").hasRole("ADMIN")
+                                    .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                                     .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
+                                    .requestMatchers("/api/users/**").authenticated()
                                     .requestMatchers("/api/players/**", "/api/leaderboards").authenticated()
                                     .anyRequest().authenticated())
             .csrf(AbstractHttpConfigurer::disable)

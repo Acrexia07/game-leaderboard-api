@@ -12,7 +12,7 @@ public class User1TestData {
         user1.setId(1L);
         user1.setUsername("user1");
         user1.setPassword("User@456");
-        user1.setRoles(UserRoles.USER);
+        user1.setRole(UserRoles.USER);
         user1.setCreatedAt(LocalDateTime.now());
         return user1;
     }
@@ -23,7 +23,7 @@ public class User1TestData {
         updatedUser.setId(1L);
         updatedUser.setUsername("user1");
         updatedUser.setPassword("User#456");
-        updatedUser.setRoles(UserRoles.USER);
+        updatedUser.setRole(UserRoles.USER);
         updatedUser.setCreatedAt(LocalDateTime.now());
         return updatedUser;
     }

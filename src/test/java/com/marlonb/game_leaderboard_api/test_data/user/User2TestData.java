@@ -10,7 +10,7 @@ public class User2TestData {
         user2.setId(2L);
         user2.setUsername("user2");
         user2.setPassword("$2a$11$encoded.password.hash");
-        user2.setRoles(UserRoles.USER);
+        user2.setRole(UserRoles.USER);
         return user2;
     }
 
