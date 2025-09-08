@@ -795,12 +795,28 @@ test configurations.
 **🧠 Technical Learning:**
 - **Knowledge Reinforcement:** Remembered the importance of using `final` keyword with `@RequiredArgsConstructor` 
 for proper dependency injection.
-- **Design Insight:** Identified the need to establish User-Player entity relationships before JWT implementation 
-for better data integrity and security.
 
-📌 **Next Step:** JWT Implementation Preparation - Connecting `PlayerEntity` to `UserEntity`
+📌 **Next Step:** JWT Implementation Preparation - login dummy endpoint creation
 
+---
 
+## Day 33: JWT Implementation Preparation - login dummy endpoint creation
+**📅 Date:** September 8, 2025
+
+**🎯 Objectives:**
+- Implement a dummy login endpoint and conduct API testing to verify communication.
+- Implement service function that verifies credential during the controller execution.
+
+**🛠️ Implementation Summary:**
+- Added corresponding data transfer object in preparation for JWT implementation.
+- Added login dummy endpoint for jwt preparation.
+- Added service function that verifies user credentials and generate token (implemented in hardcoded string for now).
+- Added global exception handler for handling bad credential exceptions.
+
+**🧠 Technical Learning:**
+- **💡 Gain Insight:** I was able to gain knowledge about preparation before implementing JWT in the project.
+
+📌 **Next Step:** JWT Implementation 
 ---
 
 *Development continues with focus on building resilient, well-tested service architecture*
