@@ -29,6 +29,11 @@ public class UserController {
                                                       createUserRequest));
     }
 
+    @PostMapping("/users/login")
+    public ResponseEntity<String> loginUser () {
+        return ResponseEntity.ok().body("User login successfully!");
+    }
+
     @PostMapping("/users")
     public ResponseEntity<ApiMessageResponseDto<UserResponseDto>> createAdminUser (@Valid @RequestBody
                                                                                    AdminUserRequestDto adminRequest) {
