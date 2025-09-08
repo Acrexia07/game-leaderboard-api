@@ -12,7 +12,7 @@ public enum ErrorMessages {
     JSON_ERROR_MESSAGE("Malformed JSON structure"),
     FORMAT_REQUEST_ERROR_MESSAGE("Invalid request format"),
     HTTP_MESSAGE_NOT_READABLE_ERROR_MESSAGE("Unable to process request body"),
-    USERNAME_NOT_FOUND_MESSAGE("User not found!"),
+    BAD_CREDENTIALS_MESSAGE("Bad credentials found!"),
     VALIDATION_ERROR_MESSAGE("Validation error(s) found!");
 
     private final String errorMessage;

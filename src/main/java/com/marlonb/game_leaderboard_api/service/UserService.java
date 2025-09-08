@@ -6,6 +6,10 @@ import com.marlonb.game_leaderboard_api.model.user.*;
 import com.marlonb.game_leaderboard_api.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +25,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final AuthenticationManager authManager;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -101,5 +106,22 @@ public class UserService {
         return userRepository.findById(id)
                              .orElseThrow(() -> new ResourceNotFoundException
                                           (String.format("This user id '%d' does not exist!", id)));
+    }
+
+    public String verifyUser(@Valid @RequestBody LoginRequestDto loginRequest) {
+
+        try {
+            Authentication authentication =
+                    authManager.authenticate(new UsernamePasswordAuthenticationToken(
+                            loginRequest.username(),
+                            loginRequest.password()
+                    ));
+
+            return "...generating Token";
+
+        } catch (BadCredentialsException e) {
+            throw new BadCredentialsException("Invalid username or password!");
+        }
+
     }
 }

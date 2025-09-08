@@ -30,8 +30,13 @@ public class UserController {
     }
 
     @PostMapping("/users/login")
-    public ResponseEntity<String> loginUser () {
-        return ResponseEntity.ok().body("User login successfully!");
+    public ResponseEntity<ApiMessageResponseDto<String>> loginUser (@Valid @RequestBody LoginRequestDto loginRequest) {
+
+        String verifiedUser = userService.verifyUser(loginRequest);
+
+        return ResponseEntity.ok().body(new ApiMessageResponseDto<>
+                                        ("User login successfully!",
+                                         verifiedUser));
     }
 
     @PostMapping("/users")

@@ -5,6 +5,7 @@ import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundExcepti
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -100,5 +101,16 @@ public class GlobalExceptionHandler {
                                         HttpStatus.BAD_REQUEST.value(),
                                         HTTP_MESSAGE_NOT_READABLE_ERROR_MESSAGE.getErrorMessage(),
                                         customError));
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponseDto> handlesBadCredentialsExceptions (BadCredentialsException ex) {
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body(new ErrorResponseDto
+                                     (LocalDateTime.now(),
+                                      HttpStatus.UNAUTHORIZED.value(),
+                                      BAD_CREDENTIALS_MESSAGE.getErrorMessage(),
+                                      Map.of("user", List.of(ex.getMessage()))));
     }
 }
