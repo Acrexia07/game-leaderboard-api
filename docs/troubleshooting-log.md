@@ -220,7 +220,6 @@ Without `SecurityFilterChain` bean, Spring Security defaults to requiring authen
   - Security filter chain rule ordering is critical - specific patterns must come before general ones
   - Separating test security configurations improves reusability across multiple test classes
 
-
 ---
 
 ### **Issue 11 (September 7, 2025): Admin users getting 401 Unauthorized despite correct credentials**
@@ -259,3 +258,43 @@ Without `SecurityFilterChain` bean, Spring Security defaults to requiring authen
   - Without final, the field remains null and causes NullPointerException during authentication
   - Alternative solution: Use @Autowired annotation instead of @RequiredArgsConstructor
   - Always verify dependency injection is working when authentication fails mysteriously
+
+---
+
+### **Issue 11 (September 9, 2025): JWT Key Generation Only Producing 156 Bits Instead of Required 256 Bits**
+
+- **🐞 Issue:** JwtService was only generating 156 bits for HMAC-SHA256 algorithm, which requires minimum 256 bits for 
+secure signing.
+
+- **⚠️ Error/Symptom:**
+  - Expected: 256-bit (32-byte) secret key
+  - Actual: 156-bit key from hardcoded string "myGameLeaderboardSecretKey"
+  - JWT library throwing insufficient key length errors
+
+- **🔧 Root Cause:**
+  ```java
+  // WRONG: Using hardcoded string, ignoring generated key
+  private String secretKey = "myGameLeaderboardSecretKey";
+
+  public JWTService() {
+      KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
+      SecretKey sk = keyGen.generateKey();
+      Base64.getEncoder().encodeToString(sk.getEncoded()); // Generated but not used!
+  }
+
+- **🧪 Solution:**
+  ```java
+  // CORRECT: Actually use the generated key
+  private String secretKey;
+
+  public JWTService() {
+  KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
+  SecretKey sk = keyGen.generateKey();
+  secretKey = Base64.getEncoder().encodeToString(sk.getEncoded()); // Assign it!
+  }
+
+- **📝 Lesson Learned:**
+  - HMAC-SHA256 requires exactly 256 bits (32 bytes) for security.
+  - Base64 encoding of random strings doesn't guarantee proper bit length.
+  - `KeyGenerator.getInstance("HmacSHA256")` automatically generates correct bit length.
+  - Always verify generated key meets algorithm requirements.

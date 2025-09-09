@@ -817,6 +817,33 @@ for proper dependency injection.
 - **💡 Gain Insight:** I was able to gain knowledge about preparation before implementing JWT in the project.
 
 📌 **Next Step:** JWT Implementation 
+
+---
+
+## Day 34: JWT Implementation  - Implementation of JWT token generation
+**📅 Date:** September 9, 2025
+
+**🎯 Objectives:**
+- Implement `JwtService` that handles jwt token generation.
+- Understand the implementation of key generation.
+
+**⚠️ Challenges Encountered:**
+- Initially got only 156 bits instead of required 256 bits
+- Understanding the relationship between key generation and JWT signing
+- Testing JWT implementation from scratch proved complexity
+
+**🛠️ Implementation Summary:**
+- Implement `JwtService` that handles jwt token generation.
+- Understood the concept of key generation by considering conversion of strings into bytes and achieving the required
+amount of bits based on the algorithm to be executed (like HmacSHA256 algorithm that requires at least 256 bits).
+
+**🧠 Technical Learning:**
+- **💡 Realization:** I realized that implementation of JWT in the project is complex to understand, especially when it's
+your first time.
+  I've decided to document all the works that I've done up to generating JWT token.
+
+📌 **Next Step:** JWT Implementation Documentation - From preparation to generating JWT Token
+
 ---
 
 *Development continues with focus on building resilient, well-tested service architecture*
