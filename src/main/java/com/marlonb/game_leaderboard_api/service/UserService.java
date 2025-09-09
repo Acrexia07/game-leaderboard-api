@@ -26,6 +26,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final AuthenticationManager authManager;
+    private final JWTService jwtService;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -117,7 +118,7 @@ public class UserService {
                             loginRequest.password()
                     ));
 
-            return "...generating Token";
+            return jwtService.generateToken(loginRequest.username());
 
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Invalid username or password!");
