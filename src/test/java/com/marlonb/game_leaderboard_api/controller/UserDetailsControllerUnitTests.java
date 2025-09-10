@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(UserController.class)
 @Import(TestSecurityConfig.class)
-public class UserDetailsControllerUnitTests {
+public class    UserDetailsControllerUnitTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -108,6 +108,26 @@ public class UserDetailsControllerUnitTests {
                             header().exists("location"),
                             header().string("location", "/api/users/" + testAdminUserResponse.id()),
                             jsonPath("$.apiMessage").value("Admin created successfully!"));
+        }
+
+        @Test
+        @DisplayName("Should pass when user login successfully")
+        void shouldPassWhenUserLoginSuccessfully () throws Exception {
+
+            LoginRequestDto testLoginRequest = User1TestData.sampleUser1LoginRequest();
+
+            when(userService.verifyUser(any()))
+                    .thenReturn(String.valueOf(testLoginRequest));
+
+            String jsonUserLoginRequest = mapper.writeValueAsString(testLoginRequest);
+
+            mockMvc.perform(post("/api/users/login")
+                            .with(httpBasic("acrexia", "dummy"))
+                            .contentType("application/json")
+                            .content(jsonUserLoginRequest))
+                   .andExpectAll(
+                           status().isOk(),
+                           jsonPath("$.apiMessage").value("User login successfully!"));
         }
 
         @Test

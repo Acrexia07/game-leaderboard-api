@@ -46,6 +46,14 @@ public class User1TestData {
         );
     }
 
+    public static LoginRequestDto sampleUser1LoginRequest () {
+
+        return new LoginRequestDto(
+                sampleUser1Data().getUsername(),
+                sampleUser1Data().getPassword()
+        );
+    }
+
     public static UserUpdateDto sampleUser1Update () {
 
         return new UserUpdateDto(
