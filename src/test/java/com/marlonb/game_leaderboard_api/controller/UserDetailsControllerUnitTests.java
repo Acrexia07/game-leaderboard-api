@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -302,6 +303,28 @@ public class    UserDetailsControllerUnitTests {
                             status().isBadRequest(),
                             jsonPath("$.message")
                                     .value(VALIDATION_ERROR_MESSAGE.getErrorMessage()));
+        }
+
+        @Test
+        @DisplayName("Should return error status on login request when bad credentials occurred")
+        void shouldReturnErrorStatusOnLoginRequestWhenBadCredentialsOccurred () throws Exception {
+
+            LoginRequestDto testUserLoginRequest = User1TestData.sampleUser1LoginRequest();
+
+            when(userService.verifyUser(any()))
+                    .thenThrow(new BadCredentialsException
+                               (BAD_CREDENTIALS_MESSAGE.getErrorMessage()));
+
+            String jsonUserLoginRequest = mapper.writeValueAsString(testUserLoginRequest);
+
+            mockMvc.perform(post("/api/users/login")
+                            .with(httpBasic("acrexia", "dummy"))
+                            .contentType("application/json")
+                            .content(jsonUserLoginRequest))
+                   .andExpectAll(
+                           status().isUnauthorized(),
+                           jsonPath("$.message")
+                                   .value(BAD_CREDENTIALS_MESSAGE.getErrorMessage()));
         }
     }
 }
