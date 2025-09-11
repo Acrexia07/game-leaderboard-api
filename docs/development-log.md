@@ -842,7 +842,40 @@ amount of bits based on the algorithm to be executed (like HmacSHA256 algorithm 
 your first time.
   I've decided to document all the works that I've done up to generating JWT token.
 
-📌 **Next Step:** JWT Implementation Documentation - From preparation to generating JWT Token
+📌 **Next Step:** JWT Implementation - User Login Testing
+
+---
+
+## Day 35: JWT Implementation - User Login Testing 
+**📅 Date:** September 10, 2025
+
+**🎯 Objectives:**
+- Implement test cases (positive and negative) on User Login.
+
+**🛠️ Implementation Summary:**
+- Implemented test cases for user login
+
+📌 **Next Step:** JWT Implementation - JWT-related service unit Testing
+
+---
+
+## Day 35: JWT Implementation - JWT-related service unit Testing
+**📅 Date:** September 11, 2025
+
+**🎯 Objectives:**
+- Implement test cases on jwt-related service functions.
+
+**🛠️ Implementation Summary:**
+- Implemented test cases on the service function that verifies user credentials.
+- Implemented test cases on `JwtService`.
+- Implemented test cases on `GameUserDetailsService`.
+
+**🧠 Technical Learning:**
+- **💡 Realization:** I realize that the test implementation strategy on CRUD and authentication are different 
+in each other. 
+  I need to create my own test pattern in the authentication implementation.
+
+📌 **Next Step:** JWT Implementation continuation - Token Validation
 
 ---
 
