@@ -106,7 +106,7 @@ public class UserService {
 
         return userRepository.findById(id)
                              .orElseThrow(() -> new ResourceNotFoundException
-                                          (String.format("This user id '%d' does not exist!", id)));
+                                          (String.format(RESOURCE_NOT_FOUND.getErrorMessage(), id)));
     }
 
     public String verifyUser(@Valid @RequestBody LoginRequestDto loginRequest) {
@@ -121,7 +121,7 @@ public class UserService {
             return jwtService.generateToken(loginRequest.username());
 
         } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("Invalid username or password!");
+            throw new BadCredentialsException(INVALID_CREDENTIALS_FOUND.getErrorMessage());
         }
 
     }

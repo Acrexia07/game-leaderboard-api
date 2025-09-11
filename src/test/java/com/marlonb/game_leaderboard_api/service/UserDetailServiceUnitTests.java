@@ -15,11 +15,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 import java.util.Optional;
 
 import static com.marlonb.game_leaderboard_api.test_assertions.UserTestAssertions.assertUserServiceReturnedExpectedResponse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -31,6 +35,12 @@ public class UserDetailServiceUnitTests {
 
     @Mock
     private UserMapper userMapper;
+
+    @Mock
+    private AuthenticationManager authManager;
+
+    @Mock
+    private JWTService jwtService;
 
     @InjectMocks
     private UserService userService;
@@ -167,6 +177,26 @@ public class UserDetailServiceUnitTests {
             userService.deleteSpecificUser(testUserId);
 
             verify(userRepository).deleteById(testUserId);
+        }
+
+        @Test
+        @DisplayName("Should verify user successfully")
+        void shouldVerifyUserSuccessfully () {
+
+            LoginRequestDto testUserLoginRequest = User1TestData.sampleUser1LoginRequest();
+            Authentication mockAuth = mock(Authentication.class);
+            String expectedToken = "jwt-token";
+
+            when(authManager.authenticate(any()))
+                    .thenReturn(mockAuth);
+
+            when(jwtService.generateToken(testUserLoginRequest.username()))
+                    .thenReturn(expectedToken);
+
+            String result = userService.verifyUser(testUserLoginRequest);
+
+            assertEquals(expectedToken, result);
+
         }
     }
 
