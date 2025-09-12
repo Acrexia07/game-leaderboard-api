@@ -4,19 +4,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
 public class JwtServiceUnitTests {
 
     private JWTService jwtService;
 
     @BeforeEach
     void setUp() {
-        jwtService = new JWTService();
+        jwtService = new JWTService(
+                "3p7n+4cY0F3I6F19d8O5jB9GqM9AjZs8T0mWTg4fTlo=", // test secret
+                60000 // 1 min
+        );
     }
 
     @Nested
