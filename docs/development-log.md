@@ -879,4 +879,45 @@ in each other.
 
 ---
 
+## Day 36: JWT Implementation Continuation – Token Validation
+📅 Date: September 12, 2025
+
+**🎯 Objectives:**
+- Finalize JWT token validation in the security layer.
+
+**🛠️ Implementation Summary:**
+- Implemented token validation inside the security filter chain.
+- Ensured incoming requests are processed only if the JWT token is valid and not expired.
+- Verified integration flow between `JwtService` and `GameUserDetailsService`.
+
+🧠 Technical Learning:
+- **💡 Realization:** Token validation logic is the backbone of JWT-based security.
+  Any misalignment (e.g., expired tokens not being caught) could expose endpoints.
+- **⚡ Key Insight:** Separating concerns between token generation and validation leads to cleaner, testable code.
+
+📌 Next Step: Clean up outdated tests and refine authorization rules.
+
+---
+
+## Day 37: Security Refinement – PreAuthorize & Test Cleanup
+📅 Date: September 13, 2025
+
+**🎯 Objectives:**
+Introduce method-level authorization using @PreAuthorize.
+Remove outdated controller unit tests that were designed for Basic Auth.
+
+🛠️ Implementation Summary:
+- Applied @PreAuthorize annotations in controller endpoints to enforce role-based access policies.
+- Removed controller unit tests tied to Basic Auth since they no longer aligned with JWT flow.
+- Documented rationale for test removal in commit messages for transparency.
+
+**🧠 Technical Learning:**
+- **⚡ Lesson Learned:** It’s okay to remove outdated tests if they hinder progress and what matters is planning proper
+  replacement tests must align with the current architecture.
+- **💡 Insight:** Declarative security annotations (@PreAuthorize) make intent clearer than centralized configuration alone.
+
+📌 Next Step: Rebuild controller unit tests aligned with JWT authentication and @PreAuthorize authorization.
+
+---
+
 *Development continues with focus on building resilient, well-tested service architecture*
