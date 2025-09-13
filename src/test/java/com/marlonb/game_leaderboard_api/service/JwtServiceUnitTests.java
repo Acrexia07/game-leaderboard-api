@@ -27,13 +27,14 @@ public class JwtServiceUnitTests {
         void shouldGenerateTokenForValidUsername () {
 
             String testUsername = "username";
-
             String token = jwtService.generateToken(testUsername);
 
             assertNotNull(token);
-
             assertFalse(token.isEmpty());
 
+            String extractedUsername = jwtService.extractUsername(token);
+
+            assertEquals(testUsername, extractedUsername);
         }
     }
 

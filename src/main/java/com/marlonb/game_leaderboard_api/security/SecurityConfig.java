@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,13 +19,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
+@EnableMethodSecurity
 @Configuration
 @RequiredArgsConstructor
-public class BasicAuthenticationConfig {
+public class SecurityConfig {
 
     private final GameUserDetailsService gameUserDetailsService;
+    private final JwtFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws  Exception {
@@ -35,9 +39,11 @@ public class BasicAuthenticationConfig {
                                     .requestMatchers(HttpMethod.POST, "/api/users").hasRole("ADMIN")
                                     .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
                                     .requestMatchers("/api/players/**", "/api/leaderboards").authenticated()
+                                    .requestMatchers("/api/users/**").authenticated()
                                     .anyRequest().authenticated())
             .csrf(AbstractHttpConfigurer::disable)
             .httpBasic(Customizer.withDefaults())
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .build();
