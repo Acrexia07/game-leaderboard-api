@@ -89,6 +89,7 @@ public class UserService {
                     (String.format(userUpdate.getUsername(), DUPLICATE_USERNAME_FOUND));
         }
 
+        foundUser.setPassword(encoder.encode(foundUser.getPassword()));
         userMapper.toUpdateFromEntity(foundUser, userUpdate);
         UserEntity savedUser = userRepository.save(foundUser);
 
