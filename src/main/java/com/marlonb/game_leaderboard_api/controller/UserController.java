@@ -73,6 +73,7 @@ public class UserController {
                                          retrievedUser));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @PutMapping("/users/{id}")
     public ResponseEntity<ApiMessageResponseDto<UserResponseDto>>
                     updateSpecificUserData (@PathVariable long id, @Valid @RequestBody UserUpdateDto userUpdate) {
@@ -84,6 +85,7 @@ public class UserController {
                                          updatedUser));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> deleteSpecificUserData (@PathVariable long id) {
 
