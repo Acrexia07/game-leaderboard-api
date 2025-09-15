@@ -1,6 +1,7 @@
 package com.marlonb.game_leaderboard_api.test_data.user;
 
 import com.marlonb.game_leaderboard_api.model.user.*;
+import com.mysql.cj.log.Log;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,22 @@ public class User1TestData {
         user1.setRole(UserRoles.USER);
         user1.setCreatedAt(LocalDateTime.now());
         return user1;
+    }
+
+    public static LoginRequestDto sampleUser1LoginData () {
+
+        return new LoginRequestDto(
+                sampleUser1Data().getUsername(),
+                sampleUser1Data().getPassword()
+        );
+    }
+
+    public static LoginRequestDto sampleUser1InvalidLoginData () {
+
+        return new LoginRequestDto(
+                sampleUser1Data().getUsername(),
+                "WrongPassword"
+        );
     }
 
     public static UserEntity sampleUserDataAfterUpdate () {
