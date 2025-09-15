@@ -60,7 +60,15 @@ public class User1TestData {
 
         return new UserRequestDto(
                 sampleUser1Data().getUsername(),
-                sampleUser1Data().getPassword()
+                "Tester@123"
+        );
+    }
+
+    public static UserRequestDto sampleInvalidUser1Request () {
+
+        return new UserRequestDto(
+                "user2541asdfadf",
+                "Tester@13asddfioae"
         );
     }
 

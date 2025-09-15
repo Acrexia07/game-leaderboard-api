@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class UserRequestDto {
 
     @NotNull(message = "username is required!")
+    @Size(min = 2, max = 6, message = "Username must be between 2 and 6 characters")
     private String username;
 
     @NotNull(message = "password is required and cannot be null!")

@@ -3,6 +3,8 @@ package com.marlonb.game_leaderboard_api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marlonb.game_leaderboard_api.model.user.LoginRequestDto;
 
+import com.marlonb.game_leaderboard_api.model.user.UserRequestDto;
+import com.marlonb.game_leaderboard_api.model.user.UserResponseDto;
 import com.marlonb.game_leaderboard_api.service.GameUserDetailsService;
 import com.marlonb.game_leaderboard_api.service.JWTService;
 import com.marlonb.game_leaderboard_api.service.UserService;
@@ -22,6 +24,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.BAD_CREDENTIALS_MESSAGE;
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -51,7 +55,31 @@ public class UserControllerUnitTests {
     class PositiveTests {
 
         @Test
-        @DisplayName("Login: Should pass login when user has valid credentials")
+        @DisplayName("Register: Should register successfully when public user has valid credentials")
+        void shouldRegisterSuccessfullyWhenPublicUserHasValidCredentials () throws Exception {
+
+            UserRequestDto testPublicUserRequest = User1TestData.sampleUser1Request();
+            UserResponseDto testPublicUserResponse = User1TestData.sampleUser1Response();
+
+            when(userService.createUser(any(UserRequestDto.class)))
+                    .thenReturn(testPublicUserResponse);
+
+            String jsonPublicUserRequest = mapper.writeValueAsString(testPublicUserRequest);
+
+            mockMvc.perform(post("/api/users/register")
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonPublicUserRequest))
+                   .andExpectAll(
+                           status().isCreated(),
+                           header().exists("Location"),
+                           header().string("Location", containsString("/api/users/register/")),
+                           jsonPath("$.apiMessage").value("User created successfully!"),
+                           jsonPath("$.response.username").value(testPublicUserRequest.getUsername()));
+        }
+
+        @Test
+        @DisplayName("Login: Should login when user has valid credentials")
         void shouldPassLoginWhenUserHasValidCredentials() throws Exception {
 
             // Arrange
@@ -81,8 +109,8 @@ public class UserControllerUnitTests {
     class NegativeTests {
 
         @Test
-        @DisplayName("Login: Should fail login when user has invalid credentials")
-        void shouldFailLoginWhenUserHasInvalidCredentials () throws Exception {
+        @DisplayName("Login: Should fail to login when user has invalid credentials")
+        void shouldFailToLoginWhenUserHasInvalidCredentials () throws Exception {
 
             LoginRequestDto testUserInvalidLogin = User1TestData.sampleUser1InvalidLoginData();
 
@@ -100,6 +128,21 @@ public class UserControllerUnitTests {
                             status().isUnauthorized());
         }
 
+        @Test
+        @DisplayName("Register: Should fail to register when user is invalid")
+        void shouldFailToRegisterWhenUserIsInvalid () throws Exception {
+
+            UserRequestDto invalidTestUserRequest = User1TestData.sampleInvalidUser1Request();
+
+            String jsonInvalidLoginRequest = mapper.writeValueAsString(invalidTestUserRequest);
+
+            mockMvc.perform(post("/api/users/register")
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonInvalidLoginRequest))
+                    .andExpectAll(
+                            status().isBadRequest());
+        }
     }
 
 }
