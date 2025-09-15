@@ -10,6 +10,7 @@ import com.marlonb.game_leaderboard_api.service.UserService;
 import com.marlonb.game_leaderboard_api.test_data.user.AdminUser1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 import com.marlonb.game_leaderboard_api.test_securityConfig.TestSecurityConfig;
+import lombok.With;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,7 @@ import java.util.List;
 import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.BAD_CREDENTIALS_MESSAGE;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -60,7 +62,7 @@ public class UserControllerUnitTests {
     class PositiveTests {
 
         @Test
-        @DisplayName("Register(POST): Should register successfully when public user has valid credentials")
+        @DisplayName("Register(CREATE): Should register successfully when public user has valid credentials")
         void shouldRegisterSuccessfullyWhenPublicUserHasValidCredentials () throws Exception {
 
             UserRequestDto testPublicUserRequest = User1TestData.sampleUser1Request();
@@ -109,7 +111,7 @@ public class UserControllerUnitTests {
         }
 
         @Test
-        @DisplayName("Login(POST): Should login when user has valid credentials")
+        @DisplayName("Login(CREATE): Should login when user has valid credentials")
         void shouldPassLoginWhenUserHasValidCredentials() throws Exception {
 
             LoginRequestDto testUserLogin = User1TestData.sampleUser1LoginData();
@@ -181,7 +183,7 @@ public class UserControllerUnitTests {
 
         @Test
         @WithMockUser(username = "1", roles = "USER")
-        @DisplayName("User Management(READ): Should update specific user successfully")
+        @DisplayName("User Management(UPDATE): Should update specific user successfully")
         void shouldUpdateSpecificUserSuccessfully () throws Exception {
 
             UserPrincipal testUserPrincipal = User1TestData.sampleUser1PrincipalData();
@@ -207,6 +209,20 @@ public class UserControllerUnitTests {
                                     .value(testUserPrincipalUpdate.getUsername()));
         }
 
+        @Test
+        @WithMockUser(roles = "ADMIN")
+        @DisplayName("User Management(DELETE): Should delete specific user successfully")
+        void shouldDeleteSpecificUserSuccessfully () throws Exception {
+
+            UserEntity testAdminUser = AdminUser1TestData.sampleAdminUser1Data();
+            final long testUserId = testAdminUser.getId();
+
+            doNothing().when(userService).deleteSpecificUser(testUserId);
+
+            mockMvc.perform(delete("/api/users/{id}", testUserId)
+                            .with(csrf()))
+                    .andExpect(status().isNoContent());
+        }
     }
 
 
@@ -266,8 +282,8 @@ public class UserControllerUnitTests {
 
         @Test
         @WithMockUser(roles = "ADMIN")
-        @DisplayName("User Management(READ): Should fail to retrieve specific user when user id does not exist")
-        void shouldFailToRetrieveSpecificUserWhenUserIdDoesNotExist () throws Exception {
+        @DisplayName("User Management(GENERAL): Should return error status when user id does not exist")
+        void shouldReturnErrorStatusWhenUserIdDoesNotExist () throws Exception {
 
             final long nonExistentId = 100L;
 
