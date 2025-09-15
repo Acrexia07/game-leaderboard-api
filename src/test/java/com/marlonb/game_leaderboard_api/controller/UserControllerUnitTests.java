@@ -1,11 +1,9 @@
 package com.marlonb.game_leaderboard_api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marlonb.game_leaderboard_api.model.user.AdminUserRequestDto;
-import com.marlonb.game_leaderboard_api.model.user.LoginRequestDto;
+import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
+import com.marlonb.game_leaderboard_api.model.user.*;
 
-import com.marlonb.game_leaderboard_api.model.user.UserRequestDto;
-import com.marlonb.game_leaderboard_api.model.user.UserResponseDto;
 import com.marlonb.game_leaderboard_api.service.GameUserDetailsService;
 import com.marlonb.game_leaderboard_api.service.JWTService;
 import com.marlonb.game_leaderboard_api.service.UserService;
@@ -26,11 +24,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.BAD_CREDENTIALS_MESSAGE;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -127,7 +128,53 @@ public class UserControllerUnitTests {
                             jsonPath("$.response").value(expectedToken));
         }
 
+        @Test
+        @WithMockUser(roles = "ADMIN")
+        @DisplayName("User Management(READ): Should retrieve all users successfully")
+        void shouldRetrieveAllUsersSuccessfully () throws Exception {
 
+            UserResponseDto testPublicUser1 = User1TestData.sampleUser1Response();
+            UserResponseDto testAdminUser1 = AdminUser1TestData.sampleAdminUser1Response();
+
+            List<UserResponseDto> listOfUsers = List.of(testPublicUser1, testAdminUser1);
+
+            when(userService.retrieveAllUsers()).thenReturn(listOfUsers);
+
+            String jsonListOfUsersResponse = mapper.writeValueAsString(listOfUsers);
+
+            mockMvc.perform(get("/api/users")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonListOfUsersResponse))
+                    .andExpectAll(
+                            status().isOk(),
+                            jsonPath("$.apiMessage").value("Retrieved all users successfully!"),
+                            jsonPath("$.response.length()").value(2));
+        }
+
+        @Test
+        @WithMockUser(username = "1" , roles = "USER")
+        @DisplayName("User Management(READ): Should retrieve specific user successfully")
+        void shouldRetrieveSpecificUserSuccessfully () throws Exception {
+
+            UserPrincipal testUserPrincipal = User1TestData.sampleUser1PrincipalData();
+            UserResponseDto testUserPrincipalResponse = User1TestData.sampleUser1PrincipalResponse();
+
+            final long testUserId = testUserPrincipal.getId();
+
+            when(userService.retrieveSpecificUser(testUserId))
+                    .thenReturn(testUserPrincipalResponse);
+
+            String jsonUserResponse = mapper.writeValueAsString(testUserPrincipalResponse);
+
+            mockMvc.perform(get("/api/users/{id}", testUserId)
+                            .with(user(testUserPrincipal))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .contentType(jsonUserResponse))
+                    .andExpectAll(
+                            status().isOk(),
+                            jsonPath("$.apiMessage").value("Retrieved specific user successfully!"),
+                            jsonPath("$.response.username").value(testUserPrincipalResponse.username()));
+        }
     }
 
 
@@ -183,6 +230,27 @@ public class UserControllerUnitTests {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(jsonInvalidAdminRequest))
                     .andExpect(status().isBadRequest());
+        }
+
+        @Test
+        @WithMockUser(roles = "ADMIN")
+        @DisplayName("User Management(READ): Should fail to retrieve specific user when user id does not exist")
+        void shouldFailToRetrieveSpecificUserWhenUserIdDoesNotExist () throws Exception {
+
+            final long nonExistentId = 100L;
+
+            String RESOURCE_NOT_FOUND_ERROR_MESSAGE =
+                    String.format("This user id '%s' does not exist!", nonExistentId);
+
+            when(userService.retrieveSpecificUser(nonExistentId))
+                    .thenThrow(new ResourceNotFoundException
+                                (String.format(RESOURCE_NOT_FOUND_ERROR_MESSAGE)));
+
+            mockMvc.perform(get("/api/users/{id}", nonExistentId))
+                    .andExpectAll(
+                            status().isNotFound(),
+                            jsonPath("$.message").value("Resource not found!"),
+                            jsonPath("$.error.resource").value(RESOURCE_NOT_FOUND_ERROR_MESSAGE));
         }
     }
 

@@ -19,6 +19,25 @@ public class User1TestData {
         return user1;
     }
 
+    /* --- USER PRINCIPAL DATA --- */
+    public static UserPrincipal sampleUser1PrincipalData () {
+
+        return new UserPrincipal(
+                sampleUser1Data()
+        );
+    }
+
+    public static UserResponseDto sampleUser1PrincipalResponse () {
+
+        return new UserResponseDto(
+                sampleUser1PrincipalData().getId(),
+                sampleUser1PrincipalData().getUsername(),
+                sampleUser1PrincipalData().getPassword(),
+                sampleUser1Data().getCreatedAt()
+        );
+    }
+
+    /* --- LOGIN DATA --- */
     public static LoginRequestDto sampleUser1LoginData () {
 
         return new LoginRequestDto(

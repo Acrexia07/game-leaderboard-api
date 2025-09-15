@@ -1,0 +1,29 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="GameLeaderboardApiApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+    <envs>
+      <env name="jwt.secret-key" value="nvnz7soMKLRQmHIkIjsztz7YK51mz62DemOHaILgU9k=" />
+      <env name="jwt.expiration-time" value="86400000" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.marlonb.game_leaderboard_api.GameLeaderboardApiApplication" />
+    <module name="game-leaderboard-api" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.marlonb.game_leaderboard_api.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <extension name="net.ashald.envfile">
+      <option name="IS_ENABLED" value="false" />
+      <option name="IS_SUBST" value="false" />
+      <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+      <option name="IS_IGNORE_MISSING_FILES" value="false" />
+      <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+      <ENTRIES>
+        <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+      </ENTRIES>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
