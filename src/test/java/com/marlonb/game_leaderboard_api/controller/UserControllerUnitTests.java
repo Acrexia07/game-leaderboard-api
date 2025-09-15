@@ -1,6 +1,7 @@
 package com.marlonb.game_leaderboard_api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.marlonb.game_leaderboard_api.model.user.AdminUserRequestDto;
 import com.marlonb.game_leaderboard_api.model.user.LoginRequestDto;
 
 import com.marlonb.game_leaderboard_api.model.user.UserRequestDto;
@@ -8,6 +9,7 @@ import com.marlonb.game_leaderboard_api.model.user.UserResponseDto;
 import com.marlonb.game_leaderboard_api.service.GameUserDetailsService;
 import com.marlonb.game_leaderboard_api.service.JWTService;
 import com.marlonb.game_leaderboard_api.service.UserService;
+import com.marlonb.game_leaderboard_api.test_data.user.AdminUser1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 import com.marlonb.game_leaderboard_api.test_securityConfig.TestSecurityConfig;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -55,7 +58,7 @@ public class UserControllerUnitTests {
     class PositiveTests {
 
         @Test
-        @DisplayName("Register: Should register successfully when public user has valid credentials")
+        @DisplayName("Register(Public User): Should register successfully when public user has valid credentials")
         void shouldRegisterSuccessfullyWhenPublicUserHasValidCredentials () throws Exception {
 
             UserRequestDto testPublicUserRequest = User1TestData.sampleUser1Request();
@@ -79,10 +82,34 @@ public class UserControllerUnitTests {
         }
 
         @Test
+        @WithMockUser(roles = "ADMIN")
+        @DisplayName("Register(Admin User): Should register successfully when admin user has valid credentials")
+        void shouldRegisterSuccessfullyWhenAdminUserHasValidCredentials () throws Exception {
+
+            AdminUserRequestDto testAdminUserRequest = AdminUser1TestData.sampleAdminUser1Request();
+            UserResponseDto testAdminUserResponse = AdminUser1TestData.sampleAdminUser1Response();
+
+            when(userService.createAdminUser(testAdminUserRequest))
+                    .thenReturn(testAdminUserResponse);
+
+            String jsonAdminUserRequest = mapper.writeValueAsString(testAdminUserRequest);
+
+            mockMvc.perform(post("/api/users")
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonAdminUserRequest))
+                    .andExpectAll(
+                            status().isCreated(),
+                            header().exists("Location"),
+                            header().string("Location", containsString("/api/users/")),
+                            jsonPath("$.apiMessage").value("Admin created successfully!"),
+                            jsonPath("$.response.username").value(testAdminUserRequest.getUsername()));
+        }
+
+        @Test
         @DisplayName("Login: Should login when user has valid credentials")
         void shouldPassLoginWhenUserHasValidCredentials() throws Exception {
 
-            // Arrange
             LoginRequestDto testUserLogin = User1TestData.sampleUser1LoginData();
             String expectedToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0VXNlciIsImlhdCI6MTczNTYwMzIwMCwiZXhwIjoxNzM1Njg5NjAwfQ.signature";
 
@@ -90,7 +117,6 @@ public class UserControllerUnitTests {
 
             String jsonLoginRequest = mapper.writeValueAsString(testUserLogin);
 
-            // Act & Assert
             mockMvc.perform(post("/api/users/login")
                             .with(csrf())
                             .contentType(MediaType.APPLICATION_JSON)
@@ -129,7 +155,7 @@ public class UserControllerUnitTests {
         }
 
         @Test
-        @DisplayName("Register: Should fail to register when user is invalid")
+        @DisplayName("Register(Public User): Should fail to register when user is invalid")
         void shouldFailToRegisterWhenUserIsInvalid () throws Exception {
 
             UserRequestDto invalidTestUserRequest = User1TestData.sampleInvalidUser1Request();
@@ -140,8 +166,23 @@ public class UserControllerUnitTests {
                             .with(csrf())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(jsonInvalidLoginRequest))
-                    .andExpectAll(
-                            status().isBadRequest());
+                    .andExpect(status().isBadRequest());
+        }
+
+        @Test
+        @WithMockUser(roles = "ADMIN")
+        @DisplayName("Register(Admin User): Should fail to register when admin user is invalid")
+        void shouldFailToRegisterWhenAdminUserIsInvalid () throws Exception {
+
+            AdminUserRequestDto invalidTestAdminRequest = AdminUser1TestData.sampleAdminUser1InvalidRequest();
+
+            String jsonInvalidAdminRequest = mapper.writeValueAsString(invalidTestAdminRequest);
+
+            mockMvc.perform(post("/api/users")
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonInvalidAdminRequest))
+                    .andExpect(status().isBadRequest());
         }
     }
 

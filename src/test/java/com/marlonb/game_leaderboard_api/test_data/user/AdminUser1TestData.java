@@ -47,6 +47,15 @@ public class AdminUser1TestData {
         );
     }
 
+    public static AdminUserRequestDto sampleAdminUser1InvalidRequest () {
+
+        return new AdminUserRequestDto(
+                "user2541asdfadf",
+                "Tester@13asddfioae",
+                sampleAdminUser1Data().getRole()
+        );
+    }
+
     public static AdminUserUpdateDto sampleAdminUser1Update () {
 
         return new AdminUserUpdateDto(
