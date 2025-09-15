@@ -60,7 +60,7 @@ public class UserControllerUnitTests {
     class PositiveTests {
 
         @Test
-        @DisplayName("Register(Public User): Should register successfully when public user has valid credentials")
+        @DisplayName("Register(POST): Should register successfully when public user has valid credentials")
         void shouldRegisterSuccessfullyWhenPublicUserHasValidCredentials () throws Exception {
 
             UserRequestDto testPublicUserRequest = User1TestData.sampleUser1Request();
@@ -109,7 +109,7 @@ public class UserControllerUnitTests {
         }
 
         @Test
-        @DisplayName("Login: Should login when user has valid credentials")
+        @DisplayName("Login(POST): Should login when user has valid credentials")
         void shouldPassLoginWhenUserHasValidCredentials() throws Exception {
 
             LoginRequestDto testUserLogin = User1TestData.sampleUser1LoginData();
@@ -173,9 +173,40 @@ public class UserControllerUnitTests {
                             .contentType(jsonUserResponse))
                     .andExpectAll(
                             status().isOk(),
-                            jsonPath("$.apiMessage").value("Retrieved specific user successfully!"),
-                            jsonPath("$.response.username").value(testUserPrincipalResponse.username()));
+                            jsonPath("$.apiMessage")
+                                    .value("Retrieved specific user successfully!"),
+                            jsonPath("$.response.username")
+                                    .value(testUserPrincipalResponse.username()));
         }
+
+        @Test
+        @WithMockUser(username = "1", roles = "USER")
+        @DisplayName("User Management(READ): Should update specific user successfully")
+        void shouldUpdateSpecificUserSuccessfully () throws Exception {
+
+            UserPrincipal testUserPrincipal = User1TestData.sampleUser1PrincipalData();
+            final long testUserId = testUserPrincipal.getId();
+
+            UserUpdateDto testUserPrincipalUpdate = User1TestData.sampleUser1PrincipalUpdate();
+            UserResponseDto testUserPrincipalResponseAfterUpdate = User1TestData.sampleUser1PrincipalResponseAfterUpdate();
+
+            when(userService.updateSpecificUser(testUserId, testUserPrincipalUpdate))
+                    .thenReturn(testUserPrincipalResponseAfterUpdate);
+
+            String jsonUserResponse = mapper.writeValueAsString(testUserPrincipalUpdate);
+
+            mockMvc.perform(put("/api/users/{id}", testUserId)
+                            .with(user(testUserPrincipal))
+                            .content(jsonUserResponse)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpectAll(
+                            status().isOk(),
+                            jsonPath("$.apiMessage")
+                                    .value("Updated specific user successfully!"),
+                            jsonPath("$.response.username")
+                                    .value(testUserPrincipalUpdate.getUsername()));
+        }
+
     }
 
 
@@ -273,6 +304,33 @@ public class UserControllerUnitTests {
                             jsonPath("$.error.credentials[0]").value("Access Denied"));
 
         }
+
+        @Test
+        @DisplayName("User Management(READ): Should fail to update if user data input is invalid")
+        void shouldFailToUpdateIfUserDataInputIsInvalid () throws Exception {
+
+            UserPrincipal testUserPrincipal = User1TestData.sampleUser1PrincipalData();
+            final long testUserId = testUserPrincipal.getId();
+
+            UserUpdateDto invalidTestUserPrincipal =
+                    User1TestData.sampleUser1PrincipalInvalidUpdate();
+            UserResponseDto invalidTestUserPrincipalResponse =
+                    User1TestData.sampleUser1PrincipalResponseAfterInvalidUpdate();
+
+            when(userService.updateSpecificUser(testUserId, invalidTestUserPrincipal))
+                    .thenReturn(invalidTestUserPrincipalResponse);
+
+            String invalidJsonTestUserPrincipal = mapper.writeValueAsString(invalidTestUserPrincipal);
+
+            mockMvc.perform(put("/api/users/{id}", testUserId)
+                        .with(user(testUserPrincipal))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidJsonTestUserPrincipal))
+                    .andExpectAll(
+                            status().isBadRequest(),
+                            jsonPath("$.message").value("Validation error(s) found!"));
+        }
+
     }
 
 }

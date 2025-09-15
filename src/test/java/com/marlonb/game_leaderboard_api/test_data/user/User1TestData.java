@@ -1,19 +1,20 @@
 package com.marlonb.game_leaderboard_api.test_data.user;
 
 import com.marlonb.game_leaderboard_api.model.user.*;
-import com.mysql.cj.log.Log;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 
 public class User1TestData {
+
+    private final static BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public static UserEntity sampleUser1Data () {
 
         var user1 = new UserEntity();
         user1.setId(1L);
         user1.setUsername("user1");
-        user1.setPassword("$2a$10$H7Dmx3aWm6z7PFEyjpcKzeGHPP26q00B9sNWZ35hbeqEEvkshg4qC");
+        user1.setPassword(encoder.encode("Test@123"));
         user1.setRole(UserRoles.USER);
         user1.setCreatedAt(LocalDateTime.now());
         return user1;
@@ -33,6 +34,42 @@ public class User1TestData {
                 sampleUser1PrincipalData().getId(),
                 sampleUser1PrincipalData().getUsername(),
                 sampleUser1PrincipalData().getPassword(),
+                sampleUser1Data().getCreatedAt()
+        );
+    }
+
+    public static UserUpdateDto sampleUser1PrincipalUpdate () {
+
+        return new UserUpdateDto(
+                "User01",
+                "Test@123"
+        );
+    }
+
+    public static UserUpdateDto sampleUser1PrincipalInvalidUpdate () {
+
+        return new UserUpdateDto(
+                "User01",
+                "Test#4567890abcdefghjklmn"
+        );
+    }
+
+    public static UserResponseDto sampleUser1PrincipalResponseAfterUpdate() {
+
+        return new UserResponseDto(
+                sampleUser1PrincipalData().getId(),
+                sampleUser1PrincipalUpdate().getUsername(),
+                sampleUser1PrincipalUpdate().getPassword(),
+                sampleUser1Data().getCreatedAt()
+        );
+    }
+
+    public static UserResponseDto sampleUser1PrincipalResponseAfterInvalidUpdate() {
+
+        return new UserResponseDto(
+                sampleUser1PrincipalData().getId(),
+                sampleUser1PrincipalInvalidUpdate().getUsername(),
+                sampleUser1PrincipalInvalidUpdate().getPassword(),
                 sampleUser1Data().getCreatedAt()
         );
     }
@@ -59,7 +96,7 @@ public class User1TestData {
         var updatedUser = new UserEntity();
         updatedUser.setId(1L);
         updatedUser.setUsername("user1");
-        updatedUser.setPassword("$2a$10$H7Dmx3aWm6z7PFEyjpcKzeGHPP26q00B9sNWZ35hbeqEEvkshg4qC");
+        updatedUser.setPassword(encoder.encode("Test#123"));
         updatedUser.setRole(UserRoles.USER);
         updatedUser.setCreatedAt(LocalDateTime.now());
         return updatedUser;
@@ -87,7 +124,7 @@ public class User1TestData {
 
         return new UserRequestDto(
                 "user2541asdfadf",
-                "Tester@13asddfioae"
+                encoder.encode("Test@123")
         );
     }
 
@@ -103,7 +140,7 @@ public class User1TestData {
 
         return new UserUpdateDto(
                 sampleUser1Data().getUsername(),
-                "$2a$10$c7vjfX1qO5WQCMChFYweAue8lMBncf4kcX6y2Fnl34kwRLjIpG3Pu"
+                encoder.encode("Test@123")
         );
     }
 }
