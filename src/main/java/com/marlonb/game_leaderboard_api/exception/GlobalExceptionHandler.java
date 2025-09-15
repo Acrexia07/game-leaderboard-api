@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import org.springframework.security.access.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,6 +59,30 @@ public class GlobalExceptionHandler {
                                         Map.of("resource", List.of(ex.getMessage()))));
     }
 
+    // HTTP STATUS 403 - FORBIDDEN
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponseDto> handlesAccessDeniedExceptions (AccessDeniedException ex) {
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponseDto
+                        (LocalDateTime.now(),
+                                HttpStatus.FORBIDDEN.value(),
+                                ACCESS_DENIED_MESSAGE.getErrorMessage(),
+                                Map.of("credentials", List.of(ex.getMessage()))));
+    }
+
+    // HTTP STATUS 401 - UNAUTHORIZED
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponseDto> handlesBadCredentialsExceptions (BadCredentialsException ex) {
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body(new ErrorResponseDto
+                                       (LocalDateTime.now(),
+                                        HttpStatus.UNAUTHORIZED.value(),
+                                        BAD_CREDENTIALS_MESSAGE.getErrorMessage(),
+                                        Map.of("user", List.of(ex.getMessage()))));
+    }
+
     // HTTP STATUS 400 - BAD REQUEST
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDto> handlesAttributeValidationExceptions
@@ -101,16 +126,5 @@ public class GlobalExceptionHandler {
                                         HttpStatus.BAD_REQUEST.value(),
                                         HTTP_MESSAGE_NOT_READABLE_ERROR_MESSAGE.getErrorMessage(),
                                         customError));
-    }
-
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ErrorResponseDto> handlesBadCredentialsExceptions (BadCredentialsException ex) {
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                             .body(new ErrorResponseDto
-                                     (LocalDateTime.now(),
-                                      HttpStatus.UNAUTHORIZED.value(),
-                                      BAD_CREDENTIALS_MESSAGE.getErrorMessage(),
-                                      Map.of("user", List.of(ex.getMessage()))));
     }
 }

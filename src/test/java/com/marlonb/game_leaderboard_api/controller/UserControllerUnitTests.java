@@ -24,6 +24,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.springframework.security.access.AccessDeniedException;
 import java.util.List;
 
 import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.BAD_CREDENTIALS_MESSAGE;
@@ -251,6 +252,26 @@ public class UserControllerUnitTests {
                             status().isNotFound(),
                             jsonPath("$.message").value("Resource not found!"),
                             jsonPath("$.error.resource").value(RESOURCE_NOT_FOUND_ERROR_MESSAGE));
+        }
+
+        @Test
+        @DisplayName("User Management(READ): Should deny public user accessing other user's data")
+        void shouldDenyPublicUserAccessingOtherUsersData () throws Exception {
+
+            UserPrincipal testUserPrincipal = User1TestData.sampleUser1PrincipalData();
+            final long otherUserId = 2L;
+
+            when(userService.retrieveSpecificUser(otherUserId))
+                    .thenThrow(new AccessDeniedException("Access Denied!"));
+
+            mockMvc.perform(get("/api/users/{id}", otherUserId)
+                            .with(user(testUserPrincipal)))
+                    .andExpectAll(
+                            status().isForbidden(),
+                            jsonPath("$.message")
+                                    .value("Forbidden access – insufficient permissions."),
+                            jsonPath("$.error.credentials[0]").value("Access Denied"));
+
         }
     }
 
