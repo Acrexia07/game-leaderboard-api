@@ -312,10 +312,9 @@ was expecting 403 Forbidden, but response returned 500 Internal Server Error ins
   mockMvc.perform(get("/api/users/{id}", otherUserId))
   .andExpect(status().isForbidden());  // FAILED: returned 500
   ```
-
-- **⚠️ Error/Symptom:** 
-  - 500 Internal Server Error in JSON response
-  - Custom `@ExceptionHandler(AccessDeniedException.class)` not triggered
+  **⚠️ Error/Symptom:** 
+    - 500 Internal Server Error in JSON response
+    - Custom `@ExceptionHandler(AccessDeniedException.class)` not triggered
 
 - **🔧 Root Cause:**
   - `@WithMockUser` only sets username and roles, but doesn’t populate the custom UserPrincipal.id.
@@ -351,3 +350,56 @@ explicitly provide a full `UserPrincipal` object when testing ID-sensitive scena
   - Use @WithMockUser only for role-based checks.
   - For ID-based checks (when @PreAuthorize references authentication.principal.id), always use .with(user(customPrincipal)).
   - Mixing both is redundant — .with(user(...)) overrides @WithMockUser.
+
+---
+
+### Issue 13 (September 16, 2025): Compilation failure in test data due to missing PlayerSummaryDto
+
+- **🐞 Issue:** `mvn clean install` fails with compilation errors when constructing `UserResponseDto` in test classes.
+  - **Error example:**
+    ```
+    constructor UserResponseDto in record cannot be applied to given types;
+    required: long,String,String,LocalDateTime,PlayerSummaryDto
+    found:    Long,String,String,LocalDateTime
+    reason: actual and formal argument lists differ in length
+    ```
+    
+- **🔧 Root Cause:** `UserResponseDto` is a record with five fields, including `PlayerSummaryDto playerAccount`. 
+Test data was creating `UserResponseDto` with only four arguments, omitting the player summary.
+
+- **🧪 Solution:** 
+  - Create a test data object for `PlayerSummaryDto` in your test data class:
+    ```
+    public static PlayerSummaryDto playerSummaryDto () {
+
+        return new PlayerSummaryDto(
+                samplePlayerData().getPlayerName(),
+                samplePlayerData().getUuid(),
+                samplePlayerData().getScores(),
+                samplePlayerData().getTimestamp()
+        );
+    }
+    
+    
+  - Pass this `PlayerSummaryDto` when constructing `UserResponseDto` in all test classes:
+    ```
+    public static UserResponseDto sampleUser1PrincipalResponse () {
+  
+        return new UserResponseDto(
+                sampleUser1PrincipalData().getId(),
+                sampleUser1PrincipalData().getUsername(),
+                sampleUser1PrincipalData().getPassword(),
+                sampleUser1Data().getCreatedAt(),
+                playerSummaryDto() // ← like this one
+        );
+    }
+
+- **✅ Result:**
+  - Maven compilation errors are resolved.
+  - `mvn clean install` completes successfully.
+  - Postman and runtime behavior remain unchanged because MapStruct still handles mapping in the service layer.
+
+- **📝 Lesson Learned:**
+  - Records enforce all constructor fields, even in test data.
+  - Test DTOs must include all required fields, or provide null if the field is optional.
+  - Creating dedicated test data objects (like PlayerSummaryDto) improves reusability and consistency across tests.

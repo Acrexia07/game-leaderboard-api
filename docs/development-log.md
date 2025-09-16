@@ -916,18 +916,18 @@ Remove outdated controller unit tests that were designed for Basic Auth.
   replacement tests must align with the current architecture.
 - **💡 Insight:** Declarative security annotations (@PreAuthorize) make intent clearer than centralized configuration alone.
 
-**📌 Next Step:** Rebuild controller unit tests aligned with JWT authentication and @PreAuthorize authorization.
+**📌 Next Step:** Rebuild user controller unit tests aligned with JWT authentication and @PreAuthorize authorization.
 
 ---
 
 ## Day 38: User controller Unit test recreation
-📅 Date: September 13, 2025
+📅 Date: September 15, 2025
 
 **🎯 Objectives:**
 - Recreate updated user controller unit test after JWT implementation.
 
 🛠️ Implementation Summary:
-- Implemented new controller unit testing that tests core CRUD operations on controller layer.
+- Implemented new controller unit testing that tests core CRUD operations on the controller layer.
 - Fix some issue while conducting testing.
 
 **⚠️ Challenges Encountered:**
@@ -935,7 +935,38 @@ Remove outdated controller unit tests that were designed for Basic Auth.
 `@PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")` was expecting 403 Forbidden, 
 but response returned 500 Internal Server Error instead.
 
-## Day 39: Controller Unit test recreation
+**🧠 Technical Learning:**
+- **💡 Realization:** The only strategies needed after implementation of JWT was defining Test configuration, Adding 
+`@WithMockUser` on those tests that require a specific role, and adjusting perform execution of `MockMvc`.
+
+**📌 Next Step:** Implementation of data relationship on `UserEntity` and `PlayerEntity`
+
+---
+
+## Day 39: Implementation of data relationship on `UserEntity` and `PlayerEntity`
+📅 Date: September 16, 2025
+
+**🎯 Objectives:**
+- Implement one-to-one relation with `UserEntity` and `PlayerEntity`.
+- Refactor all implementation and test based on the implementation of those entities.
+
+🛠️ Implementation Summary:
+- Implemented one-to-one relation with `UserEntity` and `PlayerEntity`.
+- Refactored all implementation and tests based on the implementation of those entities.
+- Fixed some issues along the way of implementation.
+
+**⚠️ Challenges Encountered:**
+- **🐞 Issue:** `mvn clean install` fails with compilation errors when constructing `UserResponseDto` in test classes.
+- **🔧 Root Cause:** `UserResponseDto` is a record with five fields, including `PlayerSummaryDto playerAccount`.
+  Test data was creating `UserResponseDto` with only four arguments, omitting the player summary.
+- **🧪 Solution:** Create a test data object for `PlayerSummaryDto` in your test data class and pass those 
+`PlayerSummaryDto` when constructing `UserResponseDto` in all test classes.
+- **✅ Result:**Maven compilation errors are resolved.
+
+**🧠 Technical Learning:**
+- **💡 Gain new Knowledge:** I was able to know the concept of utilizing Summary Dto and configuration it in the mapper interface.
+
+**📌 Next Step:** Rebuild player controller unit tests aligned with JWT authentication and @PreAuthorize authorization.
 
 ---
 
