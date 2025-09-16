@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.model;
 
+import com.marlonb.game_leaderboard_api.model.user.UserEntity;
 import org.mapstruct.*;
 
 @Mapper(
@@ -19,4 +20,14 @@ public interface PlayerInfoMapper {
     @Mapping(target = "id", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void toUpdateFromEntity (@MappingTarget PlayerEntity playerInfo, PlayerUpdateDto playerUpdate);
+
+    default PlayerEntity fromPlayerId(Long playerId) {
+
+        if (playerId == null) return null;
+
+        PlayerEntity player = new PlayerEntity();
+        player.setId(playerId);
+
+        return player;
+    }
 }

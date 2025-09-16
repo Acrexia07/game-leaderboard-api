@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.model;
 
+import com.marlonb.game_leaderboard_api.model.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,6 +28,10 @@ public class PlayerEntity {
     private Integer scores;
 
     private LocalDateTime timestamp;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserEntity user;
 
     @PrePersist
     public void generateUuid() {

@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.model.user;
 
+import com.marlonb.game_leaderboard_api.model.PlayerEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,9 @@ public class UserEntity {
     private UserRoles role;
 
     private LocalDateTime createdAt;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private PlayerEntity player;
 
     @PrePersist
     public void onCreate () {
