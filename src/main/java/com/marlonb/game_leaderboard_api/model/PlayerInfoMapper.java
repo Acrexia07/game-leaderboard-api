@@ -10,10 +10,12 @@ import org.mapstruct.*;
 public interface PlayerInfoMapper {
 
     // Response mapping
+    @Mapping(target = "userId", source = "user.id")
     PlayerResponseDto toResponse (PlayerEntity playerInfo);
 
     // Request mapping
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", ignore = true)
     PlayerEntity toEntity (PlayerRequestDto playerRequest);
 
     // Update mapping
@@ -21,7 +23,7 @@ public interface PlayerInfoMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void toUpdateFromEntity (@MappingTarget PlayerEntity playerInfo, PlayerUpdateDto playerUpdate);
 
-    default PlayerEntity fromPlayerId(Long playerId) {
+    default PlayerEntity fromPlayerId (Long playerId) {
 
         if (playerId == null) return null;
 
@@ -29,5 +31,16 @@ public interface PlayerInfoMapper {
         player.setId(playerId);
 
         return player;
+    }
+
+    // For UserEntity lookups
+    default UserEntity fromUserId(Long userId) {
+
+        if (userId == null) return null;
+
+        UserEntity user = new UserEntity();
+        user.setId(userId);
+
+        return user;
     }
 }

@@ -30,7 +30,7 @@ public class PlayerEntity {
     private LocalDateTime timestamp;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @PrePersist

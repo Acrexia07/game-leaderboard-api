@@ -2,6 +2,7 @@ package com.marlonb.game_leaderboard_api.test_data;
 
 import com.marlonb.game_leaderboard_api.model.PlayerEntity;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
+import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -18,6 +19,7 @@ public class Player3TestData {
         samplePlayer3Data.setPlayerName("speedRun07");
         samplePlayer3Data.setScores(99900);
         samplePlayer3Data.setTimestamp(LocalDateTime.now().minusMinutes(10));
+        samplePlayer3Data.setUser(User1TestData.sampleUser1Data());
 
         return  samplePlayer3Data;
     }
@@ -29,7 +31,8 @@ public class Player3TestData {
                 samplePlayer3Data.getUuid(),
                 samplePlayer3Data.getPlayerName(),
                 samplePlayer3Data.getScores(),
-                samplePlayer3Data.getTimestamp()
+                samplePlayer3Data.getTimestamp(),
+                samplePlayer3Data.getUser().getId()
         );
     }
 

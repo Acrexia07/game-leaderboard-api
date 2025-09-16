@@ -4,6 +4,7 @@ import com.marlonb.game_leaderboard_api.model.PlayerEntity;
 import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
 import com.marlonb.game_leaderboard_api.model.PlayerUpdateDto;
+import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class PlayerTestData {
         samplePlayerData.setPlayerName("player1");
         samplePlayerData.setScores(56700);
         samplePlayerData.setTimestamp(LocalDateTime.now());
+        samplePlayerData.setUser(User1TestData.sampleUser1Data());
         return samplePlayerData;
     }
 
@@ -33,6 +35,7 @@ public class PlayerTestData {
         samplePlayerDataAfterUpdate.setPlayerName("player1");
         samplePlayerDataAfterUpdate.setScores(60000);
         samplePlayerDataAfterUpdate.setTimestamp(LocalDateTime.now());
+        samplePlayerDataAfterUpdate.setUser(User1TestData.sampleUser1Data());
         return samplePlayerDataAfterUpdate;
     }
 
@@ -43,7 +46,8 @@ public class PlayerTestData {
                 samplePlayerData.getUuid(),
                 samplePlayerData.getPlayerName(),
                 samplePlayerData.getScores(),
-                samplePlayerData.getTimestamp()
+                samplePlayerData.getTimestamp(),
+                samplePlayerData.getUser().getId()
         );
     }
 

@@ -3,9 +3,12 @@ package com.marlonb.game_leaderboard_api.service;
 import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.*;
+import com.marlonb.game_leaderboard_api.model.user.UserEntity;
 import com.marlonb.game_leaderboard_api.repository.PlayerRepository;
+import com.marlonb.game_leaderboard_api.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,13 +22,17 @@ import static com.marlonb.game_leaderboard_api.service.ServiceErrorMessages.*;
 public class PlayerService {
 
     private final PlayerRepository playerRepository;
+    private final UserRepository userRepository;
     private final PlayerInfoMapper playerMapper;
 
     // CREATE: Add new player data
     @Transactional
     public PlayerResponseDto savePlayerData (@Valid @RequestBody
-                                                    PlayerRequestDto createRequest) {
+                                             PlayerRequestDto createRequest,
+                                             Authentication authentication) {
 
+        String username = authentication.getName();
+        UserEntity user = userRepository.findByUsername(username);
         PlayerEntity createPlayer = playerMapper.toEntity(createRequest);
 
         if(playerRepository.existsByPlayerName(createPlayer.getPlayerName())) {
@@ -33,6 +40,7 @@ public class PlayerService {
                     (String.format(createPlayer.getPlayerName(), DUPLICATE_PLAYER_NAME_FOUND));
         }
 
+        createPlayer.setUser(user);
         PlayerEntity savedPlayer = playerRepository.save(createPlayer);
         return playerMapper.toResponse(savedPlayer);
     }

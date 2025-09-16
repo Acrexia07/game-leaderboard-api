@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.model;
 
+import com.marlonb.game_leaderboard_api.model.user.UserEntity;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

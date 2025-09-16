@@ -6,6 +6,7 @@ import com.marlonb.game_leaderboard_api.model.PlayerUpdateDto;
 import com.marlonb.game_leaderboard_api.service.PlayerService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -22,10 +23,11 @@ public class PlayerController {
     }
 
     @PostMapping("/players")
-    public ResponseEntity<ApiMessageResponseDto<PlayerResponseDto>> createPlayerResource (@Valid @RequestBody
-                                                                   PlayerRequestDto playerRequest) {
+    public ResponseEntity<ApiMessageResponseDto<PlayerResponseDto>> createPlayerResource
+                                                                (@Valid @RequestBody PlayerRequestDto playerRequest,
+                                                                                     Authentication authentication) {
 
-        PlayerResponseDto playerResponseForCreate = playerService.savePlayerData(playerRequest);
+        PlayerResponseDto playerResponseForCreate = playerService.savePlayerData(playerRequest, authentication);
         URI location = URI.create("/api/players/" + playerResponseForCreate.id());
 
         return ResponseEntity.created(location).body(new ApiMessageResponseDto<>

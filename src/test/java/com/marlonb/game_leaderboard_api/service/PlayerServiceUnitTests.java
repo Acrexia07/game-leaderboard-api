@@ -4,6 +4,7 @@ import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundE
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.*;
 import com.marlonb.game_leaderboard_api.repository.PlayerRepository;
+import com.marlonb.game_leaderboard_api.repository.UserRepository;
 import com.marlonb.game_leaderboard_api.test_data.Player2TestData;
 import com.marlonb.game_leaderboard_api.test_data.Player3TestData;
 import com.marlonb.game_leaderboard_api.test_data.PlayerTestData;
@@ -20,6 +21,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
 
 //import java.time.LocalDateTime;
 import java.util.List;
@@ -35,6 +37,12 @@ public class PlayerServiceUnitTests {
 
     @Mock
     private PlayerRepository playerRepository;
+
+    @Mock
+    private Authentication authentication;
+
+    @Mock
+    private UserRepository userRepository;
 
     @Mock
     private PlayerInfoMapper playerMapper;
@@ -62,8 +70,13 @@ public class PlayerServiceUnitTests {
         @DisplayName("Should create player successfully")
         void shouldCreatePlayerSuccessfully () {
 
+            String username = authentication.getName();
+
             when(playerMapper.toEntity(any(PlayerRequestDto.class)))
                     .thenReturn(testPlayer);
+
+            when(userRepository.findByUsername(username))
+                    .thenReturn(testPlayer.getUser());
 
             when(playerRepository.save(any(PlayerEntity.class)))
                     .thenReturn(testPlayer);
@@ -71,7 +84,7 @@ public class PlayerServiceUnitTests {
             when(playerMapper.toResponse(any(PlayerEntity.class)))
                     .thenReturn(expectedResponse);
 
-            PlayerResponseDto actualResponse = playerService.savePlayerData(testPlayerRequest);
+            PlayerResponseDto actualResponse = playerService.savePlayerData(testPlayerRequest, authentication);
 
             assertServiceReturnedExpectedResponse(actualResponse, expectedResponse);
         }
@@ -253,7 +266,7 @@ public class PlayerServiceUnitTests {
                 when(playerRepository.existsByPlayerName("player1")).thenReturn(true);
 
                 Assertions.assertThrows(DuplicateResourceFoundException.class,
-                                        () -> playerService.savePlayerData(testPlayerRequest));
+                                        () -> playerService.savePlayerData(testPlayerRequest, authentication));
 
                 verify(playerRepository, never()).save(any());
             }
