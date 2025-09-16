@@ -298,3 +298,56 @@ secure signing.
   - Base64 encoding of random strings doesn't guarantee proper bit length.
   - `KeyGenerator.getInstance("HmacSHA256")` automatically generates correct bit length.
   - Always verify generated key meets algorithm requirements.
+
+---
+
+### Issue 12 (September 15, 2025): AccessDeniedException tests returning 500 instead of 403
+
+- **🐞 Issue:** Unit test for endpoint with `@PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")` 
+was expecting 403 Forbidden, but response returned 500 Internal Server Error instead.
+  ```
+  when(userService.retrieveSpecificUser(otherUserId))
+  .thenThrow(new AccessDeniedException("Access Denied!"));
+  
+  mockMvc.perform(get("/api/users/{id}", otherUserId))
+  .andExpect(status().isForbidden());  // FAILED: returned 500
+  ```
+
+- **⚠️ Error/Symptom:** 
+  - 500 Internal Server Error in JSON response
+  - Custom `@ExceptionHandler(AccessDeniedException.class)` not triggered
+
+- **🔧 Root Cause:**
+  - `@WithMockUser` only sets username and roles, but doesn’t populate the custom UserPrincipal.id.
+  - Since `@PreAuthorize compares #id == authentication.principal.id`, Spring Security could not evaluate the condition properly.
+  - As a result, the security filter threw an exception that bypassed the custom handler and defaulted to a generic 500 error.
+
+- **🧪 Solution:** Instead of relying solely on @WithMockUser, 
+explicitly provide a full `UserPrincipal` object when testing ID-sensitive scenarios.
+  ```
+  @Test
+  @DisplayName("User Management(READ): Should deny public user accessing other user's data")
+  void shouldDenyPublicUserAccessingOtherUsersData () throws Exception {
+  UserPrincipal testUserPrincipal = User1TestData.sampleUser1PrincipalData(); // has id = 1
+  final long otherUserId = 2L;
+  
+      when(userService.retrieveSpecificUser(otherUserId))
+          .thenThrow(new AccessDeniedException("Access Denied"));
+  
+      mockMvc.perform(get("/api/users/{id}", otherUserId)
+                      .with(user(testUserPrincipal))) // ✅ supply principal with real ID
+              .andExpectAll(
+                      status().isForbidden(),
+                      jsonPath("$.message").value("Forbidden access – insufficient permissions."),
+                      jsonPath("$.error.credentials[0]").value("Access Denied"));
+  }
+  ```
+
+- **✅ Result:**
+  - Test now correctly returns 403 Forbidden.
+  - Custom exception handler successfully formats JSON error response.
+
+- **📝 Lesson Learned:**
+  - Use @WithMockUser only for role-based checks.
+  - For ID-based checks (when @PreAuthorize references authentication.principal.id), always use .with(user(customPrincipal)).
+  - Mixing both is redundant — .with(user(...)) overrides @WithMockUser.

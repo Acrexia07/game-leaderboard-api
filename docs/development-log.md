@@ -357,7 +357,7 @@ testing.
   - If there's a parsing needed in an attribute when testing, instead of updating DTOs, instantiate
     an ObjectMapper.
 
-📌 **Next Step:** Refactor all tests
+**📌 Next Step:** Refactor all tests
 
 ---
 
@@ -370,7 +370,7 @@ testing.
 **🛠️ Implementation Summary:**
 - Restructuring all of test
 
-📌 **Next Step:** Top 3 player repository implementation - Query and Test
+**📌 Next Step:** Top 3 player repository implementation - Query and Test
 
 ---
 
@@ -411,7 +411,7 @@ testing.
   - I was able to understand the test strategy on implementing test for retrieving top 3 players data in implementing 
   leaderboard logic.
 
-📌 **Next Step:** Controller function for leaderboard
+**📌 Next Step:** Controller function for leaderboard
 
 ---
 
@@ -435,7 +435,7 @@ the `playerMapper`.
 - **🧘‍♂️ Controller Unit test familiarization:** I was able to familiar further more about controller 
 unit test case development.
 
-📌 **Next Step:** WebSocket Learning Phase
+**📌 Next Step:** WebSocket Learning Phase
 
 ---
 
@@ -449,7 +449,7 @@ unit test case development.
 **🧠 Technical Learning:**
 - **📖 New Knowledge Acquired: ** I was able to learn the usage and implementation of websocket theoretically.
 
-📌 **Next Step:** Refactor instantiation of `timestamp` attributes
+**📌 Next Step:** Refactor instantiation of `timestamp` attributes
 
 ---
 
@@ -466,7 +466,7 @@ unit test case development.
 - Removed `timestamp` attribute on request and update DTOs.
 - Refactored all classes affected by the `timestamp` implementation changes.
 
-📌 **Next Step:** Implementation of JWT - Learning phase
+**📌 Next Step:** Implementation of JWT - Learning phase
 
 **🎯 Objectives:**
 - Learn deeper about spring security.
@@ -518,7 +518,7 @@ _"After learning Websocket concept theoretically, I conclude that I need to impl
 
 - Implemented `UserRepository` that extends `JpaRepository`.
 
-📌 **Next Step:** JWT Implementation preparation - DTOs creation
+**📌 Next Step:** JWT Implementation preparation - DTOs creation
 
 ---
 
@@ -552,12 +552,12 @@ _"After learning Websocket concept theoretically, I conclude that I need to impl
   }
 - **✅ Result:** No issue related to this occurred again.
 
-📌 **Next Step:** JWT Implementation preparation - `UserService` implementation
+**📌 Next Step:** JWT Implementation preparation - `UserService` implementation
 
 ## Day 21: JWT Implementation preparation - `UserService` implementation
 **📅 Date:** August 25, 2025
 
-**🎯 Objectives:**
+- **🎯 Objectives:**
 - Implement Test-Driven Development approach for core functionality
 - Create `UserEntity` with comprehensive validation for user management
 - Develop service layer function for user data persistence
@@ -567,7 +567,7 @@ _"After learning Websocket concept theoretically, I conclude that I need to impl
 - Developed test data helper methods and comprehensive test cases
 - Implemented `createUser` service function with full test coverage
 
-📌 **Next Step:** Expand service layer functions with additional CRUD operations
+**📌 Next Step:** Expand service layer functions with additional CRUD operations
 
 ---
 
@@ -586,7 +586,7 @@ _"After learning Websocket concept theoretically, I conclude that I need to impl
 - **📖 New Knowledge Acquired: ** I was able to learn that by using `@RequiredArgsConstructor`, I was able to reduce 
 boilerplate in implementing constructor-based dependency injection.
 
-📌 **Next Step:** TDD Continuation - Negative Test Case Development for `UserService`
+**📌 Next Step:** TDD Continuation - Negative Test Case Development for `UserService`
 
 ---
 
@@ -606,7 +606,7 @@ boilerplate in implementing constructor-based dependency injection.
 **🧠 Technical Learning:**
 - **📖 Knowledge Recall: ** I was able to recall all the procedures when developing a negative test case.
 
-📌 **Next Step:** TDD Continuation - Positive test case development of the controller layer functions
+**📌 Next Step:** TDD Continuation - Positive test case development of the controller layer functions
 
 ---
 
@@ -625,7 +625,7 @@ boilerplate in implementing constructor-based dependency injection.
 - **📖 Knowledge Recall: ** I was able to recall all the procedures when developing a positive test case on
 controller layer functions.
 
-📌 **Next Step:** Security Planning – JWT & Endpoint Authorization Design
+**📌 Next Step:** Security Planning – JWT & Endpoint Authorization Design
 
 ---
 
@@ -652,7 +652,7 @@ controller layer functions.
 - Recognized that planning is as important as coding for scalable security design.
 - Identified separation of concerns: security users vs in-game player accounts.
 
-📌 Next Step: JWT preparation - Continuation of implementing controller layer function for retrieve all user data.
+**📌 Next Step:** JWT preparation - Continuation of implementing controller layer function for retrieve all user data.
 
 ---
 
@@ -672,7 +672,7 @@ with positive testing.
 - **📖 Knowledge Recall: ** I was able to recall all the procedures when developing a positive test case on
 controller layer functions.
 
-📌 **Next Step:** JWT Implementation Preparation - Test-Driven Development of Controller layer via Positive Testing
+**📌 Next Step:** JWT Implementation Preparation - Test-Driven Development of Controller layer via Positive Testing
 
 ---
 
@@ -687,7 +687,7 @@ controller layer functions.
 - Implemented test case development to be used as anchor when developing the controller layer functions.
 - Developed controller layer functions based on the created test cases.
 
-📌 **Next Step:** JWT Implementation Preparation - Test-Driven Development continuation of Controller layer 
+**📌 Next Step:** JWT Implementation Preparation - Test-Driven Development continuation of Controller layer 
 via Negative Testing
 
 ---
@@ -722,7 +722,7 @@ via Negative Testing
 - **📖 Realization: ** I was able to learn and understand the consideration of having the admin user roles as part of
 the user management for creation and implementation.
 
-📌 **Next Step:** JWT Implementation Preparation - Admin Service Layer and Controller layer Implementation
+**📌 Next Step:** JWT Implementation Preparation - Admin Service Layer and Controller layer Implementation
 
 ---
 
@@ -741,7 +741,7 @@ the user management for creation and implementation.
 **🧠 Technical Learning:**
 - **📖 Realization: ** I was able to understand the importance of user management in spring security aspect.
 
-📌 **Next Step:** Restructuring classes in preparation for JWT Implementation 
+**📌 Next Step:** Restructuring classes in preparation for JWT Implementation 
 
 ---
 
@@ -768,7 +768,7 @@ the user management for creation and implementation.
 test configurations.
 - **⚡ Best Practice:** Separating test security configurations improves reusability across multiple test classes.
 
-📌 **Next Step:** JWT Implementation Preparation
+**📌 Next Step:** JWT Implementation Preparation
 
 ---
 
@@ -796,7 +796,7 @@ test configurations.
 - **Knowledge Reinforcement:** Remembered the importance of using `final` keyword with `@RequiredArgsConstructor` 
 for proper dependency injection.
 
-📌 **Next Step:** JWT Implementation Preparation - login dummy endpoint creation
+**📌 Next Step:** JWT Implementation Preparation - login dummy endpoint creation
 
 ---
 
@@ -816,7 +816,7 @@ for proper dependency injection.
 **🧠 Technical Learning:**
 - **💡 Gain Insight:** I was able to gain knowledge about preparation before implementing JWT in the project.
 
-📌 **Next Step:** JWT Implementation 
+**📌 Next Step:** JWT Implementation 
 
 ---
 
@@ -842,7 +842,7 @@ amount of bits based on the algorithm to be executed (like HmacSHA256 algorithm 
 your first time.
   I've decided to document all the works that I've done up to generating JWT token.
 
-📌 **Next Step:** JWT Implementation - User Login Testing
+**📌 Next Step:** JWT Implementation - User Login Testing
 
 ---
 
@@ -855,7 +855,7 @@ your first time.
 **🛠️ Implementation Summary:**
 - Implemented test cases for user login
 
-📌 **Next Step:** JWT Implementation - JWT-related service unit Testing
+**📌 Next Step:** JWT Implementation - JWT-related service unit Testing
 
 ---
 
@@ -875,7 +875,7 @@ your first time.
 in each other. 
   I need to create my own test pattern in the authentication implementation.
 
-📌 **Next Step:** JWT Implementation continuation - Token Validation
+**📌 Next Step:** JWT Implementation continuation - Token Validation
 
 ---
 
@@ -895,7 +895,7 @@ in each other.
   Any misalignment (e.g., expired tokens not being caught) could expose endpoints.
 - **⚡ Key Insight:** Separating concerns between token generation and validation leads to cleaner, testable code.
 
-📌 Next Step: Clean up outdated tests and refine authorization rules.
+**📌 Next Step:** Clean up outdated tests and refine authorization rules.
 
 ---
 
@@ -916,7 +916,26 @@ Remove outdated controller unit tests that were designed for Basic Auth.
   replacement tests must align with the current architecture.
 - **💡 Insight:** Declarative security annotations (@PreAuthorize) make intent clearer than centralized configuration alone.
 
-📌 Next Step: Rebuild controller unit tests aligned with JWT authentication and @PreAuthorize authorization.
+**📌 Next Step:** Rebuild controller unit tests aligned with JWT authentication and @PreAuthorize authorization.
+
+---
+
+## Day 38: User controller Unit test recreation
+📅 Date: September 13, 2025
+
+**🎯 Objectives:**
+- Recreate updated user controller unit test after JWT implementation.
+
+🛠️ Implementation Summary:
+- Implemented new controller unit testing that tests core CRUD operations on controller layer.
+- Fix some issue while conducting testing.
+
+**⚠️ Challenges Encountered:**
+- AccessDeniedException tests returning 500 instead of 403 — Unit test for endpoint with 
+`@PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")` was expecting 403 Forbidden, 
+but response returned 500 Internal Server Error instead.
+
+## Day 39: Controller Unit test recreation
 
 ---
 
