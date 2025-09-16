@@ -13,6 +13,14 @@ public interface PlayerInfoMapper {
     @Mapping(target = "userId", source = "user.id")
     PlayerResponseDto toResponse (PlayerEntity playerInfo);
 
+    // Custom Response Mapping
+    @Named("userToSummary")
+    @Mapping(target = "playerName", source = "playerName")
+    @Mapping(target = "uuid", source = "uuid")
+    @Mapping(target = "scores", source = "scores")
+    @Mapping(target = "timestamp", source = "timestamp")
+    PlayerSummaryDto toSummary (PlayerEntity player);
+
     // Request mapping
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)

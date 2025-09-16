@@ -1,12 +1,11 @@
 package com.marlonb.game_leaderboard_api.model.user;
 
-import com.marlonb.game_leaderboard_api.model.PlayerEntity;
+import com.marlonb.game_leaderboard_api.model.PlayerSummaryDto;
 
 import java.time.LocalDateTime;
 
-public record UserResponseDto(
-   long id,
-   String username,
-   String password,
-   LocalDateTime createdAt
-) {}
+public record UserResponseDto(long id,
+                              String username,
+                              String password,
+                              LocalDateTime createdAt,
+                              PlayerSummaryDto playerAccount) {}

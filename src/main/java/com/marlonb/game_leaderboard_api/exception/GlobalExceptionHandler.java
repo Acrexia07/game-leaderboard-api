@@ -2,6 +2,7 @@ package com.marlonb.game_leaderboard_api.exception;
 
 import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -45,6 +46,17 @@ public class GlobalExceptionHandler {
                                         HttpStatus.CONFLICT.value(),
                                         DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage(),
                                         Map.of("resource", List.of(ex.getMessage()))));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponseDto> handlesDataIntegrityExceptions (DataIntegrityViolationException ex) {
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                             .body(new ErrorResponseDto
+                                       (LocalDateTime.now(),
+                                        HttpStatus.CONFLICT.value(),
+                                        DATA_INTEGRITY_ISSUE_MESSAGE.getErrorMessage(),
+                                        Map.of("player", List.of(PLAYER_CREATION_ERROR_MESSAGE.getErrorMessage()))));
     }
 
     // HTTP STATUS 404 - NOT FOUND

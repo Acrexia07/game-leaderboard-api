@@ -1,14 +1,17 @@
 package com.marlonb.game_leaderboard_api.model.user;
 
 import com.marlonb.game_leaderboard_api.model.PlayerEntity;
+import com.marlonb.game_leaderboard_api.model.PlayerInfoMapper;
 import org.mapstruct.*;
 
 @Mapper(
         componentModel = "spring",
+        uses = PlayerInfoMapper.class,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL
 )
 public interface UserMapper {
 
+    @Mapping(target = "playerAccount", source = "player", qualifiedByName = "userToSummary")
     UserResponseDto toResponse (UserEntity userResponse);
 
     @Mapping(target = "id", ignore = true)
@@ -33,5 +36,15 @@ public interface UserMapper {
         user.setId(userId);
 
         return user;
+    }
+
+    default PlayerEntity fromPlayerId (Long playerId) {
+
+        if (playerId == null) return null;
+
+        PlayerEntity player = new PlayerEntity();
+        player.setId(playerId);
+
+        return player;
     }
 }

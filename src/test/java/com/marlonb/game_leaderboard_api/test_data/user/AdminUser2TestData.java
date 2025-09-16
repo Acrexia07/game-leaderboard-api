@@ -1,8 +1,11 @@
 package com.marlonb.game_leaderboard_api.test_data.user;
 
+import com.marlonb.game_leaderboard_api.model.PlayerSummaryDto;
 import com.marlonb.game_leaderboard_api.model.user.*;
 
 import java.time.LocalDateTime;
+
+import static com.marlonb.game_leaderboard_api.test_data.Player2TestData.samplePlayerData2;
 
 public class AdminUser2TestData {
 
@@ -28,13 +31,24 @@ public class AdminUser2TestData {
         return updatedAdmin2;
     }
 
+    public static PlayerSummaryDto playerSummaryDto () {
+
+        return new PlayerSummaryDto(
+                samplePlayerData2().getPlayerName(),
+                samplePlayerData2().getUuid(),
+                samplePlayerData2().getScores(),
+                samplePlayerData2().getTimestamp()
+        );
+    }
+
     public static UserResponseDto sampleAdminUser2Response () {
 
         return new UserResponseDto(
                 sampleAdminUser2Data().getId(),
                 sampleAdminUser2Data().getUsername(),
                 sampleAdminUser2Data().getPassword(),
-                sampleAdminUser2Data().getCreatedAt()
+                sampleAdminUser2Data().getCreatedAt(),
+                playerSummaryDto()
         );
     }
 

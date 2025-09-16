@@ -14,6 +14,8 @@ public enum ErrorMessages {
     HTTP_MESSAGE_NOT_READABLE_ERROR_MESSAGE("Unable to process request body"),
     BAD_CREDENTIALS_MESSAGE("Bad credentials found!"),
     ACCESS_DENIED_MESSAGE("Forbidden access – insufficient permissions."),
+    DATA_INTEGRITY_ISSUE_MESSAGE("Creation conflict detected!"),
+    PLAYER_CREATION_ERROR_MESSAGE("Each user can only create one player."),
     VALIDATION_ERROR_MESSAGE("Validation error(s) found!");
 
     private final String errorMessage;

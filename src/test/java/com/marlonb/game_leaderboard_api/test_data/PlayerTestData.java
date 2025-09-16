@@ -1,9 +1,6 @@
 package com.marlonb.game_leaderboard_api.test_data;
 
-import com.marlonb.game_leaderboard_api.model.PlayerEntity;
-import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
-import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
-import com.marlonb.game_leaderboard_api.model.PlayerUpdateDto;
+import com.marlonb.game_leaderboard_api.model.*;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 
 import java.time.LocalDateTime;

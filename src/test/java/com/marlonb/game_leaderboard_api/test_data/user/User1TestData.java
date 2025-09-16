@@ -1,9 +1,12 @@
 package com.marlonb.game_leaderboard_api.test_data.user;
 
+import com.marlonb.game_leaderboard_api.model.PlayerSummaryDto;
 import com.marlonb.game_leaderboard_api.model.user.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
+
+import static com.marlonb.game_leaderboard_api.test_data.PlayerTestData.samplePlayerData;
 
 public class User1TestData {
 
@@ -28,13 +31,24 @@ public class User1TestData {
         );
     }
 
+    public static PlayerSummaryDto playerSummaryDto () {
+
+        return new PlayerSummaryDto(
+                samplePlayerData().getPlayerName(),
+                samplePlayerData().getUuid(),
+                samplePlayerData().getScores(),
+                samplePlayerData().getTimestamp()
+        );
+    }
+
     public static UserResponseDto sampleUser1PrincipalResponse () {
 
         return new UserResponseDto(
                 sampleUser1PrincipalData().getId(),
                 sampleUser1PrincipalData().getUsername(),
                 sampleUser1PrincipalData().getPassword(),
-                sampleUser1Data().getCreatedAt()
+                sampleUser1Data().getCreatedAt(),
+                playerSummaryDto()
         );
     }
 
@@ -60,7 +74,8 @@ public class User1TestData {
                 sampleUser1PrincipalData().getId(),
                 sampleUser1PrincipalUpdate().getUsername(),
                 sampleUser1PrincipalUpdate().getPassword(),
-                sampleUser1Data().getCreatedAt()
+                sampleUser1Data().getCreatedAt(),
+                playerSummaryDto()
         );
     }
 
@@ -70,7 +85,8 @@ public class User1TestData {
                 sampleUser1PrincipalData().getId(),
                 sampleUser1PrincipalInvalidUpdate().getUsername(),
                 sampleUser1PrincipalInvalidUpdate().getPassword(),
-                sampleUser1Data().getCreatedAt()
+                sampleUser1Data().getCreatedAt(),
+                playerSummaryDto()
         );
     }
 
@@ -108,7 +124,8 @@ public class User1TestData {
                 sampleUser1Data().getId(),
                 sampleUser1Data().getUsername(),
                 sampleUser1Data().getPassword(),
-                sampleUser1Data().getCreatedAt()
+                sampleUser1Data().getCreatedAt(),
+                playerSummaryDto()
         );
     }
 
