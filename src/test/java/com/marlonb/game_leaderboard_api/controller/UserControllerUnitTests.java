@@ -68,7 +68,7 @@ public class UserControllerUnitTests {
             UserRequestDto testPublicUserRequest = User1TestData.sampleUser1Request();
             UserResponseDto testPublicUserResponse = User1TestData.sampleUser1Response();
 
-            when(userService.createUser(any(UserRequestDto.class)))
+            when(userService.createUser(testPublicUserRequest))
                     .thenReturn(testPublicUserResponse);
 
             String jsonPublicUserRequest = mapper.writeValueAsString(testPublicUserRequest);

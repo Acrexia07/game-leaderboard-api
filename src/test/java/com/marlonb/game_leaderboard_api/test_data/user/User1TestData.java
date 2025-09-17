@@ -29,7 +29,7 @@ public class User1TestData {
         BASE_USER = new UserEntity();
         BASE_USER.setId(1L);
         BASE_USER.setUsername(RAW_USERNAME);
-        BASE_USER.setPassword(ENCODED_PASSWORD);
+        BASE_USER.setPassword(RAW_PASSWORD);
         BASE_USER.setRole(UserRoles.USER);
         BASE_USER.setCreatedAt(LocalDateTime.now());
 
@@ -147,7 +147,7 @@ public class User1TestData {
 
         return new UserRequestDto(
                 sampleUser1Data().getUsername(),
-                "Tester@123"
+                sampleUser1Data().getPassword()
         );
     }
 
