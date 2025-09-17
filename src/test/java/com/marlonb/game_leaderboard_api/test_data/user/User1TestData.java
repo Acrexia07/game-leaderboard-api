@@ -126,7 +126,7 @@ public class User1TestData {
         updatedUser.setUsername("user1");
         updatedUser.setPassword(encoder.encode("Test#123"));
         updatedUser.setRole(UserRoles.USER);
-        updatedUser.setCreatedAt(LocalDateTime.now());
+        updatedUser.setCreatedAt(LocalDateTime.of(2023, 1, 1, 0, 0));
         return updatedUser;
     }
 
@@ -144,8 +144,19 @@ public class User1TestData {
     public static UserRequestDto sampleUser1Request () {
 
         return new UserRequestDto(
-                RAW_USERNAME,
-                RAW_PASSWORD
+                "user7",
+                "Tester@07"
+        );
+    }
+
+    public static UserResponseDto sampleUser1ResponseForCreate () {
+
+        return new UserResponseDto(
+                2L,
+                sampleUser1Request().getUsername(),
+                sampleUser1Request().getPassword(),
+                LocalDateTime.of(2023, 1, 1, 0, 0),
+                null
         );
     }
 

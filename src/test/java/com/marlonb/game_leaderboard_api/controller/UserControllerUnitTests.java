@@ -66,7 +66,7 @@ public class UserControllerUnitTests {
         void shouldRegisterSuccessfullyWhenPublicUserHasValidCredentials () throws Exception {
 
             UserRequestDto testPublicUserRequest = User1TestData.sampleUser1Request();
-            UserResponseDto testPublicUserResponse = User1TestData.sampleUser1Response();
+            UserResponseDto testPublicUserResponse = User1TestData.sampleUser1ResponseForCreate();
 
             when(userService.createUser(any(UserRequestDto.class)))
                     .thenReturn(testPublicUserResponse);
@@ -74,8 +74,9 @@ public class UserControllerUnitTests {
             String jsonPublicUserRequest = mapper.writeValueAsString(testPublicUserRequest);
             mockMvc.perform(post("/api/users/register")
                             .with(csrf())
-                            .content("{\"username\":\"user1\",\"password\":\"Passw0rd@\"}")
-                            .contentType(MediaType.APPLICATION_JSON))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonPublicUserRequest))
+                    .andDo(print())
                     .andExpectAll(
                            status().isCreated(),
                            header().exists("Location"),
