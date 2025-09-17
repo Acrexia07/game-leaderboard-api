@@ -13,7 +13,7 @@ public class User1TestData {
     private final static BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     private static final String RAW_USERNAME = "user1";
-    private static final String RAW_PASSWORD = "Test@123";
+    private static final String RAW_PASSWORD = "Passw0rd@";
 
     private static final String RAW_UPDATED_USERNAME = "User01";
 
