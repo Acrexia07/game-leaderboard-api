@@ -2,6 +2,7 @@ package com.marlonb.game_leaderboard_api.test_data;
 
 import com.marlonb.game_leaderboard_api.model.*;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -9,6 +10,7 @@ import java.util.UUID;
 public class PlayerTestData {
 
     private static final UUID playerUID = UUID.randomUUID();
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public static PlayerEntity samplePlayerData () {
 
@@ -60,6 +62,14 @@ public class PlayerTestData {
 
         return new PlayerRequestDto(
                 samplePlayerData().getPlayerName(),
+                samplePlayerData().getScores()
+        );
+    }
+
+    public static PlayerRequestDto sampleInvalidPlayerRequest () {
+
+        return new PlayerRequestDto(
+                "user_12345694668",
                 samplePlayerData().getScores()
         );
     }
