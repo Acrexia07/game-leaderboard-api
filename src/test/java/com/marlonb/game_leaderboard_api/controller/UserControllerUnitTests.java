@@ -29,6 +29,7 @@ import java.util.List;
 
 import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.BAD_CREDENTIALS_MESSAGE;
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -67,11 +68,10 @@ public class UserControllerUnitTests {
             UserRequestDto testPublicUserRequest = User1TestData.sampleUser1Request();
             UserResponseDto testPublicUserResponse = User1TestData.sampleUser1Response();
 
-            when(userService.createUser(testPublicUserRequest))
+            when(userService.createUser(any(UserRequestDto.class)))
                     .thenReturn(testPublicUserResponse);
 
             String jsonPublicUserRequest = mapper.writeValueAsString(testPublicUserRequest);
-
             mockMvc.perform(post("/api/users/register")
                             .with(csrf())
                             .contentType(MediaType.APPLICATION_JSON)
