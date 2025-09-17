@@ -20,8 +20,6 @@ public class User1TestData {
     private static final String RAW_INVALID_UPDATED_PASSWORD = "Test#4567890abcdefghjklmn";
     private static final String RAW_INVALID_LOGIN_PASSWORD = "WrongPassword";
 
-    private static final String ENCODED_PASSWORD = encoder.encode(RAW_PASSWORD);
-
     private final static UserEntity BASE_USER;
     private final static UserPrincipal BASE_PRINCIPAL;
 
@@ -146,8 +144,8 @@ public class User1TestData {
     public static UserRequestDto sampleUser1Request () {
 
         return new UserRequestDto(
-                sampleUser1Data().getUsername(),
-                sampleUser1Data().getPassword()
+                RAW_USERNAME,
+                RAW_PASSWORD
         );
     }
 

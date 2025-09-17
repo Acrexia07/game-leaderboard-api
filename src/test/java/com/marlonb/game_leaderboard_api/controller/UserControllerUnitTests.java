@@ -10,7 +10,6 @@ import com.marlonb.game_leaderboard_api.service.UserService;
 import com.marlonb.game_leaderboard_api.test_data.user.AdminUser1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 import com.marlonb.game_leaderboard_api.test_securityConfig.TestSecurityConfig;
-import lombok.With;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,6 @@ import java.util.List;
 
 import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.BAD_CREDENTIALS_MESSAGE;
 import static org.hamcrest.Matchers.containsString;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -78,7 +76,6 @@ public class UserControllerUnitTests {
                             .with(csrf())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(jsonPublicUserRequest))
-                    .andDo(print())
                     .andExpectAll(
                            status().isCreated(),
                            header().exists("Location"),
