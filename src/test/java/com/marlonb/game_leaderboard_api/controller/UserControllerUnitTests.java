@@ -35,6 +35,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -77,7 +78,8 @@ public class UserControllerUnitTests {
                             .with(csrf())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(jsonPublicUserRequest))
-                   .andExpectAll(
+                    .andDo(print())
+                    .andExpectAll(
                            status().isCreated(),
                            header().exists("Location"),
                            header().string("Location", containsString("/api/users/register/")),

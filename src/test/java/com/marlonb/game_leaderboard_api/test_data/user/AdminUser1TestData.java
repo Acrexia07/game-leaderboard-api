@@ -48,7 +48,7 @@ public class AdminUser1TestData {
                 sampleAdminUser1Data().getUsername(),
                 sampleAdminUser1Data().getPassword(),
                 sampleAdminUser1Data().getCreatedAt(),
-                playerSummaryDto()
+                null
         );
     }
 

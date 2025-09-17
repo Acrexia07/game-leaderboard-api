@@ -139,7 +139,7 @@ public class User1TestData {
                 sampleUser1Data().getUsername(),
                 sampleUser1Data().getPassword(),
                 sampleUser1Data().getCreatedAt(),
-                playerSummaryDto()
+                null
         );
     }
 
