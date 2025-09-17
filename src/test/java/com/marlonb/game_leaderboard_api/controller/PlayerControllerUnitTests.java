@@ -2,22 +2,18 @@ package com.marlonb.game_leaderboard_api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marlonb.game_leaderboard_api.model.PlayerEntity;
-import com.marlonb.game_leaderboard_api.model.PlayerInfoMapper;
 import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
-import com.marlonb.game_leaderboard_api.security.JwtFilter;
 import com.marlonb.game_leaderboard_api.service.GameUserDetailsService;
 import com.marlonb.game_leaderboard_api.service.JWTService;
 import com.marlonb.game_leaderboard_api.service.PlayerService;
 import com.marlonb.game_leaderboard_api.test_data.Player2TestData;
 import com.marlonb.game_leaderboard_api.test_data.PlayerTestData;
 import com.marlonb.game_leaderboard_api.test_securityConfig.TestSecurityConfig;
-import lombok.With;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -33,7 +29,6 @@ import java.util.List;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -118,7 +113,30 @@ public class PlayerControllerUnitTests {
                            jsonPath("$.response.length()").value(2));
         }
 
+        @Test
+        @WithMockUser(roles = "ADMIN")
+        @DisplayName("Player (READ): Should retrieve specific player data successfully by Admin")
+        void shouldRetrieveSpecificPlayerDataSuccessfullyByAdmin () throws Exception {
 
+            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
+            final long testPlayerId = testPlayer.getId();
+            PlayerResponseDto testPlayerResponse = PlayerTestData.samplePlayerResponse(testPlayer);
+
+            when(playerService.retrieveSpecificPlayerData(testPlayerId))
+                    .thenReturn(testPlayerResponse);
+
+            String jsonTestPlayerResponse = mapper.writeValueAsString(testPlayerResponse);
+
+            mockMvc.perform(get("/api/players/{id}", testPlayerId)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonTestPlayerResponse))
+                   .andExpectAll(
+                           status().isOk(),
+                           jsonPath("$.apiMessage")
+                                   .value("Retrieved specific player successfully!"),
+                           jsonPath("$.response.playerName")
+                                   .value(testPlayerResponse.playerName()));
+        }
     }
 
     @Nested

@@ -25,7 +25,8 @@ public class TestSecurityConfig {
                         .requestMatchers("/api/users/login", "/api/users/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
-                        .requestMatchers("/api/players/**", "/api/leaderboards").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/players/{id}").hasRole("ADMIN")
+                        .requestMatchers("/api/leaderboards").authenticated()
                         .requestMatchers("/api/users/**").authenticated()
                         .anyRequest().authenticated())
                 .build();

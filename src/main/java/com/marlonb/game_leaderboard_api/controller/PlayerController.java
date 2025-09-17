@@ -6,6 +6,7 @@ import com.marlonb.game_leaderboard_api.model.PlayerUpdateDto;
 import com.marlonb.game_leaderboard_api.service.PlayerService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,13 +47,14 @@ public class PlayerController {
     }
 
     @GetMapping("/players/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.playerId")
     public ResponseEntity<ApiMessageResponseDto<PlayerResponseDto>> retrieveSpecificPlayerResource
                                                     (@PathVariable long id) {
 
         PlayerResponseDto foundResponse = playerService.retrieveSpecificPlayerData(id);
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
-                                        ("Specific player data retrieved successfully!", foundResponse));
+                                        ("Retrieved specific player successfully!", foundResponse));
     }
 
     @GetMapping("/leaderboards")
@@ -66,6 +68,7 @@ public class PlayerController {
     }
 
     @PutMapping("/players/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.player.id")
     public ResponseEntity<ApiMessageResponseDto<PlayerResponseDto>> updateSpecificPlayerResource
             (@PathVariable long id, @Valid @RequestBody PlayerUpdateDto updateDto) {
 
@@ -77,6 +80,7 @@ public class PlayerController {
     }
 
     @DeleteMapping("/players/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.player.id")
     public ResponseEntity<Void> deleteSpecificPlayerResource (@PathVariable long id) {
 
         playerService.deleteSpecificPlayerData(id);

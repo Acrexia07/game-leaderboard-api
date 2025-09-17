@@ -231,7 +231,7 @@ public class UserDetailServiceUnitTests {
                 when(userMapper.toEntity(any(UserRequestDto.class)))
                         .thenReturn(testUser);
 
-                when(userRepository.existsByUsername("user1"))
+                when(userRepository.existsByUsername(anyString()))
                         .thenReturn(true);
 
                 assertThrows(DuplicateResourceFoundException.class,

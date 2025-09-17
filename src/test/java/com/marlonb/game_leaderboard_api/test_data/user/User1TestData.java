@@ -12,23 +12,37 @@ public class User1TestData {
 
     private final static BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public static UserEntity sampleUser1Data () {
+    private static final String RAW_USERNAME = "user1";
+    private static final String RAW_PASSWORD = "Test@123";
 
-        var user1 = new UserEntity();
-        user1.setId(1L);
-        user1.setUsername("user1");
-        user1.setPassword(encoder.encode("Test@123"));
-        user1.setRole(UserRoles.USER);
-        user1.setCreatedAt(LocalDateTime.now());
-        return user1;
+    private static final String RAW_UPDATED_USERNAME = "User01";
+
+    private static final String RAW_INVALID_UPDATED_PASSWORD = "Test#4567890abcdefghjklmn";
+    private static final String RAW_INVALID_LOGIN_PASSWORD = "WrongPassword";
+
+    private static final String ENCODED_PASSWORD = encoder.encode(RAW_PASSWORD);
+
+    private final static UserEntity BASE_USER;
+    private final static UserPrincipal BASE_PRINCIPAL;
+
+    static {
+        BASE_USER = new UserEntity();
+        BASE_USER.setId(1L);
+        BASE_USER.setUsername(RAW_USERNAME);
+        BASE_USER.setPassword(ENCODED_PASSWORD);
+        BASE_USER.setRole(UserRoles.USER);
+        BASE_USER.setCreatedAt(LocalDateTime.now());
+
+        BASE_PRINCIPAL = new UserPrincipal(BASE_USER);
+    }
+
+    public static UserEntity sampleUser1Data () {
+        return BASE_USER;
     }
 
     /* --- USER PRINCIPAL DATA --- */
     public static UserPrincipal sampleUser1PrincipalData () {
-
-        return new UserPrincipal(
-                sampleUser1Data()
-        );
+        return BASE_PRINCIPAL;
     }
 
     public static PlayerSummaryDto playerSummaryDto () {
@@ -55,16 +69,16 @@ public class User1TestData {
     public static UserUpdateDto sampleUser1PrincipalUpdate () {
 
         return new UserUpdateDto(
-                "User01",
-                "Test@123"
+                RAW_UPDATED_USERNAME,
+                RAW_PASSWORD
         );
     }
 
     public static UserUpdateDto sampleUser1PrincipalInvalidUpdate () {
 
         return new UserUpdateDto(
-                "User01",
-                "Test#4567890abcdefghjklmn"
+                RAW_UPDATED_USERNAME,
+                RAW_INVALID_UPDATED_PASSWORD
         );
     }
 
@@ -94,8 +108,8 @@ public class User1TestData {
     public static LoginRequestDto sampleUser1LoginData () {
 
         return new LoginRequestDto(
-                sampleUser1Data().getUsername(),
-                sampleUser1Data().getPassword()
+                BASE_USER.getUsername(),
+                RAW_PASSWORD
         );
     }
 
@@ -103,7 +117,7 @@ public class User1TestData {
 
         return new LoginRequestDto(
                 sampleUser1Data().getUsername(),
-                "WrongPassword"
+                RAW_INVALID_LOGIN_PASSWORD
         );
     }
 
