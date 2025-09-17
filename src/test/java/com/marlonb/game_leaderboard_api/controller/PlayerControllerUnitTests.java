@@ -9,6 +9,7 @@ import com.marlonb.game_leaderboard_api.security.JwtFilter;
 import com.marlonb.game_leaderboard_api.service.GameUserDetailsService;
 import com.marlonb.game_leaderboard_api.service.JWTService;
 import com.marlonb.game_leaderboard_api.service.PlayerService;
+import com.marlonb.game_leaderboard_api.test_data.Player2TestData;
 import com.marlonb.game_leaderboard_api.test_data.PlayerTestData;
 import com.marlonb.game_leaderboard_api.test_securityConfig.TestSecurityConfig;
 import lombok.With;
@@ -26,6 +27,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -64,8 +67,8 @@ public class PlayerControllerUnitTests {
 
         @Test
         @WithMockUser(username = "1", roles = "USER")
-        @DisplayName("Player(CREATE): Should create user successfully")
-        void shouldCreateUserSuccessfully () throws Exception {
+        @DisplayName("Player(CREATE): Should create player successfully")
+        void shouldCreatePlayerSuccessfully () throws Exception {
 
             PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
             PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
@@ -87,6 +90,35 @@ public class PlayerControllerUnitTests {
                            jsonPath("$.apiMessage").value("Player created successfully!"),
                            jsonPath("$.response.playerName").value(testPlayerRequest.getPlayerName()));
         }
+
+        @Test
+        @WithMockUser(roles = "ADMIN")
+        @DisplayName("Player(READ): Should retrieve all players successfully")
+        void shouldRetrieveAllPlayersSuccessfully () throws Exception {
+
+            PlayerEntity testPlayer1 = PlayerTestData.samplePlayerData();
+            PlayerEntity testPlayer2 = Player2TestData.samplePlayerData2();
+
+            PlayerResponseDto testPlayer1Response = PlayerTestData.samplePlayerResponse(testPlayer1);
+            PlayerResponseDto testPlayer2Response = Player2TestData.samplePlayerResponse2(testPlayer2);
+
+            List<PlayerResponseDto> expectedResponses = List.of(testPlayer1Response, testPlayer2Response);
+
+            when(playerService.retrieveAllPlayersData())
+                    .thenReturn(expectedResponses);
+
+            String jsonListOfPlayersResponse = mapper.writeValueAsString(expectedResponses);
+
+            mockMvc.perform(get("/api/players")
+                            .content(jsonListOfPlayersResponse)
+                            .contentType(MediaType.APPLICATION_JSON))
+                   .andExpectAll(
+                           status().isOk(),
+                           jsonPath("$.apiMessage").value("Retrieved all players successfully!"),
+                           jsonPath("$.response.length()").value(2));
+        }
+
+
     }
 
     @Nested
