@@ -74,8 +74,8 @@ public class UserControllerUnitTests {
             String jsonPublicUserRequest = mapper.writeValueAsString(testPublicUserRequest);
             mockMvc.perform(post("/api/users/register")
                             .with(csrf())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(jsonPublicUserRequest))
+                            .content("{\"username\":\"user1\",\"password\":\"Passw0rd@\"}")
+                            .contentType(MediaType.APPLICATION_JSON))
                     .andExpectAll(
                            status().isCreated(),
                            header().exists("Location"),
