@@ -6,6 +6,7 @@ import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundExcepti
 import com.marlonb.game_leaderboard_api.model.PlayerEntity;
 import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
+import com.marlonb.game_leaderboard_api.model.PlayerUpdateDto;
 import com.marlonb.game_leaderboard_api.service.GameUserDetailsService;
 import com.marlonb.game_leaderboard_api.service.JWTService;
 import com.marlonb.game_leaderboard_api.service.PlayerService;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionConfigurationException;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -117,7 +119,7 @@ public class PlayerControllerUnitTests {
 
         @Test
         @WithMockUser(roles = "ADMIN")
-        @DisplayName("Player (READ): Should retrieve specific player data successfully by Admin")
+        @DisplayName("Player(READ): Should retrieve specific player data successfully by Admin")
         void shouldRetrieveSpecificPlayerDataSuccessfullyByAdmin () throws Exception {
 
             PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
@@ -138,6 +140,33 @@ public class PlayerControllerUnitTests {
                                    .value("Retrieved specific player successfully!"),
                            jsonPath("$.response.playerName")
                                    .value(testPlayerResponse.playerName()));
+        }
+
+        @Test
+        @WithMockUser(roles = "ADMIN")
+        @DisplayName("Player(UPDATE): Should update specific player data successfully by Admin")
+        void shouldUpdateSpecificPlayerDataSuccessfullyByAdmin () throws Exception {
+
+            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
+            final long testPlayerId = testPlayer.getId();
+
+            PlayerUpdateDto testPlayerUpdate = PlayerTestData.samplePlayerUpdate();
+            PlayerResponseDto testPlayerResponseAfterUpdate = PlayerTestData.samplePlayerResponseAfterUpdate();
+
+            when(playerService.updateSpecificPlayerData(testPlayerId, testPlayerUpdate))
+                    .thenReturn(testPlayerResponseAfterUpdate);
+
+            String jsonPlayerUpdate = mapper.writeValueAsString(testPlayerUpdate);
+
+            mockMvc.perform(put("/api/players/{id}", testPlayerId)
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonPlayerUpdate))
+                   .andExpectAll(
+                           status().isOk(),
+                           jsonPath("$.apiMessage")
+                                   .value("Specific player updated successfully!"),
+                           jsonPath("$.response.playerName").value(testPlayerUpdate.getPlayerName()));
         }
     }
 

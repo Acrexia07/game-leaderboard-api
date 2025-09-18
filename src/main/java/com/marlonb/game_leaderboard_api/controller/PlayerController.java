@@ -47,7 +47,7 @@ public class PlayerController {
     }
 
     @GetMapping("/players/{id}")
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.playerId")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiMessageResponseDto<PlayerResponseDto>> retrieveSpecificPlayerResource
                                                     (@PathVariable long id) {
 
@@ -68,7 +68,7 @@ public class PlayerController {
     }
 
     @PutMapping("/players/{id}")
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.player.id")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiMessageResponseDto<PlayerResponseDto>> updateSpecificPlayerResource
             (@PathVariable long id, @Valid @RequestBody PlayerUpdateDto updateDto) {
 

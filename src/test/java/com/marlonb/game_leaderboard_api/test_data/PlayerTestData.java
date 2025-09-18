@@ -12,28 +12,34 @@ public class PlayerTestData {
     private static final UUID playerUID = UUID.randomUUID();
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+    private static final PlayerEntity BASE_PLAYER_DATA;
+
+    private static final int UPDATED_PLAYER_SCORE = 60000;
+
+    static {
+        BASE_PLAYER_DATA = new PlayerEntity();
+
+        BASE_PLAYER_DATA.setId(1L);
+        BASE_PLAYER_DATA.setUuid(playerUID);
+        BASE_PLAYER_DATA.setPlayerName("player1");
+        BASE_PLAYER_DATA.setScores(56700);
+        BASE_PLAYER_DATA.setTimestamp(LocalDateTime.of(2025, 1, 1, 0, 0));
+        BASE_PLAYER_DATA.setUser(User1TestData.sampleUser1Data());
+    }
+
     public static PlayerEntity samplePlayerData () {
-
-        var samplePlayerData = new PlayerEntity();
-
-        samplePlayerData.setId(1L);
-        samplePlayerData.setUuid(playerUID);
-        samplePlayerData.setPlayerName("player1");
-        samplePlayerData.setScores(56700);
-        samplePlayerData.setTimestamp(LocalDateTime.now());
-        samplePlayerData.setUser(User1TestData.sampleUser1Data());
-        return samplePlayerData;
+        return BASE_PLAYER_DATA;
     }
 
     public static PlayerEntity samplePlayerDataAfterUpdate () {
 
         var samplePlayerDataAfterUpdate = new PlayerEntity();
 
-        samplePlayerDataAfterUpdate.setId(1L);
-        samplePlayerDataAfterUpdate.setUuid(samplePlayerData().getUuid());
-        samplePlayerDataAfterUpdate.setPlayerName("player1");
-        samplePlayerDataAfterUpdate.setScores(60000);
-        samplePlayerDataAfterUpdate.setTimestamp(LocalDateTime.now());
+        samplePlayerDataAfterUpdate.setId(BASE_PLAYER_DATA.getId());
+        samplePlayerDataAfterUpdate.setUuid(BASE_PLAYER_DATA.getUuid());
+        samplePlayerDataAfterUpdate.setPlayerName(BASE_PLAYER_DATA.getPlayerName());
+        samplePlayerDataAfterUpdate.setScores(UPDATED_PLAYER_SCORE);
+        samplePlayerDataAfterUpdate.setTimestamp(BASE_PLAYER_DATA.getTimestamp());
         samplePlayerDataAfterUpdate.setUser(User1TestData.sampleUser1Data());
         return samplePlayerDataAfterUpdate;
     }
@@ -54,7 +60,19 @@ public class PlayerTestData {
 
         return new PlayerUpdateDto(
                 samplePlayerData().getPlayerName(),
-                60000
+                UPDATED_PLAYER_SCORE
+        );
+    }
+
+    public static PlayerResponseDto samplePlayerResponseAfterUpdate () {
+
+        return new PlayerResponseDto(
+                samplePlayerData().getId(),
+                samplePlayerData().getUuid(),
+                samplePlayerUpdate().getPlayerName(),
+                samplePlayerUpdate().getScores(),
+                samplePlayerData().getTimestamp(),
+                samplePlayerData().getUser().getId()
         );
     }
 
