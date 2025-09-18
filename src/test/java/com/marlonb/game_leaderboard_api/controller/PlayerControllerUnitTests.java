@@ -1,6 +1,8 @@
 package com.marlonb.game_leaderboard_api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.marlonb.game_leaderboard_api.exception.GlobalExceptionHandler;
+import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.PlayerEntity;
 import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
@@ -157,6 +159,22 @@ public class PlayerControllerUnitTests {
                             .content(jsonInvalidPlayerRequest))
                     .andExpect(status().isBadRequest());
 
+        }
+
+        @Test
+        @WithMockUser(roles = "ADMIN")
+        @DisplayName("Player(READ): Should fail to retrieve when player id does not exists")
+        void shouldFailToRetrieveWhenPlayerIdDoesNotExists () throws Exception {
+
+            final long nonExistentId = 100L;
+
+            when(playerService.retrieveSpecificPlayerData(nonExistentId))
+                    .thenThrow(new ResourceNotFoundException("Resource not found!"));
+
+            mockMvc.perform(get("/api/players/{id}", nonExistentId))
+                   .andExpectAll(
+                           status().isNotFound(),
+                           jsonPath("$.message").value("Resource not found!"));
         }
     }
 }
