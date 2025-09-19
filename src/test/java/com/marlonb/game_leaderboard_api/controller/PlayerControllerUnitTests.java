@@ -1,12 +1,9 @@
 package com.marlonb.game_leaderboard_api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.marlonb.game_leaderboard_api.exception.GlobalExceptionHandler;
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
-import com.marlonb.game_leaderboard_api.model.PlayerEntity;
-import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
-import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
-import com.marlonb.game_leaderboard_api.model.PlayerUpdateDto;
+import com.marlonb.game_leaderboard_api.model.*;
+import com.marlonb.game_leaderboard_api.model.user.UserPrincipal;
 import com.marlonb.game_leaderboard_api.service.GameUserDetailsService;
 import com.marlonb.game_leaderboard_api.service.JWTService;
 import com.marlonb.game_leaderboard_api.service.PlayerService;
@@ -17,7 +14,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.ExtensionConfigurationException;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -143,6 +139,30 @@ public class PlayerControllerUnitTests {
         }
 
         @Test
+        @DisplayName("Player(READ): Should retrieve player profile successfully!")
+        void shouldRetrievePlayerProfileSuccessfully () throws Exception {
+
+            UserPrincipal testPrincipal = PlayerTestData.sampleUserPrincipal();
+            final long testPlayerId = testPrincipal.getPlayerId();
+
+            PlayerSummaryDto testPlayerSummary = PlayerTestData.samplePlayerSummary();
+
+            when(playerService.getPlayerProfile(testPlayerId))
+                    .thenReturn(testPlayerSummary);
+
+            String jsonPlayerProfile = mapper.writeValueAsString(testPlayerSummary);
+
+            mockMvc.perform(get("/api/players/me")
+                            .with(user(testPrincipal))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonPlayerProfile))
+                   .andExpectAll(
+                           status().isOk(),
+                           jsonPath("$.apiMessage").value("Retrieve user profile successfully!"),
+                           jsonPath("$.response.playerName").value(testPlayerSummary.playerName()));
+        }
+
+        @Test
         @WithMockUser(roles = "ADMIN")
         @DisplayName("Player(UPDATE): Should update specific player data successfully by Admin")
         void shouldUpdateSpecificPlayerDataSuccessfullyByAdmin () throws Exception {
@@ -204,6 +224,22 @@ public class PlayerControllerUnitTests {
                    .andExpectAll(
                            status().isNotFound(),
                            jsonPath("$.message").value("Resource not found!"));
+        }
+
+        @Test
+        @DisplayName("Player(READ): Should fail to retrieve player profile if player id does not exist")
+        void shouldFailToRetrievePlayerProfileIfPlayerIdDoesNotExist () throws Exception {
+
+            UserPrincipal principal = PlayerTestData.sampleUserWithoutPlayerAccount();
+
+            mockMvc.perform(get("/api/players/me")
+                            .with(user(principal)))
+                   .andExpectAll(
+                           status().isNotFound(),
+                           jsonPath("$.message")
+                                   .value("Resource not found!"),
+                           jsonPath("$.error.resource")
+                                   .value("Player account not created yet for this user"));
         }
     }
 }

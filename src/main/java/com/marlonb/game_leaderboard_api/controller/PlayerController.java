@@ -1,10 +1,14 @@
 package com.marlonb.game_leaderboard_api.controller;
 
+import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
+import com.marlonb.game_leaderboard_api.model.PlayerSummaryDto;
 import com.marlonb.game_leaderboard_api.model.PlayerUpdateDto;
+import com.marlonb.game_leaderboard_api.model.user.UserPrincipal;
 import com.marlonb.game_leaderboard_api.service.PlayerService;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -85,5 +89,24 @@ public class PlayerController {
 
         playerService.deleteSpecificPlayerData(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /* --- User endpoints --- */
+    @GetMapping("/players/me")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiMessageResponseDto<PlayerSummaryDto>> retrieveUserProfileResource (Authentication auth) {
+
+        UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
+        Long playerId = principal.getPlayerId();
+
+        if (playerId == null) {
+           throw new ResourceNotFoundException("Player account not created yet for this user");
+        }
+
+        PlayerSummaryDto profileResponse = playerService.getPlayerProfile(playerId);
+
+        return ResponseEntity.ok().body(new ApiMessageResponseDto<>
+                                        ("Retrieve user profile successfully!",
+                                        profileResponse));
     }
 }

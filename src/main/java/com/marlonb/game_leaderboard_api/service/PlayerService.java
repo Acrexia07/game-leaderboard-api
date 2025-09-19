@@ -74,6 +74,13 @@ public class PlayerService {
         return playerMapper.toResponse(foundPlayer);
     }
 
+    @Transactional(readOnly = true)
+    public PlayerSummaryDto getPlayerProfile (long id) {
+
+        PlayerEntity foundPlayer = findPlayerId(id);
+        return playerMapper.toSummary(foundPlayer);
+    }
+
     // UPDATE: Update specific player data
     @Transactional
     public PlayerResponseDto updateSpecificPlayerData (long id, PlayerUpdateDto playerUpdateDto) {

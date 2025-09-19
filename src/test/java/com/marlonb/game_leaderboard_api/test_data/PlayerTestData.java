@@ -1,7 +1,11 @@
 package com.marlonb.game_leaderboard_api.test_data;
 
 import com.marlonb.game_leaderboard_api.model.*;
+import com.marlonb.game_leaderboard_api.model.user.UserEntity;
+import com.marlonb.game_leaderboard_api.model.user.UserPrincipal;
+import com.marlonb.game_leaderboard_api.model.user.UserRoles;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -89,6 +93,28 @@ public class PlayerTestData {
         return new PlayerRequestDto(
                 "user_12345694668",
                 samplePlayerData().getScores()
+        );
+    }
+
+    public static UserPrincipal sampleUserPrincipal () {
+        UserEntity user = User1TestData.sampleUser1Data();
+        user.setPlayer(BASE_PLAYER_DATA);
+        return new UserPrincipal(user);
+    }
+
+    public static UserPrincipal sampleUserWithoutPlayerAccount () {
+        UserEntity user = User1TestData.sampleUser1Data();
+        user.setPlayer(null);
+        return new UserPrincipal(user);
+    }
+
+    public static PlayerSummaryDto samplePlayerSummary () {
+
+        return new PlayerSummaryDto(
+                samplePlayerData().getPlayerName(),
+                samplePlayerData().getUuid(),
+                samplePlayerData().getScores(),
+                samplePlayerData().getTimestamp()
         );
     }
 }

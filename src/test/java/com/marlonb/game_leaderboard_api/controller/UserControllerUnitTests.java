@@ -111,6 +111,7 @@ public class UserControllerUnitTests {
         }
 
         @Test
+        @WithMockUser(roles = "USER")
         @DisplayName("Login(CREATE): Should login when user has valid credentials")
         void shouldPassLoginWhenUserHasValidCredentials() throws Exception {
 
@@ -230,6 +231,7 @@ public class UserControllerUnitTests {
     class NegativeTests {
 
         @Test
+        @WithMockUser(roles = "USER")
         @DisplayName("Login: Should fail to login when user has invalid credentials")
         void shouldFailToLoginWhenUserHasInvalidCredentials () throws Exception {
 
