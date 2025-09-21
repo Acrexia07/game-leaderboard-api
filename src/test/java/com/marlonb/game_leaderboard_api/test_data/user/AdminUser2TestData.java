@@ -36,8 +36,7 @@ public class AdminUser2TestData {
         return new PlayerSummaryDto(
                 samplePlayerData2().getPlayerName(),
                 samplePlayerData2().getUuid(),
-                samplePlayerData2().getScores(),
-                samplePlayerData2().getTimestamp()
+                samplePlayerData2().getScores()
         );
     }
 

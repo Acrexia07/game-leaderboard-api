@@ -18,7 +18,6 @@ public interface PlayerInfoMapper {
     @Mapping(target = "playerName", source = "playerName")
     @Mapping(target = "uuid", source = "uuid")
     @Mapping(target = "scores", source = "scores")
-    @Mapping(target = "timestamp", source = "timestamp")
     PlayerSummaryDto toSummary (PlayerEntity player);
 
     // Request mapping
@@ -28,6 +27,8 @@ public interface PlayerInfoMapper {
 
     // Update mapping
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "playerName", source = "playerName")
+    @Mapping(target = "scores", source = "scores")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void toUpdateFromEntity (@MappingTarget PlayerEntity playerInfo, PlayerUpdateDto playerUpdate);
 

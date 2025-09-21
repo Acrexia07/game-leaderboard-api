@@ -158,7 +158,7 @@ public class PlayerControllerUnitTests {
                             .content(jsonPlayerProfile))
                    .andExpectAll(
                            status().isOk(),
-                           jsonPath("$.apiMessage").value("Retrieve user profile successfully!"),
+                           jsonPath("$.apiMessage").value("Retrieve player profile successfully!"),
                            jsonPath("$.response.playerName").value(testPlayerSummary.playerName()));
         }
 
@@ -187,6 +187,31 @@ public class PlayerControllerUnitTests {
                            jsonPath("$.apiMessage")
                                    .value("Specific player updated successfully!"),
                            jsonPath("$.response.playerName").value(testPlayerUpdate.getPlayerName()));
+        }
+
+        @Test
+        @DisplayName("Player(READ): Should update player profile successfully!")
+        void shouldUpdatePlayerProfileSuccessfully () throws Exception {
+
+            UserPrincipal principal = PlayerTestData.sampleUserPrincipal();
+            final long testPlayerId = principal.getPlayerId();
+
+            PlayerUpdateDto testPlayerUpdate = PlayerTestData.samplePlayerUpdate();
+            PlayerSummaryDto testProfileUpdate = PlayerTestData.samplePlayerUpdateSummary();
+
+            when(playerService.updatePlayerProfile(testPlayerId, testPlayerUpdate))
+                    .thenReturn(testProfileUpdate);
+
+            String jsonProfileUpdate = mapper.writeValueAsString(testPlayerUpdate);
+
+            mockMvc.perform(put("/api/players/me")
+                            .with(user(principal))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonProfileUpdate))
+                   .andExpectAll(
+                           status().isOk(),
+                           jsonPath("$.apiMessage")
+                                   .value("Update player profile successfully!"));
         }
     }
 

@@ -99,6 +99,23 @@ public class PlayerService {
         return playerMapper.toResponse(savedUpdatedPlayer);
     }
 
+    @Transactional
+    public PlayerSummaryDto updatePlayerProfile (long id, PlayerUpdateDto playerUpdateDto) {
+
+        PlayerEntity foundPlayer = findPlayerId(id);
+
+        if(playerRepository.existsByPlayerName(playerUpdateDto.getPlayerName()) &&
+                !foundPlayer.getPlayerName().equalsIgnoreCase(playerUpdateDto.getPlayerName())) {
+            throw new DuplicateResourceFoundException
+                    (String.format(playerUpdateDto.getPlayerName(), DUPLICATE_PLAYER_NAME_FOUND));
+        }
+
+        playerMapper.toUpdateFromEntity(foundPlayer, playerUpdateDto);
+        PlayerEntity savedUpdatedPlayer = playerRepository.save(foundPlayer);
+
+        return playerMapper.toSummary(savedUpdatedPlayer);
+    }
+
     // DELETE: remove specific player data
     @Transactional
     public void deleteSpecificPlayerData (long id) {

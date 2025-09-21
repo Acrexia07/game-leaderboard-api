@@ -113,8 +113,16 @@ public class PlayerTestData {
         return new PlayerSummaryDto(
                 samplePlayerData().getPlayerName(),
                 samplePlayerData().getUuid(),
-                samplePlayerData().getScores(),
-                samplePlayerData().getTimestamp()
+                samplePlayerData().getScores()
+        );
+    }
+
+    public static PlayerSummaryDto samplePlayerUpdateSummary () {
+
+        return new PlayerSummaryDto(
+                samplePlayerData().getPlayerName(),
+                samplePlayerData().getUuid(),
+                samplePlayerUpdate().getScores()
         );
     }
 }

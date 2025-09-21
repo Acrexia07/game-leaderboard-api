@@ -94,7 +94,7 @@ public class PlayerController {
     /* --- User endpoints --- */
     @GetMapping("/players/me")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiMessageResponseDto<PlayerSummaryDto>> retrieveUserProfileResource (Authentication auth) {
+    public ResponseEntity<ApiMessageResponseDto<PlayerSummaryDto>> retrievePlayerProfileResource (Authentication auth) {
 
         UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
         Long playerId = principal.getPlayerId();
@@ -106,7 +106,27 @@ public class PlayerController {
         PlayerSummaryDto profileResponse = playerService.getPlayerProfile(playerId);
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
-                                        ("Retrieve user profile successfully!",
+                                        ("Retrieve player profile successfully!",
+                                        profileResponse));
+    }
+
+    @PutMapping("/players/me")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiMessageResponseDto<PlayerSummaryDto>> updatePlayerProfile (Authentication authentication,
+                                                                                        @Valid @RequestBody
+                                                                                        PlayerUpdateDto playerUpdate) {
+
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+        Long playerId = principal.getPlayerId();
+
+        if (playerId == null) {
+            throw new ResourceNotFoundException("Player account not created yet for this user");
+        }
+
+       PlayerSummaryDto profileResponse = playerService.updatePlayerProfile(playerId, playerUpdate);
+
+       return ResponseEntity.ok().body(new ApiMessageResponseDto<>
+                                       ("Update player profile successfully!",
                                         profileResponse));
     }
 }
