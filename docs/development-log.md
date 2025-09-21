@@ -970,4 +970,81 @@ but response returned 500 Internal Server Error instead.
 
 ---
 
+## Day 40: Rebuild player controller unit tests aligned with JWT authentication and @PreAuthorize authorization.
+📅 Date: September 17, 2025
+
+**🎯 Objectives:**
+- Implement new test cases for `PlayerController`.
+- Refactor security configuration that aligns with the player controller authorizations and permissions.
+
+🛠️ Implementation Summary:
+- Implemented new test cases for the updated player controller functions.
+- Added new permissions on security configurations on both dev and test implementations.
+- Updated test data to align the test case objectives.
+
+**🧠 Technical Learning:**
+- **💡 Gain new Knowledge:** I was able to acquire new knowledge on how to handle test data and cases more.
+
+**📌 Next Step:** Continuation for rebuilding player controller tests
+
+---
+
+## Day 41: Continuation for rebuilding player controller tests
+📅 Date: September 18, 2025
+
+**🎯 Objectives:**
+- Continue implementation of newly test cases for other controller functions.
+
+🛠️ Implementation Summary:
+- Continued implementation of newly test cases for other controller functions.
+
+**📌 Next Step:** Implementation of new controller functions for handling player profile conveniently
+
+
+## Day 42: Implementation of new controller functions for handling player profile conveniently
+📅 Date: September 19, 2025
+
+**🎯 Objectives:**
+- Implement new controller functions to this program for player convenience with this endpoint: `/api/players/me`.
+- Configure implementation of `PlayerSummaryDto` for user experience.
+
+🛠️ Implementation Summary:
+- Implemented new controller functions to this program for player convenience with this endpoint: `/api/players/me`.
+- Configured implementation of `PlayerSummaryDto` for user experience by adding new abstract method on `PlayerInfoMapper`
+that handles `PlayerSummaryDto` and declare it to those controller functions.
+
+**🧠 Technical Learning:**
+- **💡 Gain new Knowledge:**
+
+_I will be taking a break tomorrow._
+
+**📌 Next Step:** Continuation of the implementation of player profile
+
+---
+
+## Day 43: Continuation of the implementation of player profile
+📅 Date: September 17, 2025
+
+**🎯 Objectives:**
+- Continue implement controller functions and tests for player profile.
+
+🛠️ Implementation Summary:
+- Encountered an issue about abnormal JSON response when updating the player profile and was solved.
+
+**⚠️ Challenges Encountered:**
+- Encountered an issue about abnormal JSON response when updating player profile. 
+Nothing updated values reflect in the output.
+- **🔧 Root Cause:** Forgot to annotate the `PlayerUpdateDto` parameter with `@Valid` and `@RequestBody`.
+- **🧪 Solution:** Added `@Valid` and `@RequestBody` on the `PlayerUpdateDto` parameter.
+- **✅ Result:** Maven compilation errors are resolved.
+
+**🧠 Technical Learning:**
+- **💡 Lesson Learned:** I am able to recall about conducting deserialization on the incoming HTTP request body (JSON)
+into an object with the usage of `@RequestBody` and using `@Valid` to reflect the jakarta constraints declared on DTO 
+for save operations (Create and Update).
+
+**📌 Next Step:** Refactoring all the codes and test before proceeding to integration testing
+
+---
+
 *Development continues with focus on building resilient, well-tested service architecture*
