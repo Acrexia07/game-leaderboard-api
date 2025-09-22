@@ -11,7 +11,7 @@ import static com.marlonb.game_leaderboard_api.test_data.PlayerTestData.samplePl
 public class User1TestData {
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    private static final String ENCODED_USER1_PASSWORD = encoder.encode("Test@123");
+//    private static final String ENCODED_USER1_PASSWORD = encoder.encode("Test@123");
 
     private static final UserEntity BASE_USER1;
     private static final UserPrincipal BASE_PRINCIPAL;
@@ -26,6 +26,7 @@ public class User1TestData {
 
     /* --- UPDATED VALUES --- */
     private static final String UPDATED_USER1_NAME = "User01";
+    private static final String UPDATED_USER1_PASSWORD = "Passw0rd@123";
 
     /* --- INVALID VALUES --- */
     private static final String INVALID_USER1_NAME = "user2541asdfadf";
@@ -77,7 +78,7 @@ public class User1TestData {
         var updatedUser = new UserEntity();
         updatedUser.setId(USER1_ID);
         updatedUser.setUsername(USER1_NAME);
-        updatedUser.setPassword(ENCODED_USER1_PASSWORD);
+        updatedUser.setPassword(UPDATED_USER1_PASSWORD);
         updatedUser.setRole(USER1_ROLE);
         updatedUser.setCreatedAt(USER1_CREATION_DATE);
         return updatedUser;
@@ -117,7 +118,7 @@ public class User1TestData {
 
         return new UserRequestDto(
                 INVALID_USER1_NAME,
-                ENCODED_USER1_PASSWORD
+                USER1_PASSWORD
         );
     }
 
@@ -125,7 +126,7 @@ public class User1TestData {
 
         return new UserUpdateDto(
                 sampleUser1Data().getUsername(),
-                ENCODED_USER1_PASSWORD
+                UPDATED_USER1_PASSWORD
         );
     }
 
