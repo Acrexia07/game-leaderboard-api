@@ -403,3 +403,50 @@ Test data was creating `UserResponseDto` with only four arguments, omitting the 
   - Records enforce all constructor fields, even in test data.
   - Test DTOs must include all required fields, or provide null if the field is optional.
   - Creating dedicated test data objects (like PlayerSummaryDto) improves reusability and consistency across tests.
+
+### Issue 14 (September 22, 2025): AdminUserRequestDto test failing due to hashed password in validation
+
+- **🐞 Issue:**
+Unit test `shouldRegisterSuccessfullyWhenAdminUserHasValidCredentials` failing with 400 Bad Request instead of expected 201 Created. 
+Validation error: "Password must be between 8 and 20 characters".
+  ```
+  Status expected:<201> but was:<400>
+  Body = {"timestamp":"2025-09-22T12:30:54.789865864","statusCode":400,"message":"Validation error(s) found!","error":{"password":["Password must be between 8 and 20 characters"]}}
+  ```
+
+- **⚠️ Error/Symptom:**
+  - Test data shows plain password `"Abcd1234@"` (9 characters) in constants
+  - HTTP request body contains hashed password `"$2a$10$YCf6xv08IbuAqFtthgR32u.SSzg29m4/ihe8yPEi//LK7bDJpLQeG"` (60 characters)
+  - Validation fails because 60 > 20 character limit
+
+- **🔧 Root Cause:** Test data method `sampleAdminUser1Request()` was using entity getter methods instead of raw constant values:
+  ```
+  // WRONG: Using getters that return processed/hashed values
+  return new AdminUserRequestDto(
+      sampleAdminUser1Data().getUsername(),  // Returns processed value
+      sampleAdminUser1Data().getPassword(),  // Returns hashed password!
+      sampleAdminUser1Data().getRole()
+  );
+  ```
+  The `BASE_ADMIN_DATA` entity had its password hashed somewhere (setter, constructor, or JPA lifecycle),
+so the getter returned the 60-character hash instead of the original raw password.
+
+- **🧪 Solution:** Use raw constant values directly instead of entity getters for DTO/request objects:
+  ```
+  // CORRECT: Using raw constants for input validation
+  public static AdminUserRequestDto sampleAdminUser1Request() {
+      return new AdminUserRequestDto(
+          ADMIN1_NAME,        // Raw value "admin1"
+          ADMIN1_PASSWORD,    // Raw value "Abcd1234@"
+          ADMIN1_ROLE         // Raw value UserRoles.ADMIN
+      );
+  }
+  ```
+
+- **✅ Result:** Test passes with 201 Created status and proper validation of raw input data.
+
+- **📝 Lesson Learned:**
+  - **For DTOs/Requests:** Always use raw constant values because these represent user input before processing
+  - **For Responses/Entities:** Use getters because these represent processed/stored data
+  - Entity getters may return transformed data (hashed passwords, formatted dates, etc.)
+  - Separate raw input test data from processed entity test data to avoid validation confusion
