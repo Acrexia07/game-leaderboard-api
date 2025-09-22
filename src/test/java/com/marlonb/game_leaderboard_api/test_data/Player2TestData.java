@@ -1,9 +1,9 @@
 package com.marlonb.game_leaderboard_api.test_data;
 
 import com.marlonb.game_leaderboard_api.model.PlayerEntity;
-import com.marlonb.game_leaderboard_api.model.PlayerRequestDto;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
 import com.marlonb.game_leaderboard_api.model.PlayerUpdateDto;
+import com.marlonb.game_leaderboard_api.model.user.UserEntity;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 
 import java.time.LocalDateTime;
@@ -11,19 +11,30 @@ import java.util.UUID;
 
 public class Player2TestData {
 
+    private static final PlayerEntity BASE_PLAYER_DATA;
+
+    private static final Long PLAYER_ID = 2L;
+    private static final UUID PLAYER_UUID = UUID.randomUUID();
+    private static final String PLAYER_NAME = "player2";
+    private static final Integer PLAYER_SCORE = 76800;
+    private static final LocalDateTime PLAYER_TIMESTAMP = LocalDateTime.of
+                                                          (2025, 2, 14, 0, 0);
+    private static final UserEntity PLAYER_USER_ACCOUNT = User1TestData.sampleUser1Data();
+
+    private static final Integer PLAYER_UPDATED_SCORE = 7200;
+
+    static {
+        BASE_PLAYER_DATA = new PlayerEntity();
+        BASE_PLAYER_DATA.setId(PLAYER_ID);
+        BASE_PLAYER_DATA.setUuid(PLAYER_UUID);
+        BASE_PLAYER_DATA.setPlayerName(PLAYER_NAME);
+        BASE_PLAYER_DATA.setScores(PLAYER_SCORE);
+        BASE_PLAYER_DATA.setTimestamp(PLAYER_TIMESTAMP);
+        BASE_PLAYER_DATA.setUser(PLAYER_USER_ACCOUNT);
+    }
+
     public static PlayerEntity samplePlayerData2 () {
-
-        var samplePlayerData2 = new PlayerEntity();
-        final UUID player2UID = UUID.randomUUID();
-
-        samplePlayerData2.setId(2L);
-        samplePlayerData2.setUuid(player2UID);
-        samplePlayerData2.setPlayerName("sonicChad6");
-        samplePlayerData2.setScores(62300);
-        samplePlayerData2.setTimestamp(LocalDateTime.now().minusMinutes(30));
-        samplePlayerData2.setUser(User1TestData.sampleUser1Data());
-
-        return  samplePlayerData2;
+        return BASE_PLAYER_DATA;
     }
 
     public static PlayerResponseDto samplePlayerResponse2 (PlayerEntity samplePlayer2Data) {
@@ -42,15 +53,7 @@ public class Player2TestData {
 
         return new PlayerUpdateDto(
                 samplePlayerData2().getPlayerName(),
-                7200
-        );
-    }
-
-    public static PlayerRequestDto samplePlayerRequest2 () {
-
-        return new PlayerRequestDto(
-                samplePlayerData2().getPlayerName(),
-                samplePlayerData2().getScores()
+                PLAYER_UPDATED_SCORE
         );
     }
 }

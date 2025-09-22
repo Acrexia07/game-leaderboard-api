@@ -2,6 +2,7 @@ package com.marlonb.game_leaderboard_api.test_data;
 
 import com.marlonb.game_leaderboard_api.model.PlayerEntity;
 import com.marlonb.game_leaderboard_api.model.PlayerResponseDto;
+import com.marlonb.game_leaderboard_api.model.user.UserEntity;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 
 import java.time.LocalDateTime;
@@ -9,19 +10,28 @@ import java.util.UUID;
 
 public class Player3TestData {
 
+    private static final PlayerEntity BASE_PLAYER_DATA;
+
+    private static final Long PLAYER_ID = 3L;
+    private static final UUID PLAYER_UUID = UUID.randomUUID();
+    private static final String PLAYER_NAME = "Player1";
+    private static final Integer PLAYER_SCORE = 99900;
+    private static final LocalDateTime PLAYER_CREATION_DATE = LocalDateTime.of
+                                                              (2025, 1, 1, 0, 0);
+    private static final UserEntity PLAYER_USER_ACCOUNT = User1TestData.sampleUser1Data();
+
+    static {
+        BASE_PLAYER_DATA = new PlayerEntity();
+        BASE_PLAYER_DATA.setId(PLAYER_ID);
+        BASE_PLAYER_DATA.setUuid(PLAYER_UUID);
+        BASE_PLAYER_DATA.setPlayerName(PLAYER_NAME);
+        BASE_PLAYER_DATA.setScores(PLAYER_SCORE);
+        BASE_PLAYER_DATA.setTimestamp(PLAYER_CREATION_DATE);
+        BASE_PLAYER_DATA.setUser(PLAYER_USER_ACCOUNT);
+    }
+
     public static PlayerEntity samplePlayer3Data () {
-
-        var samplePlayer3Data = new PlayerEntity();
-        final UUID player3UID = UUID.randomUUID();
-
-        samplePlayer3Data.setId(3L);
-        samplePlayer3Data.setUuid(player3UID);
-        samplePlayer3Data.setPlayerName("speedRun07");
-        samplePlayer3Data.setScores(99900);
-        samplePlayer3Data.setTimestamp(LocalDateTime.now().minusMinutes(10));
-        samplePlayer3Data.setUser(User1TestData.sampleUser1Data());
-
-        return  samplePlayer3Data;
+        return BASE_PLAYER_DATA;
     }
 
     public static PlayerResponseDto samplePlayer3Response (PlayerEntity samplePlayer3Data) {

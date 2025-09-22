@@ -263,7 +263,7 @@ public class PlayerServiceUnitTests {
                 when(playerMapper.toEntity(any(PlayerRequestDto.class)))
                         .thenReturn(testPlayer);
 
-                when(playerRepository.existsByPlayerName("player1")).thenReturn(true);
+                when(playerRepository.existsByPlayerName("Player1")).thenReturn(true);
 
                 Assertions.assertThrows(DuplicateResourceFoundException.class,
                                         () -> playerService.savePlayerData(testPlayerRequest, authentication));

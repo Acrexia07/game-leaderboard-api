@@ -13,22 +13,35 @@ import java.util.UUID;
 
 public class PlayerTestData {
 
-    private static final UUID playerUID = UUID.randomUUID();
-    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private static final PlayerEntity BASE_PLAYER_DATA;
 
+    /* --- RAW VALUES --- */
+    private static final Long PLAYER_ID = 1L;
+    private static final UUID PLAYER_UUID = UUID.randomUUID();
+    private static final String PLAYER_NAME = "Player1";
+    private static final Integer PLAYER_SCORE = 56700;
+    private static final LocalDateTime PLAYER_CREATION_DATE = LocalDateTime.of
+                                                              (2025, 1, 1, 0, 0);
+    private static final UserEntity PLAYER_USER_ACCOUNT = User1TestData.sampleUser1Data();
+
+    /* --- UPDATED VALUES --- */
     private static final int UPDATED_PLAYER_SCORE = 60000;
 
+    /* --- INVALID VALUES --- */
+    private static final String INVALID_PLAYER_NAME = "user_12345694668";
+    private static final PlayerEntity NULL_PLAYER = null;
+
+    /* --- PLAYER DATA --- */
     static {
         BASE_PLAYER_DATA = new PlayerEntity();
-
-        BASE_PLAYER_DATA.setId(1L);
-        BASE_PLAYER_DATA.setUuid(playerUID);
-        BASE_PLAYER_DATA.setPlayerName("player1");
-        BASE_PLAYER_DATA.setScores(56700);
-        BASE_PLAYER_DATA.setTimestamp(LocalDateTime.of(2025, 1, 1, 0, 0));
-        BASE_PLAYER_DATA.setUser(User1TestData.sampleUser1Data());
+        BASE_PLAYER_DATA.setId(PLAYER_ID);
+        BASE_PLAYER_DATA.setUuid(PLAYER_UUID);
+        BASE_PLAYER_DATA.setPlayerName(PLAYER_NAME);
+        BASE_PLAYER_DATA.setScores(PLAYER_SCORE);
+        BASE_PLAYER_DATA.setTimestamp(PLAYER_CREATION_DATE);
+        BASE_PLAYER_DATA.setUser(PLAYER_USER_ACCOUNT);
     }
 
     public static PlayerEntity samplePlayerData () {
@@ -36,16 +49,8 @@ public class PlayerTestData {
     }
 
     public static PlayerEntity samplePlayerDataAfterUpdate () {
-
-        var samplePlayerDataAfterUpdate = new PlayerEntity();
-
-        samplePlayerDataAfterUpdate.setId(BASE_PLAYER_DATA.getId());
-        samplePlayerDataAfterUpdate.setUuid(BASE_PLAYER_DATA.getUuid());
-        samplePlayerDataAfterUpdate.setPlayerName(BASE_PLAYER_DATA.getPlayerName());
-        samplePlayerDataAfterUpdate.setScores(UPDATED_PLAYER_SCORE);
-        samplePlayerDataAfterUpdate.setTimestamp(BASE_PLAYER_DATA.getTimestamp());
-        samplePlayerDataAfterUpdate.setUser(User1TestData.sampleUser1Data());
-        return samplePlayerDataAfterUpdate;
+        BASE_PLAYER_DATA.setScores(UPDATED_PLAYER_SCORE);
+        return BASE_PLAYER_DATA;
     }
 
     public static PlayerResponseDto samplePlayerResponse (PlayerEntity samplePlayerData) {
@@ -91,7 +96,7 @@ public class PlayerTestData {
     public static PlayerRequestDto sampleInvalidPlayerRequest () {
 
         return new PlayerRequestDto(
-                "user_12345694668",
+                INVALID_PLAYER_NAME,
                 samplePlayerData().getScores()
         );
     }
@@ -104,7 +109,7 @@ public class PlayerTestData {
 
     public static UserPrincipal sampleUserWithoutPlayerAccount () {
         UserEntity user = User1TestData.sampleUser1Data();
-        user.setPlayer(null);
+        user.setPlayer(NULL_PLAYER);
         return new UserPrincipal(user);
     }
 
