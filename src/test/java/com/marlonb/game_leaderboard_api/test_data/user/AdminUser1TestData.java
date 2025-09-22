@@ -16,8 +16,6 @@ public class AdminUser1TestData {
     private static final LocalDateTime ADMIN_CREATION_DATE = LocalDateTime.of
                                                              (2025, 1, 1, 0, 0 ,0);
 
-
-
     /* --- INVALID VALUES --- */
     private static final String INVALID_ADMIN1_NAME = "user2541asdfadf";
     private static final String INVALID_ADMIN1_PASSWORD = "Tester@13asddfioae";
