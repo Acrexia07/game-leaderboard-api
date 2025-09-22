@@ -2,14 +2,12 @@ package com.marlonb.game_leaderboard_api.test_data.user;
 
 import com.marlonb.game_leaderboard_api.model.PlayerSummaryDto;
 import com.marlonb.game_leaderboard_api.model.user.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static com.marlonb.game_leaderboard_api.test_data.Player2TestData.samplePlayerData2;
 
 public class User2TestData {
 
     private static final UserEntity BASE_USER2_DATA;
-    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     /* --- RAW VALUES --- */
     private static final Long USER2_ID = 2L;
@@ -24,7 +22,7 @@ public class User2TestData {
         BASE_USER2_DATA = new UserEntity();
         BASE_USER2_DATA.setId(USER2_ID);
         BASE_USER2_DATA.setUsername(USER2_NAME);
-        BASE_USER2_DATA.setPassword(encoder.encode(USER2_PASSWORD));
+        BASE_USER2_DATA.setPassword(USER2_PASSWORD);
         BASE_USER2_DATA.setRole(USER2_ROLE);
     }
 

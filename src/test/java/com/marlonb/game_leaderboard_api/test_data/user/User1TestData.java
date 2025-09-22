@@ -2,16 +2,12 @@ package com.marlonb.game_leaderboard_api.test_data.user;
 
 import com.marlonb.game_leaderboard_api.model.PlayerSummaryDto;
 import com.marlonb.game_leaderboard_api.model.user.*;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 
 import static com.marlonb.game_leaderboard_api.test_data.PlayerTestData.samplePlayerData;
 
 public class User1TestData {
-
-    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//    private static final String ENCODED_USER1_PASSWORD = encoder.encode("Test@123");
 
     private static final UserEntity BASE_USER1;
     private static final UserPrincipal BASE_PRINCIPAL;
