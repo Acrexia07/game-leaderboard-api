@@ -5,7 +5,6 @@ import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundExcepti
 import com.marlonb.game_leaderboard_api.model.user.*;
 import com.marlonb.game_leaderboard_api.repository.UserRepository;
 import com.marlonb.game_leaderboard_api.test_data.user.AdminUser1TestData;
-import com.marlonb.game_leaderboard_api.test_data.user.AdminUser2TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User2TestData;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;

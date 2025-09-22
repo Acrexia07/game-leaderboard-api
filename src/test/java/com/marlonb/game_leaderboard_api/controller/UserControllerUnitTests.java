@@ -115,7 +115,7 @@ public class UserControllerUnitTests {
         @DisplayName("Login(CREATE): Should login when user has valid credentials")
         void shouldPassLoginWhenUserHasValidCredentials() throws Exception {
 
-            LoginRequestDto testUserLogin = User1TestData.sampleUser1LoginData();
+            LoginRequestDto testUserLogin = User1TestData.sampleUser1LoginRequest();
             String expectedToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0VXNlciIsImlhdCI6MTczNTYwMzIwMCwiZXhwIjoxNzM1Njg5NjAwfQ.signature";
 
             when(userService.verifyUser(testUserLogin)).thenReturn(expectedToken);
@@ -231,7 +231,7 @@ public class UserControllerUnitTests {
     class NegativeTests {
 
         @Test
-        @WithMockUser(roles = "USER")
+        @WithMockUser(roles = "USER ")
         @DisplayName("Login: Should fail to login when user has invalid credentials")
         void shouldFailToLoginWhenUserHasInvalidCredentials () throws Exception {
 

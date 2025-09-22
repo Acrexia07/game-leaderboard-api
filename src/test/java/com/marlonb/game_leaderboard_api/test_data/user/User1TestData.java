@@ -10,37 +10,41 @@ import static com.marlonb.game_leaderboard_api.test_data.PlayerTestData.samplePl
 
 public class User1TestData {
 
-    private final static BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private static final String ENCODED_USER1_PASSWORD = encoder.encode("Test@123");
 
-    private static final String RAW_USERNAME = "user1";
-    private static final String RAW_PASSWORD = "Passw0rd@";
+    private static final UserEntity BASE_USER1;
+    private static final UserPrincipal BASE_PRINCIPAL;
 
-    private static final String RAW_UPDATED_USERNAME = "User01";
+    /* --- RAW VALUES --- */
+    private static final Long USER1_ID = 1L;
+    private static final String USER1_NAME = "User1";
+    private static final String USER1_PASSWORD = "Passw0rd@";
+    private static final UserRoles USER1_ROLE = UserRoles.USER;
+    private static final LocalDateTime USER1_CREATION_DATE = LocalDateTime.of
+                                                            (2025, 12, 25, 0, 0, 0);
 
-    private static final String RAW_INVALID_UPDATED_PASSWORD = "Test#4567890abcdefghjklmn";
-    private static final String RAW_INVALID_LOGIN_PASSWORD = "WrongPassword";
+    /* --- UPDATED VALUES --- */
+    private static final String UPDATED_USER1_NAME = "User01";
 
-    private final static UserEntity BASE_USER;
-    private final static UserPrincipal BASE_PRINCIPAL;
+    /* --- INVALID VALUES --- */
+    private static final String INVALID_USER1_NAME = "user2541asdfadf";
+    private static final String INVALID_USER1_PASSWORD = "Test#4567890abcdefghjklmn";
 
     static {
-        BASE_USER = new UserEntity();
-        BASE_USER.setId(1L);
-        BASE_USER.setUsername(RAW_USERNAME);
-        BASE_USER.setPassword(RAW_PASSWORD);
-        BASE_USER.setRole(UserRoles.USER);
-        BASE_USER.setCreatedAt(LocalDateTime.now());
+        BASE_USER1 = new UserEntity();
+        BASE_USER1.setId(USER1_ID);
+        BASE_USER1.setUsername(USER1_NAME);
+        BASE_USER1.setPassword(USER1_PASSWORD);
+        BASE_USER1.setRole(USER1_ROLE);
+        BASE_USER1.setCreatedAt(USER1_CREATION_DATE);
 
-        BASE_PRINCIPAL = new UserPrincipal(BASE_USER);
+        BASE_PRINCIPAL = new UserPrincipal(BASE_USER1);
     }
 
+    /* --- USER DATA --- */
     public static UserEntity sampleUser1Data () {
-        return BASE_USER;
-    }
-
-    /* --- USER PRINCIPAL DATA --- */
-    public static UserPrincipal sampleUser1PrincipalData () {
-        return BASE_PRINCIPAL;
+        return BASE_USER1;
     }
 
     public static PlayerSummaryDto playerSummaryDto () {
@@ -52,6 +56,101 @@ public class User1TestData {
         );
     }
 
+    public static UserUpdateDto sampleUser1PrincipalUpdate () {
+
+        return new UserUpdateDto(
+                UPDATED_USER1_NAME,
+                USER1_PASSWORD
+        );
+    }
+
+    public static UserUpdateDto sampleUser1PrincipalInvalidUpdate () {
+
+        return new UserUpdateDto(
+                UPDATED_USER1_NAME,
+                INVALID_USER1_PASSWORD
+        );
+    }
+
+    public static UserEntity sampleUserDataAfterUpdate () {
+
+        var updatedUser = new UserEntity();
+        updatedUser.setId(USER1_ID);
+        updatedUser.setUsername(USER1_NAME);
+        updatedUser.setPassword(ENCODED_USER1_PASSWORD);
+        updatedUser.setRole(USER1_ROLE);
+        updatedUser.setCreatedAt(USER1_CREATION_DATE);
+        return updatedUser;
+    }
+
+    public static UserResponseDto sampleUser1Response () {
+
+        return new UserResponseDto(
+                sampleUser1Data().getId(),
+                sampleUser1Data().getUsername(),
+                sampleUser1Data().getPassword(),
+                sampleUser1Data().getCreatedAt(),
+                null
+        );
+    }
+
+    public static UserRequestDto sampleUser1Request () {
+
+        return new UserRequestDto(
+                USER1_NAME,
+                USER1_PASSWORD
+        );
+    }
+
+    public static UserResponseDto sampleUser1ResponseForCreate () {
+
+        return new UserResponseDto(
+                sampleUser1Data().getId(),
+                sampleUser1Request().getUsername(),
+                sampleUser1Request().getPassword(),
+                sampleUser1Data().getCreatedAt(),
+                null
+        );
+    }
+
+    public static UserRequestDto sampleInvalidUser1Request () {
+
+        return new UserRequestDto(
+                INVALID_USER1_NAME,
+                ENCODED_USER1_PASSWORD
+        );
+    }
+
+    public static UserUpdateDto sampleUser1Update () {
+
+        return new UserUpdateDto(
+                sampleUser1Data().getUsername(),
+                ENCODED_USER1_PASSWORD
+        );
+    }
+
+    /* --- LOGIN DATA --- */
+    public static LoginRequestDto sampleUser1LoginRequest () {
+
+        return new LoginRequestDto(
+                sampleUser1Data().getUsername(),
+                sampleUser1Data().getPassword()
+        );
+    }
+
+    public static LoginRequestDto sampleUser1InvalidLoginData () {
+
+        return new LoginRequestDto(
+                sampleUser1Data().getUsername(),
+                INVALID_USER1_PASSWORD
+        );
+    }
+
+    /* --- USER PRINCIPAL DATA --- */
+    public static UserPrincipal sampleUser1PrincipalData () {
+        return BASE_PRINCIPAL;
+    }
+
     public static UserResponseDto sampleUser1PrincipalResponse () {
 
         return new UserResponseDto(
@@ -60,22 +159,6 @@ public class User1TestData {
                 sampleUser1PrincipalData().getPassword(),
                 sampleUser1Data().getCreatedAt(),
                 playerSummaryDto()
-        );
-    }
-
-    public static UserUpdateDto sampleUser1PrincipalUpdate () {
-
-        return new UserUpdateDto(
-                RAW_UPDATED_USERNAME,
-                RAW_PASSWORD
-        );
-    }
-
-    public static UserUpdateDto sampleUser1PrincipalInvalidUpdate () {
-
-        return new UserUpdateDto(
-                RAW_UPDATED_USERNAME,
-                RAW_INVALID_UPDATED_PASSWORD
         );
     }
 
@@ -98,88 +181,6 @@ public class User1TestData {
                 sampleUser1PrincipalInvalidUpdate().getPassword(),
                 sampleUser1Data().getCreatedAt(),
                 playerSummaryDto()
-        );
-    }
-
-    /* --- LOGIN DATA --- */
-    public static LoginRequestDto sampleUser1LoginData () {
-
-        return new LoginRequestDto(
-                BASE_USER.getUsername(),
-                RAW_PASSWORD
-        );
-    }
-
-    public static LoginRequestDto sampleUser1InvalidLoginData () {
-
-        return new LoginRequestDto(
-                sampleUser1Data().getUsername(),
-                RAW_INVALID_LOGIN_PASSWORD
-        );
-    }
-
-    public static UserEntity sampleUserDataAfterUpdate () {
-
-        var updatedUser = new UserEntity();
-        updatedUser.setId(1L);
-        updatedUser.setUsername("user1");
-        updatedUser.setPassword(encoder.encode("Test#123"));
-        updatedUser.setRole(UserRoles.USER);
-        updatedUser.setCreatedAt(LocalDateTime.of(2023, 1, 1, 0, 0));
-        return updatedUser;
-    }
-
-    public static UserResponseDto sampleUser1Response () {
-
-        return new UserResponseDto(
-                sampleUser1Data().getId(),
-                sampleUser1Data().getUsername(),
-                sampleUser1Data().getPassword(),
-                sampleUser1Data().getCreatedAt(),
-                null
-        );
-    }
-
-    public static UserRequestDto sampleUser1Request () {
-
-        return new UserRequestDto(
-                "user7",
-                "Tester@07"
-        );
-    }
-
-    public static UserResponseDto sampleUser1ResponseForCreate () {
-
-        return new UserResponseDto(
-                2L,
-                sampleUser1Request().getUsername(),
-                sampleUser1Request().getPassword(),
-                LocalDateTime.of(2023, 1, 1, 0, 0),
-                null
-        );
-    }
-
-    public static UserRequestDto sampleInvalidUser1Request () {
-
-        return new UserRequestDto(
-                "user2541asdfadf",
-                encoder.encode("Test@123")
-        );
-    }
-
-    public static LoginRequestDto sampleUser1LoginRequest () {
-
-        return new LoginRequestDto(
-                sampleUser1Data().getUsername(),
-                sampleUser1Data().getPassword()
-        );
-    }
-
-    public static UserUpdateDto sampleUser1Update () {
-
-        return new UserUpdateDto(
-                sampleUser1Data().getUsername(),
-                encoder.encode("Test@123")
         );
     }
 }

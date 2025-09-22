@@ -1,43 +1,38 @@
 package com.marlonb.game_leaderboard_api.test_data.user;
 
-import com.marlonb.game_leaderboard_api.model.PlayerSummaryDto;
 import com.marlonb.game_leaderboard_api.model.user.*;
 
 import java.time.LocalDateTime;
 
-import static com.marlonb.game_leaderboard_api.test_data.PlayerTestData.samplePlayerData;
-
 public class AdminUser1TestData {
 
+    private static final UserEntity BASE_ADMIN_DATA;
+
+    /* --- RAW VALUES --- */
+    private static final Long ADMIN1_ID = 3L;
+    private static final String ADMIN1_NAME = "admin1";
+    private static final String ADMIN1_PASSWORD = "Admin@123";
+    private static final UserRoles ADMIN1_ROLE = UserRoles.ADMIN;
+    private static final LocalDateTime ADMIN_CREATION_DATE = LocalDateTime.of
+                                                             (2025, 1, 1, 0, 0 ,0);
+
+
+
+    /* --- INVALID VALUES --- */
+    private static final String INVALID_ADMIN1_NAME = "user2541asdfadf";
+    private static final String INVALID_ADMIN1_PASSWORD = "Tester@13asddfioae";
+
+    static {
+        BASE_ADMIN_DATA = new UserEntity();
+        BASE_ADMIN_DATA.setId(ADMIN1_ID);
+        BASE_ADMIN_DATA.setUsername(ADMIN1_NAME);
+        BASE_ADMIN_DATA.setPassword(ADMIN1_PASSWORD);
+        BASE_ADMIN_DATA.setRole(ADMIN1_ROLE);
+        BASE_ADMIN_DATA.setCreatedAt(ADMIN_CREATION_DATE);
+    }
+
     public static UserEntity sampleAdminUser1Data () {
-
-        UserEntity admin1 = new UserEntity();
-        admin1.setId(3L);
-        admin1.setUsername("admin1");
-        admin1.setPassword("Admin@123");
-        admin1.setRole(UserRoles.ADMIN);
-        admin1.setCreatedAt(LocalDateTime.now());
-        return admin1;
-    }
-
-    public static UserEntity sampleAdminUser1DataAfterUpdate () {
-
-        UserEntity updatedAdmin = new UserEntity();
-        updatedAdmin.setId(3L);
-        updatedAdmin.setUsername("admin1");
-        updatedAdmin.setPassword("Admin#456");
-        updatedAdmin.setRole(UserRoles.ADMIN);
-        updatedAdmin.setCreatedAt(LocalDateTime.now());
-        return updatedAdmin;
-    }
-
-    public static PlayerSummaryDto playerSummaryDto () {
-
-        return new PlayerSummaryDto(
-                samplePlayerData().getPlayerName(),
-                samplePlayerData().getUuid(),
-                samplePlayerData().getScores()
-        );
+        return BASE_ADMIN_DATA;
     }
 
     public static UserResponseDto sampleAdminUser1Response () {
@@ -63,17 +58,8 @@ public class AdminUser1TestData {
     public static AdminUserRequestDto sampleAdminUser1InvalidRequest () {
 
         return new AdminUserRequestDto(
-                "user2541asdfadf",
-                "Tester@13asddfioae",
-                sampleAdminUser1Data().getRole()
-        );
-    }
-
-    public static AdminUserUpdateDto sampleAdminUser1Update () {
-
-        return new AdminUserUpdateDto(
-                sampleAdminUser1Data().getUsername(),
-                "Admin#789",
+                INVALID_ADMIN1_NAME,
+                INVALID_ADMIN1_PASSWORD,
                 sampleAdminUser1Data().getRole()
         );
     }

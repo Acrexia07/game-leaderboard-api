@@ -2,20 +2,34 @@ package com.marlonb.game_leaderboard_api.test_data.user;
 
 import com.marlonb.game_leaderboard_api.model.PlayerSummaryDto;
 import com.marlonb.game_leaderboard_api.model.user.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static com.marlonb.game_leaderboard_api.test_data.Player2TestData.samplePlayerData2;
-import static com.marlonb.game_leaderboard_api.test_data.PlayerTestData.samplePlayerData;
 
 public class User2TestData {
 
-    public static UserEntity sampleUser2Data () {
+    private static final UserEntity BASE_USER2_DATA;
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        var user2 = new UserEntity();
-        user2.setId(2L);
-        user2.setUsername("user2");
-        user2.setPassword("$2a$11$encoded.password.hash");
-        user2.setRole(UserRoles.USER);
-        return user2;
+    /* --- RAW VALUES --- */
+    private static final Long USER2_ID = 2L;
+    private static final String USER2_NAME = "User2";
+    private static final String USER2_PASSWORD = "Test@123";
+    private static final UserRoles USER2_ROLE = UserRoles.USER;
+
+    /* --- UPDATED VALUES --- */
+    private static final String UPDATE_USER2_PASSWORD = "User#789";
+
+    static {
+        BASE_USER2_DATA = new UserEntity();
+        BASE_USER2_DATA.setId(USER2_ID);
+        BASE_USER2_DATA.setUsername(USER2_NAME);
+        BASE_USER2_DATA.setPassword(encoder.encode(USER2_PASSWORD));
+        BASE_USER2_DATA.setRole(USER2_ROLE);
+    }
+
+    public static UserEntity sampleUser2Data () {
+        return BASE_USER2_DATA;
     }
 
     public static PlayerSummaryDto playerSummaryDto () {
@@ -38,19 +52,11 @@ public class User2TestData {
         );
     }
 
-    public static UserRequestDto sampleUser2Request () {
-
-        return new UserRequestDto(
-                sampleUser2Data().getUsername(),
-                sampleUser2Data().getPassword()
-        );
-    }
-
     public static UserUpdateDto sampleUser2Update () {
 
         return new UserUpdateDto(
                 sampleUser2Data().getUsername(),
-                "User#789"
+                UPDATE_USER2_PASSWORD
         );
     }
 
