@@ -47,9 +47,9 @@ public class AdminUser1TestData {
     public static AdminUserRequestDto sampleAdminUser1Request () {
 
         return new AdminUserRequestDto(
-                sampleAdminUser1Data().getUsername(),
-                sampleAdminUser1Data().getPassword(),
-                sampleAdminUser1Data().getRole()
+                ADMIN1_NAME,
+                ADMIN1_PASSWORD,
+                ADMIN1_ROLE
         );
     }
 
