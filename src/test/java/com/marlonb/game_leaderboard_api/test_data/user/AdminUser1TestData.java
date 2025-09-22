@@ -11,7 +11,7 @@ public class AdminUser1TestData {
     /* --- RAW VALUES --- */
     private static final Long ADMIN1_ID = 3L;
     private static final String ADMIN1_NAME = "admin1";
-    private static final String ADMIN1_PASSWORD = "Admin@123";
+    private static final String ADMIN1_PASSWORD = "Abcd1234@";
     private static final UserRoles ADMIN1_ROLE = UserRoles.ADMIN;
     private static final LocalDateTime ADMIN_CREATION_DATE = LocalDateTime.of
                                                              (2025, 1, 1, 0, 0 ,0);
