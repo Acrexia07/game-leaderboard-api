@@ -18,7 +18,7 @@ public class PlayerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(unique = true, nullable = false, updatable = false)
     private UUID uuid;

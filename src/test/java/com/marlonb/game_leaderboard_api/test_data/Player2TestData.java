@@ -15,7 +15,7 @@ public class Player2TestData {
 
     private static final Long PLAYER_ID = 2L;
     private static final UUID PLAYER_UUID = UUID.randomUUID();
-    private static final String PLAYER_NAME = "player2";
+    private static final String PLAYER_NAME = "Player2";
     private static final Integer PLAYER_SCORE = 76800;
     private static final LocalDateTime PLAYER_TIMESTAMP = LocalDateTime.of
                                                           (2025, 2, 14, 0, 0);
@@ -54,6 +54,17 @@ public class Player2TestData {
         return new PlayerUpdateDto(
                 samplePlayerData2().getPlayerName(),
                 PLAYER_UPDATED_SCORE
+        );
+    }
+
+    public static PlayerEntity sampleIncompletePlayer2Data () {
+        return new PlayerEntity(
+                null,
+                PLAYER_UUID,
+                PLAYER_NAME,
+                PLAYER_SCORE,
+                PLAYER_TIMESTAMP,
+                null
         );
     }
 }
