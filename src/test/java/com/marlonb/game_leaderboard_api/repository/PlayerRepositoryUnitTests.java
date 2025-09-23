@@ -14,10 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -67,6 +65,7 @@ public class PlayerRepositoryUnitTests {
             entityManager.persist(testPlayer2);
 
             entityManager.flush();
+            entityManager.clear();
 
             List<PlayerEntity> players = List.of(testPlayer, testPlayer2, testPlayer3, testPlayer4);
             playerRepository.saveAll(players);
@@ -142,8 +141,11 @@ public class PlayerRepositoryUnitTests {
             PlayerEntity testPlayer = PlayerTestData.samplePlayerDataWithoutID();
             PlayerEntity testPlayer2 = Player2TestData.sampleIncompletePlayer2Data();
 
-            List<PlayerEntity> fewerTopPlayers = List.of(testPlayer, testPlayer2);
-            playerRepository.saveAll(fewerTopPlayers);
+            entityManager.persist(testPlayer);
+            entityManager.persist(testPlayer2);
+
+            entityManager.flush();
+            entityManager.clear();
 
             List<PlayerEntity> topPlayers = playerRepository.findTop3PlayerByOrderByScoresDescAndTimestampAsc();
 

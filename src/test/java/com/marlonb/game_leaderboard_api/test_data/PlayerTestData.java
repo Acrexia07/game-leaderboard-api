@@ -4,15 +4,12 @@ import com.marlonb.game_leaderboard_api.model.*;
 import com.marlonb.game_leaderboard_api.model.user.UserEntity;
 import com.marlonb.game_leaderboard_api.model.user.UserPrincipal;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class PlayerTestData {
 
-
-    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private static final PlayerEntity BASE_PLAYER_DATA;
 
     /* --- RAW VALUES --- */
