@@ -10,6 +10,7 @@ import com.marlonb.game_leaderboard_api.service.UserService;
 import com.marlonb.game_leaderboard_api.test_data.user.AdminUser1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 import com.marlonb.game_leaderboard_api.test_securityConfig.TestSecurityConfig;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -58,6 +59,18 @@ public class UserControllerUnitTests {
     @MockitoBean
     private GameUserDetailsService gameUserDetailsService;
 
+    private UserResponseDto testAdminUserResponse;
+    private UserPrincipal testUserPrincipal;
+    private Long testUserId;
+
+    @BeforeEach
+    void setup() {
+
+        testAdminUserResponse = AdminUser1TestData.sampleAdminUser1Response();
+        testUserPrincipal = User1TestData.sampleUser1PrincipalData();
+        testUserId = testUserPrincipal.getId();
+    }
+
     @Nested
     class PositiveTests {
 
@@ -72,6 +85,7 @@ public class UserControllerUnitTests {
                     .thenReturn(testPublicUserResponse);
 
             String jsonPublicUserRequest = mapper.writeValueAsString(testPublicUserRequest);
+
             mockMvc.perform(post("/api/users/register")
                             .with(csrf())
                             .contentType(MediaType.APPLICATION_JSON)
@@ -91,7 +105,6 @@ public class UserControllerUnitTests {
         void shouldRegisterSuccessfullyWhenAdminUserHasValidCredentials () throws Exception {
 
             AdminUserRequestDto testAdminUserRequest = AdminUser1TestData.sampleAdminUser1Request();
-            UserResponseDto testAdminUserResponse = AdminUser1TestData.sampleAdminUser1Response();
 
             when(userService.createAdminUser(testAdminUserRequest))
                     .thenReturn(testAdminUserResponse);
@@ -138,9 +151,8 @@ public class UserControllerUnitTests {
         void shouldRetrieveAllUsersSuccessfully () throws Exception {
 
             UserResponseDto testPublicUser1 = User1TestData.sampleUser1Response();
-            UserResponseDto testAdminUser1 = AdminUser1TestData.sampleAdminUser1Response();
 
-            List<UserResponseDto> listOfUsers = List.of(testPublicUser1, testAdminUser1);
+            List<UserResponseDto> listOfUsers = List.of(testPublicUser1, testAdminUserResponse);
 
             when(userService.retrieveAllUsers()).thenReturn(listOfUsers);
 
@@ -160,10 +172,7 @@ public class UserControllerUnitTests {
         @DisplayName("User Management(READ): Should retrieve specific user successfully")
         void shouldRetrieveSpecificUserSuccessfully () throws Exception {
 
-            UserPrincipal testUserPrincipal = User1TestData.sampleUser1PrincipalData();
             UserResponseDto testUserPrincipalResponse = User1TestData.sampleUser1PrincipalResponse();
-
-            final long testUserId = testUserPrincipal.getId();
 
             when(userService.retrieveSpecificUser(testUserId))
                     .thenReturn(testUserPrincipalResponse);
@@ -187,11 +196,10 @@ public class UserControllerUnitTests {
         @DisplayName("User Management(UPDATE): Should update specific user successfully")
         void shouldUpdateSpecificUserSuccessfully () throws Exception {
 
-            UserPrincipal testUserPrincipal = User1TestData.sampleUser1PrincipalData();
-            final long testUserId = testUserPrincipal.getId();
 
             UserUpdateDto testUserPrincipalUpdate = User1TestData.sampleUser1PrincipalUpdate();
-            UserResponseDto testUserPrincipalResponseAfterUpdate = User1TestData.sampleUser1PrincipalResponseAfterUpdate();
+            UserResponseDto testUserPrincipalResponseAfterUpdate =
+                                       User1TestData.sampleUser1PrincipalResponseAfterUpdate();
 
             when(userService.updateSpecificUser(testUserId, testUserPrincipalUpdate))
                     .thenReturn(testUserPrincipalResponseAfterUpdate);
@@ -307,7 +315,6 @@ public class UserControllerUnitTests {
         @DisplayName("User Management(READ): Should deny public user accessing other user's data")
         void shouldDenyPublicUserAccessingOtherUsersData () throws Exception {
 
-            UserPrincipal testUserPrincipal = User1TestData.sampleUser1PrincipalData();
             final long otherUserId = 2L;
 
             when(userService.retrieveSpecificUser(otherUserId))
@@ -326,9 +333,6 @@ public class UserControllerUnitTests {
         @Test
         @DisplayName("User Management(READ): Should fail to update if user data input is invalid")
         void shouldFailToUpdateIfUserDataInputIsInvalid () throws Exception {
-
-            UserPrincipal testUserPrincipal = User1TestData.sampleUser1PrincipalData();
-            final long testUserId = testUserPrincipal.getId();
 
             UserUpdateDto invalidTestUserPrincipal =
                     User1TestData.sampleUser1PrincipalInvalidUpdate();
