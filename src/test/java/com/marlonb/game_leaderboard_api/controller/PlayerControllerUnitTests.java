@@ -10,6 +10,7 @@ import com.marlonb.game_leaderboard_api.service.PlayerService;
 import com.marlonb.game_leaderboard_api.test_data.Player2TestData;
 import com.marlonb.game_leaderboard_api.test_data.PlayerTestData;
 import com.marlonb.game_leaderboard_api.test_securityConfig.TestSecurityConfig;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -57,6 +58,25 @@ public class PlayerControllerUnitTests {
     @MockitoBean
     private GameUserDetailsService gameUserDetailsService;
 
+    private PlayerResponseDto testPlayerResponse;
+    private Long testPlayerId;
+    private UserPrincipal testPrincipal;
+    private Long testPrincipalPlayerId;
+    private PlayerUpdateDto testPlayerUpdate;
+
+    @BeforeEach
+    void setup () {
+        PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
+        testPlayerId = testPlayer.getId();
+
+        testPlayerResponse = PlayerTestData.samplePlayerResponse(testPlayer);
+        testPlayerUpdate = PlayerTestData.samplePlayerUpdate();
+
+        testPrincipal = PlayerTestData.sampleUserPrincipal();
+        testPrincipalPlayerId = testPrincipal.getPlayerId();
+    }
+
+
     @Nested
     class PositiveTests {
 
@@ -65,9 +85,7 @@ public class PlayerControllerUnitTests {
         @DisplayName("Player(CREATE): Should create player successfully")
         void shouldCreatePlayerSuccessfully () throws Exception {
 
-            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
             PlayerRequestDto testPlayerRequest = PlayerTestData.samplePlayerRequest();
-            PlayerResponseDto testPlayerResponse = PlayerTestData.samplePlayerResponse(testPlayer);
 
             when(playerService.savePlayerData(eq(testPlayerRequest), any(Authentication.class)))
                     .thenReturn(testPlayerResponse);
@@ -91,13 +109,10 @@ public class PlayerControllerUnitTests {
         @DisplayName("Player(READ): Should retrieve all players successfully")
         void shouldRetrieveAllPlayersSuccessfully () throws Exception {
 
-            PlayerEntity testPlayer1 = PlayerTestData.samplePlayerData();
             PlayerEntity testPlayer2 = Player2TestData.samplePlayerData2();
-
-            PlayerResponseDto testPlayer1Response = PlayerTestData.samplePlayerResponse(testPlayer1);
             PlayerResponseDto testPlayer2Response = Player2TestData.samplePlayerResponse2(testPlayer2);
 
-            List<PlayerResponseDto> expectedResponses = List.of(testPlayer1Response, testPlayer2Response);
+            List<PlayerResponseDto> expectedResponses = List.of(testPlayerResponse, testPlayer2Response);
 
             when(playerService.retrieveAllPlayersData())
                     .thenReturn(expectedResponses);
@@ -117,10 +132,6 @@ public class PlayerControllerUnitTests {
         @WithMockUser(roles = "ADMIN")
         @DisplayName("Player(READ): Should retrieve specific player data successfully by Admin")
         void shouldRetrieveSpecificPlayerDataSuccessfullyByAdmin () throws Exception {
-
-            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
-            final long testPlayerId = testPlayer.getId();
-            PlayerResponseDto testPlayerResponse = PlayerTestData.samplePlayerResponse(testPlayer);
 
             when(playerService.retrieveSpecificPlayerData(testPlayerId))
                     .thenReturn(testPlayerResponse);
@@ -142,12 +153,9 @@ public class PlayerControllerUnitTests {
         @DisplayName("Player(READ): Should retrieve player profile successfully!")
         void shouldRetrievePlayerProfileSuccessfully () throws Exception {
 
-            UserPrincipal testPrincipal = PlayerTestData.sampleUserPrincipal();
-            final long testPlayerId = testPrincipal.getPlayerId();
-
             PlayerSummaryDto testPlayerSummary = PlayerTestData.samplePlayerSummary();
 
-            when(playerService.getPlayerProfile(testPlayerId))
+            when(playerService.getPlayerProfile(testPrincipalPlayerId))
                     .thenReturn(testPlayerSummary);
 
             String jsonPlayerProfile = mapper.writeValueAsString(testPlayerSummary);
@@ -167,10 +175,6 @@ public class PlayerControllerUnitTests {
         @DisplayName("Player(UPDATE): Should update specific player data successfully by Admin")
         void shouldUpdateSpecificPlayerDataSuccessfullyByAdmin () throws Exception {
 
-            PlayerEntity testPlayer = PlayerTestData.samplePlayerData();
-            final long testPlayerId = testPlayer.getId();
-
-            PlayerUpdateDto testPlayerUpdate = PlayerTestData.samplePlayerUpdate();
             PlayerResponseDto testPlayerResponseAfterUpdate = PlayerTestData.samplePlayerResponseAfterUpdate();
 
             when(playerService.updateSpecificPlayerData(testPlayerId, testPlayerUpdate))
@@ -193,19 +197,15 @@ public class PlayerControllerUnitTests {
         @DisplayName("Player(READ): Should update player profile successfully!")
         void shouldUpdatePlayerProfileSuccessfully () throws Exception {
 
-            UserPrincipal principal = PlayerTestData.sampleUserPrincipal();
-            final long testPlayerId = principal.getPlayerId();
-
-            PlayerUpdateDto testPlayerUpdate = PlayerTestData.samplePlayerUpdate();
             PlayerSummaryDto testProfileUpdate = PlayerTestData.samplePlayerUpdateSummary();
 
-            when(playerService.updatePlayerProfile(testPlayerId, testPlayerUpdate))
+            when(playerService.updatePlayerProfile(testPrincipalPlayerId, testPlayerUpdate))
                     .thenReturn(testProfileUpdate);
 
             String jsonProfileUpdate = mapper.writeValueAsString(testPlayerUpdate);
 
             mockMvc.perform(put("/api/players/me")
-                            .with(user(principal))
+                            .with(user(testPrincipal))
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(jsonProfileUpdate))
                    .andExpectAll(

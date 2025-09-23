@@ -65,7 +65,6 @@ public class UserControllerUnitTests {
 
     @BeforeEach
     void setup() {
-
         testAdminUserResponse = AdminUser1TestData.sampleAdminUser1Response();
         testUserPrincipal = User1TestData.sampleUser1PrincipalData();
         testUserId = testUserPrincipal.getId();
@@ -195,7 +194,6 @@ public class UserControllerUnitTests {
         @WithMockUser(username = "1", roles = "USER")
         @DisplayName("User Management(UPDATE): Should update specific user successfully")
         void shouldUpdateSpecificUserSuccessfully () throws Exception {
-
 
             UserUpdateDto testUserPrincipalUpdate = User1TestData.sampleUser1PrincipalUpdate();
             UserResponseDto testUserPrincipalResponseAfterUpdate =
