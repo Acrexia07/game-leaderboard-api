@@ -22,6 +22,7 @@ public class UserController {
     public ResponseEntity<ApiMessageResponseDto<UserResponseDto>> createNewUser (@Valid @RequestBody
                                                                                  UserRequestDto userRequest) {
 
+        // Save new user data and build a Location URI for the created resource
         UserResponseDto createUserRequest = userService.createUser(userRequest);
         URI location = URI.create("/api/users/register/" + createUserRequest.id());
 
@@ -44,6 +45,7 @@ public class UserController {
     public ResponseEntity<ApiMessageResponseDto<UserResponseDto>> createAdminUser (@Valid @RequestBody
                                                                                    AdminUserRequestDto adminRequest) {
 
+        // Save new admin data and build a Location URI for the created resource
         UserResponseDto createAdminRequest = userService.createAdminUser(adminRequest);
         URI location = URI.create("/api/users/" + createAdminRequest.id());
 
@@ -62,6 +64,7 @@ public class UserController {
                                          listOfUsers));
     }
 
+    // Allows access to the user with ADMIN role or the user whose ID matches the authenticated user's ID
     @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @GetMapping("/users/{id}")
     public ResponseEntity<ApiMessageResponseDto<UserResponseDto>> retrieveSpecificUserData (@PathVariable long id) {

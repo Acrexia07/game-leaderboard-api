@@ -26,6 +26,8 @@ public class JWTService {
         this.expirationDate = expirationDate;
     }
 
+    // Decode the Base64-encoded secret key and convert it into an HMAC-SHA SecretKey
+    // for signing and verifying JWT tokens.
     private SecretKey getKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -36,6 +38,8 @@ public class JWTService {
         return generateToken(Map.of(), username);
     }
 
+    // Generates a signed JWT token for the given username,
+    // including any additional claims, issued-at time, and expiration.
     public String generateToken(Map<String, Object> extraClaims, String username) {
 
         long now = System.currentTimeMillis();
@@ -52,25 +56,33 @@ public class JWTService {
     }
 
     /* --------- Token validation --------- */
+    // Validates the JWT by checking if the username matches
+    // and the token has not expired.
     public boolean isTokenValid(String token, String username) {
         return username.equals(extractUsername(token)) && !isTokenExpired(token);
     }
 
+    // Checks if the JWT token has already expired.
     public boolean isTokenExpired(String token) {
         Date expiration = extractClaim(token, Claims::getExpiration);
         return expiration.before(new Date());
     }
 
     /* --------- Claim extraction --------- */
+    // Extracts the username (subject) from the JWT token.
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
+    // Generic method to extract a specific claim from the JWT token
+    // using a claims resolver function.
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
+    // Parse the JWT token using the signing key, verify its signature,
+    // and extract all claims (payload) from the token.
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                    .verifyWith(getKey())

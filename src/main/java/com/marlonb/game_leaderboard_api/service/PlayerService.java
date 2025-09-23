@@ -31,10 +31,14 @@ public class PlayerService {
                                              PlayerRequestDto createRequest,
                                              Authentication authentication) {
 
+        // Get the currently authenticated user's username
+        // then retrieve the corresponding UserEntity from the repository
         String username = authentication.getName();
         UserEntity user = userRepository.findByUsername(username);
+
         PlayerEntity createPlayer = playerMapper.toEntity(createRequest);
 
+        // Checks if player name already exists
         if(playerRepository.existsByPlayerName(createPlayer.getPlayerName())) {
             throw new DuplicateResourceFoundException
                     (String.format(createPlayer.getPlayerName(), DUPLICATE_PLAYER_NAME_FOUND));
@@ -49,6 +53,8 @@ public class PlayerService {
     @Transactional(readOnly = true)
     public List<PlayerResponseDto> retrieveTop3Players () {
 
+        // Retrieve the top 3 players ordered by score (highest first).
+        // If multiple players have the same score, order them by timestamp (earliest first).
         return playerRepository.findTop3PlayerByOrderByScoresDescAndTimestampAsc()
                                .stream()
                                .map(playerMapper::toResponse)
@@ -61,6 +67,7 @@ public class PlayerService {
 
         List<PlayerEntity> listOfPlayers = playerRepository.findAll();
 
+        // List all player responses using Java Streams API
         return listOfPlayers.stream()
                             .map(playerMapper::toResponse)
                             .toList();
@@ -87,6 +94,8 @@ public class PlayerService {
 
         PlayerEntity foundPlayer = findPlayerId(id);
 
+        // Check if the updated player name already exists in the database
+        // and is different from the current player's name
         if(playerRepository.existsByPlayerName(playerUpdateDto.getPlayerName()) &&
                 !foundPlayer.getPlayerName().equalsIgnoreCase(playerUpdateDto.getPlayerName())) {
             throw new DuplicateResourceFoundException
@@ -104,6 +113,8 @@ public class PlayerService {
 
         PlayerEntity foundPlayer = findPlayerId(id);
 
+        // Check if the updated player name already exists in the database
+        // and is different from the current player's name
         if(playerRepository.existsByPlayerName(playerUpdateDto.getPlayerName()) &&
                 !foundPlayer.getPlayerName().equalsIgnoreCase(playerUpdateDto.getPlayerName())) {
             throw new DuplicateResourceFoundException

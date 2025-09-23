@@ -35,12 +35,15 @@ public class UserService {
 
         UserEntity createdUser = userMapper.toEntity(userRequest);
 
+        //Checks if admin username already exists in the database
         if(userRepository.existsByUsername(createdUser.getUsername())) {
             throw new DuplicateResourceFoundException
                     (String.format(createdUser.getUsername(), DUPLICATE_USERNAME_FOUND));
         }
 
+        // Encrypt password using BCrypt Password encoder
         createdUser.setPassword(encoder.encode(createdUser.getPassword()));
+
         createdUser.setRole(UserRoles.USER);
         UserEntity savedUser = userRepository.save(createdUser);
         return userMapper.toResponse(savedUser);
@@ -51,6 +54,7 @@ public class UserService {
 
         UserEntity createdAdminUser = userMapper.toEntity(adminRequest);
 
+        //Checks if admin username already exists in the database
         if(userRepository.existsByUsername(createdAdminUser.getUsername())) {
             throw new DuplicateResourceFoundException
                     (String.format(createdAdminUser.getUsername(), DUPLICATE_USERNAME_FOUND));
@@ -65,6 +69,7 @@ public class UserService {
     public List<UserResponseDto> retrieveAllUsers () {
 
         List<UserEntity> listOfUsers = userRepository.findAll();
+
         return listOfUsers.stream()
                           .map(userMapper::toResponse)
                           .toList();
@@ -83,12 +88,15 @@ public class UserService {
 
         UserEntity foundUser = findUserId(id);
 
+        // Check if the updated username already exists in the database
+        // and is different from the current user's username
         if(userRepository.existsByUsername(foundUser.getUsername()) &&
            !foundUser.getUsername().equalsIgnoreCase(userUpdate.getUsername())) {
             throw new DuplicateResourceFoundException
                     (String.format(userUpdate.getUsername(), DUPLICATE_USERNAME_FOUND));
         }
 
+        // Encrypt password using BCrypt Password encoder
         String encodePassword = encoder.encode(userUpdate.getPassword());
         userUpdate.setPassword(encodePassword);
 
@@ -114,6 +122,9 @@ public class UserService {
 
     public String verifyUser(@Valid @RequestBody LoginRequestDto loginRequest) {
 
+        // Authenticate user credentials using AuthenticationManager.
+        // If authentication succeeds, generate a JWT token for the username.
+        // If authentication fails, throw a BadCredentialsException.
         try {
             Authentication authentication =
                     authManager.authenticate(new UsernamePasswordAuthenticationToken(

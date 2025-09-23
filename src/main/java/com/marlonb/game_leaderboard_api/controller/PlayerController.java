@@ -32,6 +32,7 @@ public class PlayerController {
                                                                 (@Valid @RequestBody PlayerRequestDto playerRequest,
                                                                                      Authentication authentication) {
 
+        // Save new player data and build a Location URI for the created resource
         PlayerResponseDto playerResponseForCreate = playerService.savePlayerData(playerRequest, authentication);
         URI location = URI.create("/api/players/" + playerResponseForCreate.id());
 
@@ -96,6 +97,7 @@ public class PlayerController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiMessageResponseDto<PlayerSummaryDto>> retrievePlayerProfileResource (Authentication auth) {
 
+        // Extract the logged-in user's Player ID from the security context (UserPrincipal)
         UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
         Long playerId = principal.getPlayerId();
 
@@ -116,6 +118,7 @@ public class PlayerController {
                                                                                         @Valid @RequestBody
                                                                                         PlayerUpdateDto playerUpdate) {
 
+        // Extract the logged-in user's Player ID from the security context (UserPrincipal)
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         Long playerId = principal.getPlayerId();
 

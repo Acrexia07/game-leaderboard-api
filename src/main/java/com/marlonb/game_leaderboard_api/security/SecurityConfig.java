@@ -22,7 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity // enables @PreAuthorize / @Secured annotations on methods
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -44,14 +44,19 @@ public class SecurityConfig {
                                     .requestMatchers("/api/users/**").authenticated()
                                     .requestMatchers("/api/leaderboards").authenticated()
                                     .anyRequest().authenticated())
+            // Disable CSRF (we rely on JWT for stateless auth)
             .csrf(AbstractHttpConfigurer::disable)
+            // Allow basic auth (mainly for testing/debugging)
             .httpBasic(Customizer.withDefaults())
+            // Add JWT filter before the standard username/password filter
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+            // Make the app stateless (no HTTP sessions stored)
             .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .build();
     }
 
+    // Custom UserDetailsService (loads user data from DB)
     @Bean
     public UserDetailsService userDetailsService () {
         return gameUserDetailsService;
