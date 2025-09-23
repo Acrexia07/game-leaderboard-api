@@ -14,10 +14,10 @@ public class Player3TestData {
 
     private static final Long PLAYER_ID = 3L;
     private static final UUID PLAYER_UUID = UUID.randomUUID();
-    private static final String PLAYER_NAME = "Player3";
+    private static final String PLAYER_NAME = "Player1";
     private static final Integer PLAYER_SCORE = 99900;
     private static final LocalDateTime PLAYER_TIMESTAMP = LocalDateTime.of
-                                                              (2025, 1, 3, 0, 0);
+                                                              (2025, 1, 1, 0, 0);
     private static final UserEntity PLAYER_USER_ACCOUNT = User1TestData.sampleUser1Data();
 
     static {
@@ -47,13 +47,13 @@ public class Player3TestData {
     }
 
     public static PlayerEntity sampleIncompletePlayer3Data () {
-        return new PlayerEntity(
-                null,
-                PLAYER_UUID,
-                PLAYER_NAME,
-                PLAYER_SCORE,
-                PLAYER_TIMESTAMP,
-                null
-        );
+        PlayerEntity player = new PlayerEntity();
+        player.setId(null);
+        player.setUuid(PLAYER_UUID);
+        player.setPlayerName(PLAYER_NAME);
+        player.setScores(PLAYER_SCORE);
+        player.setTimestamp(PLAYER_TIMESTAMP);
+        player.setUser(null);
+        return player;
     }
 }

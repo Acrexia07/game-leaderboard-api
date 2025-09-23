@@ -17,7 +17,7 @@ public class Player4TestData {
     private static final String PLAYER_NAME = "Player4";
     private static final Integer PLAYER_SCORE = 78700;
     private static final LocalDateTime PLAYER_TIMESTAMP = LocalDateTime.of
-                                                              (2025, 1, 5, 0, 0);
+                                                              (2025, 1, 1, 0, 0);
     private static final UserEntity PLAYER_USER_ACCOUNT = User1TestData.sampleUser1Data();
 
     /* --- PLAYER DATA --- */
@@ -32,14 +32,14 @@ public class Player4TestData {
     }
 
     public static PlayerEntity sampleIncompletePlayer4Data () {
-        return new PlayerEntity(
-                null,
-                PLAYER_UUID,
-                PLAYER_NAME,
-                PLAYER_SCORE,
-                PLAYER_TIMESTAMP,
-                null
-        );
+        PlayerEntity player = new PlayerEntity();
+        player.setId(null);
+        player.setUuid(PLAYER_UUID);
+        player.setPlayerName(PLAYER_NAME);
+        player.setScores(PLAYER_SCORE);
+        player.setTimestamp(PLAYER_TIMESTAMP);
+        player.setUser(null);
+        return player;
     }
 
 

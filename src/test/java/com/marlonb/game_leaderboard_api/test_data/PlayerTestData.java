@@ -3,9 +3,7 @@ package com.marlonb.game_leaderboard_api.test_data;
 import com.marlonb.game_leaderboard_api.model.*;
 import com.marlonb.game_leaderboard_api.model.user.UserEntity;
 import com.marlonb.game_leaderboard_api.model.user.UserPrincipal;
-import com.marlonb.game_leaderboard_api.model.user.UserRoles;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -133,13 +131,13 @@ public class PlayerTestData {
 
     /*--- PLAYER DATA FOR INTEGRATION TESTS --- */
     public static PlayerEntity samplePlayerDataWithoutID () {
-        return new PlayerEntity(
-                null,
-                PLAYER_UUID,
-                PLAYER_NAME,
-                PLAYER_SCORE,
-                PLAYER_TIMESTAMP,
-                null
-        );
+        PlayerEntity player = new PlayerEntity();
+        player.setId(null);
+        player.setUuid(PLAYER_UUID);
+        player.setPlayerName(PLAYER_NAME);
+        player.setScores(PLAYER_SCORE);
+        player.setTimestamp(PLAYER_TIMESTAMP);
+        player.setUser(null);
+        return player;
     }
 }
