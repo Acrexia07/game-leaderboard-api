@@ -180,4 +180,16 @@ public class User1TestData {
                 playerSummaryDto()
         );
     }
+
+    /* --- USER DATA FOR INTEGRATION TESTS --- */
+    public static UserEntity sampleUser1DataWithoutId () {
+        return new UserEntity(
+                null,
+                USER1_NAME,
+                USER1_PASSWORD,
+                USER1_ROLE,
+                USER1_CREATION_DATE,
+                null
+        );
+    }
 }
