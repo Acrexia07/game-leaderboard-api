@@ -1047,4 +1047,18 @@ for save operations (Create and Update).
 
 ---
 
+## Day 44-45: Refactoring all the codes and test before proceeding to integration testing
+📅 Date: September 22-23, 2025
+
+**🎯 Objectives:**
+- Refactoring all codes and tests before proceeding to integration testing.
+
+🛠️ Implementation Summary:
+- Restructure/refactor and clean test data and test cases.
+- Add detailed comments across layers.
+
+**📌 Next Step:** Integration Test implementation
+
+---
+
 *Development continues with focus on building resilient, well-tested service architecture*
