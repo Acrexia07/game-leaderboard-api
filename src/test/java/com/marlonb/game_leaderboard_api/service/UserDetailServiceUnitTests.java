@@ -7,6 +7,7 @@ import com.marlonb.game_leaderboard_api.repository.UserRepository;
 import com.marlonb.game_leaderboard_api.test_data.user.AdminUser1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User2TestData;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -43,16 +44,34 @@ public class UserDetailServiceUnitTests {
     @InjectMocks
     private UserService userService;
 
+    private UserEntity testUser;
+    private UserEntity testUser2;
+    private UserResponseDto testUserResponse;
+    private UserRequestDto testUserRequest;
+    private Long testUserId;
+    private UserEntity testAdminUser;
+    private AdminUserRequestDto testAdminUserRequest;
+
+    @BeforeEach
+    void setup() {
+        testUser = User1TestData.sampleUser1Data();
+        testUserId = testUser.getId();
+
+        testUser2 = User2TestData.sampleUser2Data();
+
+        testUserResponse = User1TestData.sampleUser1Response();
+        testUserRequest = User1TestData.sampleUser1Request();
+
+        testAdminUser = AdminUser1TestData.sampleAdminUser1Data();
+        testAdminUserRequest = AdminUser1TestData.sampleAdminUser1Request();
+    }
+
     @Nested
     class PositiveTests {
 
         @Test
         @DisplayName("Should create user successfully")
         void shouldCreateUserSuccessfully () {
-
-            UserEntity testUser = User1TestData.sampleUser1Data();
-            UserResponseDto expectedResponse = User1TestData.sampleUser1Response();
-            UserRequestDto testUserRequest = User1TestData.sampleUser1Request();
 
             when(userMapper.toEntity(any(UserRequestDto.class)))
                     .thenReturn(testUser);
@@ -61,19 +80,17 @@ public class UserDetailServiceUnitTests {
                     .thenReturn(testUser);
 
             when(userMapper.toResponse(any(UserEntity.class)))
-                    .thenReturn(expectedResponse);
+                    .thenReturn(testUserResponse);
 
             UserResponseDto actualResponse = userService.createUser(testUserRequest);
 
-            assertUserServiceReturnedExpectedResponse(actualResponse, expectedResponse);
+            assertUserServiceReturnedExpectedResponse(actualResponse, testUserResponse);
         }
 
         @Test
         @DisplayName("Should create admin user successfully")
         void shouldCreateAdminUserSuccessfully () {
 
-            UserEntity testAdminUser = AdminUser1TestData.sampleAdminUser1Data();
-            AdminUserRequestDto testAdminUserRequest = AdminUser1TestData.sampleAdminUser1Request();
             UserResponseDto testAdminUserResponse = AdminUser1TestData.sampleAdminUser1Response();
 
             when(userMapper.toEntity(any(AdminUserRequestDto.class)))
@@ -94,18 +111,14 @@ public class UserDetailServiceUnitTests {
         @DisplayName("Should retrieve all users successfully")
         void shouldRetrieveAllUsersSuccessfully () {
 
-            UserEntity testUser1 = User1TestData.sampleUser1Data();
-            UserEntity testUser2 = User2TestData.sampleUser2Data();
-
-            UserResponseDto testUserResponse1 = User1TestData.sampleUser1Response();
             UserResponseDto testUserResponse2 = User2TestData.sampleUser2Response();
 
-            List<UserEntity> listOfUsers = List.of(testUser1, testUser2);
-            List<UserResponseDto> expectedResponses = List.of(testUserResponse1, testUserResponse2);
+            List<UserEntity> listOfUsers = List.of(testUser, testUser2);
+            List<UserResponseDto> expectedResponses = List.of(testUserResponse, testUserResponse2);
 
             when(userRepository.findAll()).thenReturn(listOfUsers);
 
-            when(userMapper.toResponse(testUser1)).thenReturn(testUserResponse1);
+            when(userMapper.toResponse(testUser)).thenReturn(testUserResponse);
             when(userMapper.toResponse(testUser2)).thenReturn(testUserResponse2);
 
             List<UserResponseDto> actualResponses = userService.retrieveAllUsers();
@@ -117,33 +130,23 @@ public class UserDetailServiceUnitTests {
         @DisplayName("Should retrieve specific user successfully")
         void shouldRetrieveSpecificUserSuccessfully () {
 
-            UserEntity testUser = User1TestData.sampleUser1Data();
-            final long testUserId = testUser.getId();
-
-            UserResponseDto expectedResponse = User1TestData.sampleUser1Response();
-
             when(userRepository.findById(testUserId))
                     .thenReturn(Optional.of(testUser));
 
             when(userMapper.toResponse(testUser))
-                    .thenReturn(expectedResponse);
+                    .thenReturn(testUserResponse);
 
             UserResponseDto actualResponse = userService.retrieveSpecificUser(testUserId);
 
-            assertUserServiceReturnedExpectedResponse(actualResponse, expectedResponse);
+            assertUserServiceReturnedExpectedResponse(actualResponse, testUserResponse);
         }
 
         @Test
         @DisplayName("Should update specific user successfully")
         void shouldUpdateSpecificUserSuccessfully () {
 
-            UserEntity testUser = User1TestData.sampleUser1Data();
-            final long testUserId = testUser.getId();
-
             UserUpdateDto testUserUpdate = User1TestData.sampleUser1Update();
             UserEntity testUserAfterUpdate = User1TestData.sampleUserDataAfterUpdate();
-
-            UserResponseDto expectedResponse = User1TestData.sampleUser1Response();
 
             when(userRepository.findById(testUserId))
                     .thenReturn(Optional.of(testUser));
@@ -155,19 +158,16 @@ public class UserDetailServiceUnitTests {
                     .thenReturn(testUserAfterUpdate);
 
             when(userMapper.toResponse(any(UserEntity.class)))
-                    .thenReturn(expectedResponse);
+                    .thenReturn(testUserResponse);
 
             UserResponseDto actualResponse = userService.updateSpecificUser(testUserId, testUserUpdate);
 
-            assertUserServiceReturnedExpectedResponse(actualResponse, expectedResponse);
+            assertUserServiceReturnedExpectedResponse(actualResponse, testUserResponse);
         }
 
         @Test
         @DisplayName("Should delete specific user successfully")
         void shouldDeleteSpecificUserSuccessfully () {
-
-            UserEntity testUser = User1TestData.sampleUser1Data();
-            final long testUserId = testUser.getId();
 
             when(userRepository.findById(testUserId))
                     .thenReturn(Optional.of(testUser));
@@ -223,9 +223,6 @@ public class UserDetailServiceUnitTests {
             @DisplayName("Should fail to create public user when username already exist")
             void shouldFailToCreatePublicUserWhenUsernameAlreadyExist () {
 
-                UserEntity testUser = User1TestData.sampleUser1Data();
-                UserRequestDto testUserRequest = User1TestData.sampleUser1Request();
-
                 when(userMapper.toEntity(any(UserRequestDto.class)))
                         .thenReturn(testUser);
 
@@ -242,9 +239,6 @@ public class UserDetailServiceUnitTests {
             @DisplayName("Should fail to create admin user when username already exist")
             void shouldFailToCreateAdminUserWhenUsernameAlreadyExist () {
 
-                UserEntity testAdminUser = AdminUser1TestData.sampleAdminUser1Data();
-                AdminUserRequestDto testAdminUserRequest = AdminUser1TestData.sampleAdminUser1Request();
-
                 when(userMapper.toEntity(any(AdminUserRequestDto.class)))
                         .thenReturn(testAdminUser);
 
@@ -260,7 +254,6 @@ public class UserDetailServiceUnitTests {
             @DisplayName("Should fail update when username already exist")
             void shouldFailUpdateWhenUsernameAlreadyExist () {
 
-                UserEntity testUser2 = User2TestData.sampleUser2Data();
                 final long testUserId = testUser2.getId();
 
                 UserUpdateDto testUserUpdate = User2TestData.sampleUser2Update();
