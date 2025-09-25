@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(PlayerController.class)
 @Import(TestSecurityConfig.class)
-public class PlayerControllerUnitTests {
+public class PlayerControllerSliceTests {
 
     @Autowired
     private MockMvc mockMvc;

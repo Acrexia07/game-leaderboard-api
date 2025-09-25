@@ -42,7 +42,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(UserController.class)
 @Import(TestSecurityConfig.class)
-public class UserControllerUnitTests {
+public class UserControllerSliceTests {
 
     @Autowired
     private MockMvc mockMvc;
