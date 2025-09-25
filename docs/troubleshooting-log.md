@@ -450,3 +450,74 @@ so the getter returned the 60-character hash instead of the original raw passwor
   - **For Responses/Entities:** Use getters because these represent processed/stored data
   - Entity getters may return transformed data (hashed passwords, formatted dates, etc.)
   - Separate raw input test data from processed entity test data to avoid validation confusion
+
+---
+
+### Issue 15 (September 25, 2025): Leaderboard test failing due to `saveAll()` merging detached entities
+
+- **🐞 Issue:**  
+  - Leaderboard unit test intermittently fails with unexpected ordering of players:
+  ```
+  Expected :[Player1, Player4, Player3]
+  Actual :[Player1, Player2, Player3]
+  ```
+  - The issue occurs when scores are equal and the query depends on `timestamp ASC` for ordering.
+
+- **⚠️ Error/Symptom:**
+  - Test explicitly sets timestamps for Player2 and Player4, but actual results show ordering drift.
+  - `saveAll()` appears to override timestamps or cause merge-related side effects.
+
+- **🔧 Root Cause:**  
+  - Mixing `entityManager.persist()` with `playerRepository.saveAll()` in the same test lifecycle:
+  ```
+  entityManager.persist(player1);
+  entityManager.persist(player2);
+  entityManager.persist(player3);
+  entityManager.persist(player4);
+  
+  entityManager.flush();
+  entityManager.clear();
+  
+  playerRepository.saveAll(List.of(player1, player2, player3, player4));
+  ```
+- `persist()` inserts and manages entities.
+- `flush()` writes them to DB.
+- `clear()` detaches all.
+- `saveAll()` then calls `merge()` on detached entities, which can:
+- Trigger `@PreUpdate`, updating timestamps unintentionally.
+- Create new managed instances with inconsistent state.
+  🧪 Solution:
+  Use one persistence approach consistently:
+
+**- ✅ Option A: Use only persist()**
+  ```
+  entityManager.persist(player1);
+  entityManager.persist(player2);
+  entityManager.persist(player3);
+  entityManager.persist(player4);
+  
+  entityManager.flush();
+  entityManager.clear();
+  
+  List<PlayerEntity> topPlayers =
+  playerRepository.findTop3PlayerByOrderByScoresDescAndTimestampAsc();
+  ```
+**- ✅ Option B: Use only `saveAll()`**
+  ```
+  List<PlayerEntity> players = List.of(player1, player2, player3, player4);
+  playerRepository.saveAll(players);
+  
+  List<PlayerEntity> topPlayers =
+  playerRepository.findTop3PlayerByOrderByScoresDescAndTimestampAsc();
+  ```
+  - 🚫 Do not mix `persist()` + `saveAll()` in the same test for the same entities.
+
+- **✅ Result:**
+Tests now produce deterministic ordering (Player1, Player4, Player3).
+No unexpected timestamp overrides.
+
+- **📝 Lesson Learned:**
+  - `persist()` (JPA) is for new entities only; schedules insert at flush/commit.
+  - `saveAll()` (Spring Data JPA) works for both new and existing, but internally uses `merge()` on detached entities.
+  - Mixing them in tests causes non-deterministic behavior.
+  - For reproducible tests, pick one strategy (prefer `persist()` for precise test control).

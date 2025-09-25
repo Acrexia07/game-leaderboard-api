@@ -1053,11 +1053,23 @@ for save operations (Create and Update).
 **🎯 Objectives:**
 - Refactoring all codes and tests before proceeding to integration testing.
 
-🛠️ Implementation Summary:
+**🛠️ Implementation Summary:**
 - Restructure/refactor and clean test data and test cases.
 - Add detailed comments across layers.
 
 **📌 Next Step:** Integration Test implementation
+
+--- 
+
+## Day 45-46: Integration Test implementation
+📅 Date: September 24-25, 2025
+
+**🎯 Objectives:**
+- Implement integration test in the project.
+
+**🛠️ Implementation Summary:**
+- Implemented integration test in the project.
+- Updated and fix some player repository test cases and data.
 
 ---
 
