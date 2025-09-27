@@ -521,3 +521,41 @@ No unexpected timestamp overrides.
   - `saveAll()` (Spring Data JPA) works for both new and existing, but internally uses `merge()` on detached entities.
   - Mixing them in tests causes non-deterministic behavior.
   - For reproducible tests, pick one strategy (prefer `persist()` for precise test control).
+
+### Issue 16 (September 27, 2025): Duplicate user data persisting between tests
+
+- **🐞 Issue:**  
+  - Tests involving user registration failed intermittently with **duplicate username constraint violations**, 
+even though H2 was configured as in-memory (`jdbc:h2:mem:testdb`).
+  Example symptom:  
+    ```
+    org.springframework.dao.DataIntegrityViolationException: could not execute statement;
+    SQL [n/a]; constraint ["UK_username ... UNIQUE INDEX"]
+    ```
+    _It looked as though test data was persisting across test runs._
+
+- **⚠️ Root Cause:**
+  - The H2 configuration included `DB_CLOSE_DELAY=-1`, which keeps the in-memory database alive until the JVM stops.
+  - While the schema was dropped between contexts (`ddl-auto=create-drop`), data inserted in one test was still 
+  visible to the next test inside the same context lifecycle.
+  - Thus, hardcoded usernames (like `newuser`) caused duplicate entries across tests.
+
+- **🧪 Solution:**  
+  Explicitly reset the `userRepository` state before each test run:
+  ```java
+  @BeforeEach
+  void setup() {
+      userRepository.deleteAll();
+      baseUrl = "http://localhost:" + port;
+  }
+  _This ensures a clean slate before each test execution._
+
+- **✅ Result:**
+  - Tests no longer fail with duplicate username errors.
+  - Each test now operates in a fully isolated state.
+
+- **📝 Lesson Learned:**
+  - Even with in-memory databases, persistence can outlive individual tests depending on connection parameters
+  `(DB_CLOSE_DELAY=-1)`.
+  - Always reset repositories `(deleteAll())` or use `@Transactional` with rollback for test isolation.
+  - Relying only on create-drop is not enough when multiple test methods share the same application context.

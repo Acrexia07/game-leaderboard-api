@@ -53,8 +53,6 @@ public class GameLeaderBoardSecurityTest {
     @MockitoBean
     private GameUserDetailsService gameUserDetailsService;
 
-
-
     @LocalServerPort
     private int port;
 

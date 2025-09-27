@@ -1071,7 +1071,30 @@ for save operations (Create and Update).
 - Implemented integration test in the project.
 - Updated and fix some player repository test cases and data.
 
-**📌 Next Step:** Security Test implementation
+**📌 Next Step:** Security Test implementation - Positive Testing
+
+--- 
+
+## Day 47: Security Test implementation - Positive Testing
+📅 Date: September 27, 2025
+
+**🎯 Objectives:**
+- Implement positive testing for security.
+
+**🛠️ Implementation Summary:**
+- Implement positive testing that test public endpoint access.
+- Implement positive testing that test protected endpoint authenticated access.
+
+**⚠️ Challenges Encountered:**
+- Duplicate user data persisting between tests
+- **🐞 Issue:** Tests involving user registration failed intermittently with **duplicate username constraint violations**,
+  even though H2 was configured as in-memory (`jdbc:h2:mem:testdb`).
+- **⚠️ Root Cause:** The H2 configuration included `DB_CLOSE_DELAY=-1`, which keeps the in-memory database alive
+until the JVM stops.
+- **🧪 Solution:** Explicitly reset the `userRepository` state before each test run.
+- - **✅ Result:**Tests no longer fail with duplicate username errors. Each test now operates in a fully isolated state.
+
+**📌 Next Step:** Security Test implementation - Positive Testing continuation and Negative Testing
 
 
 
