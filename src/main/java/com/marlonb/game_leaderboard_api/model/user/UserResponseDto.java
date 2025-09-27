@@ -4,7 +4,7 @@ import com.marlonb.game_leaderboard_api.model.PlayerSummaryDto;
 
 import java.time.LocalDateTime;
 
-public record UserResponseDto(long id,
+public record UserResponseDto(Long id,
                               String username,
                               String password,
                               LocalDateTime createdAt,

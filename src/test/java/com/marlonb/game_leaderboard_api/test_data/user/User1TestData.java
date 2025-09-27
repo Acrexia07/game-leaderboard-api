@@ -2,6 +2,7 @@ package com.marlonb.game_leaderboard_api.test_data.user;
 
 import com.marlonb.game_leaderboard_api.model.PlayerSummaryDto;
 import com.marlonb.game_leaderboard_api.model.user.*;
+import com.marlonb.game_leaderboard_api.test_data.PlayerTestData;
 
 import java.time.LocalDateTime;
 
@@ -145,6 +146,11 @@ public class User1TestData {
 
     /* --- USER PRINCIPAL DATA --- */
     public static UserPrincipal sampleUser1PrincipalData () {
+        return BASE_PRINCIPAL;
+    }
+
+    public static UserPrincipal sampleUser1PrincipalWithPlayerAccount () {
+        BASE_USER1.setPlayer(PlayerTestData.samplePlayerData());
         return BASE_PRINCIPAL;
     }
 
