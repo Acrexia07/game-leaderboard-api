@@ -10,6 +10,7 @@ import com.marlonb.game_leaderboard_api.service.GameUserDetailsService;
 import com.marlonb.game_leaderboard_api.service.JWTService;
 import com.marlonb.game_leaderboard_api.service.PlayerService;
 import com.marlonb.game_leaderboard_api.test_data.PlayerTestData;
+import com.marlonb.game_leaderboard_api.test_data.user.AdminUser1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +24,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.client.RestTemplate;
 
@@ -127,6 +127,33 @@ public class GameLeaderBoardSecurityTest {
                 );
 
                 assertNotEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+                assertNotEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+            });
+        }
+
+        @Test
+        @DisplayName("Should allow admin only on admin-protected endpoint")
+        void shouldAllowAdminOnlyOnAdminProtectedEndpoint () {
+
+            UserEntity testAdmin = AdminUser1TestData.sampleAdminUser1Data();
+            UserPrincipal adminPrincipal = AdminUser1TestData.sampleAdmin1Principal();
+
+            when(gameUserDetailsService.loadUserByUsername(testAdmin.getUsername()))
+                    .thenReturn(adminPrincipal);
+
+            String validToken = jwtService.generateToken(testAdmin.getUsername());
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(validToken);
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            String url = baseUrl + "/api/players";
+
+            assertDoesNotThrow(() -> {
+                ResponseEntity<String> response = restTemplate.exchange(
+                      url, HttpMethod.GET, entity,  String.class
+                );
+
                 assertNotEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
             });
         }

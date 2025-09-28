@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public class AdminUser1TestData {
 
     private static final UserEntity BASE_ADMIN_DATA;
+    private static final UserPrincipal ADMIN_PRINCIPAL;
 
     /* --- RAW VALUES --- */
     private static final Long ADMIN1_ID = 3L;
@@ -27,10 +28,16 @@ public class AdminUser1TestData {
         BASE_ADMIN_DATA.setPassword(ADMIN1_PASSWORD);
         BASE_ADMIN_DATA.setRole(ADMIN1_ROLE);
         BASE_ADMIN_DATA.setCreatedAt(ADMIN_CREATION_DATE);
+
+        ADMIN_PRINCIPAL = new UserPrincipal(BASE_ADMIN_DATA);
     }
 
     public static UserEntity sampleAdminUser1Data () {
         return BASE_ADMIN_DATA;
+    }
+
+    public static UserPrincipal sampleAdmin1Principal () {
+        return ADMIN_PRINCIPAL;
     }
 
     public static UserResponseDto sampleAdminUser1Response () {
