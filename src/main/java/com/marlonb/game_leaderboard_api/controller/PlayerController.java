@@ -92,7 +92,7 @@ public class PlayerController {
         return ResponseEntity.noContent().build();
     }
 
-    /* --- User endpoints --- */
+    /* --- Player endpoints --- */
     @GetMapping("/players/me")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiMessageResponseDto<PlayerSummaryDto>> retrievePlayerProfileResource (Authentication auth) {

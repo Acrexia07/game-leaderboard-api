@@ -27,13 +27,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class GameLeaderBoardSecurityTest {
+public class GameLeaderboardSecurityTests {
 
     @Autowired
     private RestTemplate restTemplate;
@@ -156,6 +155,33 @@ public class GameLeaderBoardSecurityTest {
 
                 assertNotEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
             });
+        }
+
+        @Test
+        @DisplayName("Should authenticated user access their own resource")
+        void shouldAuthenticatedUserAccessTheirOwnResource () {
+
+            UserResponseDto testUserResponse = User1TestData.sampleUser1PrincipalResponse();
+            UserPrincipal userPrincipal = PlayerTestData.sampleUserPrincipal();
+
+            when(gameUserDetailsService.loadUserByUsername(testUserResponse.username()))
+                    .thenReturn(userPrincipal);
+
+            String validToken = jwtService.generateToken(testUserResponse.username());
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(validToken);
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            String url = baseUrl + "/api/players/me";
+
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url, HttpMethod.GET, entity, String.class
+            );
+
+            assertNotEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+            assertNotEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
         }
     }
 }
