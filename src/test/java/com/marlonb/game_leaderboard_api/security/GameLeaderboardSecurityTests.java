@@ -12,6 +12,9 @@ import com.marlonb.game_leaderboard_api.service.PlayerService;
 import com.marlonb.game_leaderboard_api.test_data.PlayerTestData;
 import com.marlonb.game_leaderboard_api.test_data.user.AdminUser1TestData;
 import com.marlonb.game_leaderboard_api.test_data.user.User1TestData;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,6 +30,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import javax.crypto.SecretKey;
+import java.time.Instant;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -210,6 +217,61 @@ public class GameLeaderboardSecurityTests {
                     });
 
             assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatusCode());
+        }
+
+        @Test
+        @DisplayName("Should reject expired JWT")
+        void shouldRejectExpiredJwt () {
+
+            String secretKey = "mySampleTestKeyForThisTestAboutExpirationKey";
+            SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+
+            String expiredToken = Jwts.builder()
+                                      .subject("user1")
+                                    .issuedAt(Date.from(Instant.now().minusSeconds(3600)))
+                                    .expiration(Date.from(Instant.now().minusSeconds(1800)))
+                                    .signWith(key)
+                                    .compact();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(expiredToken);
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            String url = baseUrl + "/api/users/me";
+
+            HttpClientErrorException exception =
+                    assertThrows(HttpClientErrorException.class, () -> {
+                        restTemplate.exchange(
+                                url, HttpMethod.GET, entity, String.class
+                        );
+                    });
+
+            assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatusCode());
+        }
+
+        @Test
+        @DisplayName("Should reject unauthenticated requests to protected endpoint")
+        void shouldRejectUnauthenticatedRequestToProtectedEndpoint () {
+
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            String url = baseUrl + "/api/users";
+
+            HttpClientErrorException exception =
+                    assertThrows(HttpClientErrorException.class, () -> {
+                        restTemplate.exchange(
+                                url, HttpMethod.GET, entity, String.class
+                        );
+                    });
+
+            assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatusCode());
+        }
+
+        @Test
+        @DisplayName("Should reject unauthorized request from protected endpoint")
+        void shouldRejectUnauthorizedRequestFromProtectedEndpoint () {
+
         }
     }
 }
