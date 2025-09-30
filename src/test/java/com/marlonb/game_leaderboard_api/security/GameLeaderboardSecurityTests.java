@@ -25,6 +25,7 @@ import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -182,6 +183,33 @@ public class GameLeaderboardSecurityTests {
 
             assertNotEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
             assertNotEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        }
+    }
+
+    @Nested
+    class NegativeTests {
+
+        @Test
+        @DisplayName("Should reject invalid JWT")
+        void shouldRejectInvalidJwt () {
+
+            String invalidToken = "not-jwt-at-all";
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setBearerAuth(invalidToken);
+
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            String url = baseUrl + "/api/users/me";
+
+            HttpClientErrorException exception =
+                    assertThrows(HttpClientErrorException.class, () -> {
+                        restTemplate.exchange(
+                                url, HttpMethod.GET, entity, String.class
+                        );
+                    });
+
+            assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatusCode());
         }
     }
 }
