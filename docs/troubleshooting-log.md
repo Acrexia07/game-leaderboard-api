@@ -12,7 +12,14 @@
 - [Issue 8 (August 15, 2025): Custom Query abstract method failure with the exception `UnsatisfiedDependencyException`](#issue-8-august-15-2025-custom-query-abstract-method-failure-with-the-exception-unsatisfieddependencyexception)
 - [Issue 9 (August 24, 2025): Issue on `userRepository`](#issue-9-august-24-2025-issue-on-userrepository)
 - [Issue 10 (September 5, 2025): WebMvcTest security configuration causing 403 Forbidden errors](#issue-10-september-5-2025-webmvctest-security-configuration-causing-403-forbidden-errors)
-- [**Issue 11 (September 7, 2025): Admin users getting 401 Unauthorized despite correct credentials**](#issue-11-september-7-2025-admin-users-getting-401-unauthorized-despite-correct-credentials)
+- [Issue 11 (September 7, 2025): Admin users getting 401 Unauthorized despite correct credentials](#issue-11-september-7-2025-admin-users-getting-401-unauthorized-despite-correct-credentials)
+- [Issue 12 (September 9, 2025): JWT Key Generation Only Producing 156 Bits Instead of Required 256 Bits](#issue-12-september-9-2025-jwt-key-generation-only-producing-156-bits-instead-of-required-256-bits)
+- [Issue 13 (September 15, 2025): AccessDeniedException tests returning 500 instead of 403](#issue-13-september-15-2025-accessdeniedexception-tests-returning-500-instead-of-403)
+- [Issue 14 (September 16, 2025): Compilation failure in test data due to missing PlayerSummaryDto](#issue-14-september-16-2025-compilation-failure-in-test-data-due-to-missing-playersummarydto)
+- [Issue 15 (September 22, 2025): AdminUserRequestDto test failing due to hashed password in validation](#issue-15-september-22-2025-adminuserrequestdto-test-failing-due-to-hashed-password-in-validation)
+- [Issue 16 (September 25, 2025): Leaderboard test failing due to `saveAll()` merging detached entities](#issue-16-september-25-2025-leaderboard-test-failing-due-to-saveall-merging-detached-entities)
+- [Issue 17 (September 27, 2025): Duplicate user data persisting between tests](#issue-17-september-27-2025-duplicate-user-data-persisting-between-tests)
+- [Issue 18 (September 30, 2025): Tests failing due to HttpClientErrorException on 401 responses](#issue-18-september-30-2025-tests-failing-due-to-httpclienterrorexception-on-401-responses)
 
 ---
 ## Technical issues encountered
@@ -222,15 +229,17 @@ Without `SecurityFilterChain` bean, Spring Security defaults to requiring authen
 
 ---
 
-### **Issue 11 (September 7, 2025): Admin users getting 401 Unauthorized despite correct credentials**
+### Issue 11 (September 7, 2025): Admin users getting 401 Unauthorized despite correct credentials
 
-- **🐞 Issue:** Created admin users successfully (201 response) but getting 401 Unauthorized when trying to access protected endpoints with correct Basic Auth credentials.
+- **🐞 Issue:** Created admin users successfully (201 response) but getting 401 Unauthorized when trying to 
+access protected endpoints with correct Basic Auth credentials.
   ```
   Username: admin_config
   Password: Dummy#11
   Response: 401 Unauthorized
 
-- **Cause:** Missing final keyword in GameUserDetailsService field declaration. The @RequiredArgsConstructor annotation only works with final fields, so UserRepository was never injected and remained null.
+- **Cause:** Missing final keyword in GameUserDetailsService field declaration. The @RequiredArgsConstructor 
+annotation only works with final fields, so UserRepository was never injected and remained null.
   ```
   @Service
   @RequiredArgsConstructor
@@ -251,7 +260,8 @@ Without `SecurityFilterChain` bean, Spring Security defaults to requiring authen
       }
   }
 
-- **✅ Result:** Admin users can now authenticate successfully and access protected endpoints with proper ADMIN role authorization.
+- **✅ Result:** Admin users can now authenticate successfully and access protected endpoints with proper 
+ADMIN role authorization.
 
 - **📝 Lesson Learned:**
   - `@RequiredArgsConstructor` only generates constructor parameters for final fields
@@ -261,7 +271,7 @@ Without `SecurityFilterChain` bean, Spring Security defaults to requiring authen
 
 ---
 
-### **Issue 11 (September 9, 2025): JWT Key Generation Only Producing 156 Bits Instead of Required 256 Bits**
+### Issue 12 (September 9, 2025): JWT Key Generation Only Producing 156 Bits Instead of Required 256 Bits
 
 - **🐞 Issue:** JwtService was only generating 156 bits for HMAC-SHA256 algorithm, which requires minimum 256 bits for 
 secure signing.
@@ -301,7 +311,7 @@ secure signing.
 
 ---
 
-### Issue 12 (September 15, 2025): AccessDeniedException tests returning 500 instead of 403
+### Issue 13 (September 15, 2025): AccessDeniedException tests returning 500 instead of 403
 
 - **🐞 Issue:** Unit test for endpoint with `@PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")` 
 was expecting 403 Forbidden, but response returned 500 Internal Server Error instead.
@@ -353,7 +363,7 @@ explicitly provide a full `UserPrincipal` object when testing ID-sensitive scena
 
 ---
 
-### Issue 13 (September 16, 2025): Compilation failure in test data due to missing PlayerSummaryDto
+### Issue 14 (September 16, 2025): Compilation failure in test data due to missing PlayerSummaryDto
 
 - **🐞 Issue:** `mvn clean install` fails with compilation errors when constructing `UserResponseDto` in test classes.
   - **Error example:**
@@ -404,7 +414,7 @@ Test data was creating `UserResponseDto` with only four arguments, omitting the 
   - Test DTOs must include all required fields, or provide null if the field is optional.
   - Creating dedicated test data objects (like PlayerSummaryDto) improves reusability and consistency across tests.
 
-### Issue 14 (September 22, 2025): AdminUserRequestDto test failing due to hashed password in validation
+### Issue 15 (September 22, 2025): AdminUserRequestDto test failing due to hashed password in validation
 
 - **🐞 Issue:**
 Unit test `shouldRegisterSuccessfullyWhenAdminUserHasValidCredentials` failing with 400 Bad Request instead of expected 201 Created. 
@@ -453,7 +463,7 @@ so the getter returned the 60-character hash instead of the original raw passwor
 
 ---
 
-### Issue 15 (September 25, 2025): Leaderboard test failing due to `saveAll()` merging detached entities
+### Issue 16 (September 25, 2025): Leaderboard test failing due to `saveAll()` merging detached entities
 
 - **🐞 Issue:**  
   - Leaderboard unit test intermittently fails with unexpected ordering of players:
@@ -522,7 +532,7 @@ No unexpected timestamp overrides.
   - Mixing them in tests causes non-deterministic behavior.
   - For reproducible tests, pick one strategy (prefer `persist()` for precise test control).
 
-### Issue 16 (September 27, 2025): Duplicate user data persisting between tests
+### Issue 17 (September 27, 2025): Duplicate user data persisting between tests
 
 - **🐞 Issue:**  
   - Tests involving user registration failed intermittently with **duplicate username constraint violations**, 
@@ -559,3 +569,55 @@ even though H2 was configured as in-memory (`jdbc:h2:mem:testdb`).
   `(DB_CLOSE_DELAY=-1)`.
   - Always reset repositories `(deleteAll())` or use `@Transactional` with rollback for test isolation.
   - Relying only on create-drop is not enough when multiple test methods share the same application context.
+
+### Issue 18 (September 30, 2025): Tests failing due to HttpClientErrorException on 401 responses
+
+- **🐞 Issue:**
+  - Tests checking for missing or malformed Authorization headers were failing when asserting on ResponseEntity status:
+    ```
+    ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+    assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    ```
+  - Instead of returning a ResponseEntity with 401, the test threw:
+    ```
+    org.springframework.web.client.HttpClientErrorException$Unauthorized: 401 Unauthorized
+    ```
+
+- **⛑️ Symptom:** tests never reached the `assertEquals()` line, 
+making it seem like the framework was not returning the expected response.
+
+- **⚠️ Root Cause:**
+  - `RestTemplate.exchange()` automatically throws `HttpClientErrorException` for any 4xx client error responses 
+  by default.
+  - The exception contains the HTTP status and optional body, but does not return a normal ResponseEntity.
+  - Since no explicit response body was sent by the server, the exception appeared as `[no body]`.
+  - The test was written expecting a normal ResponseEntity, so the thrown exception prevented the test from passing.
+
+- **🧪 Solution:**
+  - Use assertThrows to expect `HttpClientErrorException` (or its subclass Unauthorized) instead of expecting a 
+  ResponseEntity:
+    ```
+    HttpClientErrorException exception = assertThrows(HttpClientErrorException.Unauthorized.class, () -> {
+    restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+    });
+    assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatusCode());
+    ```
+
+  - Optionally, disable automatic exception throwing by overriding RestTemplate’s error handler:
+    ```
+    restTemplate.setErrorHandler(new DefaultResponseErrorHandler() {
+    @Override
+    public boolean hasError(ClientHttpResponse response) {
+    return false; // Treat all responses as normal, no exceptions
+    }
+    });
+    ```
+
+- **✅ Result:**
+  - Tests now correctly handle 401 responses and can assert on status codes or messages.
+  - Prevents misleading `[no body]` errors in logs and allows proper test verification.
+
+- **📝 Lesson Learned:**
+  - RestTemplate throws exceptions for all 4xx/5xx responses by default, so tests must anticipate this behavior.
+  - Use `assertThrows` or a custom error handler when testing HTTP error responses.
+  - Do not assume `exchange()` will return a normal ResponseEntity on 4xx client errors.

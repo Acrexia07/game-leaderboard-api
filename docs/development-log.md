@@ -1096,7 +1096,31 @@ until the JVM stops.
 
 **📌 Next Step:** Security Test implementation - Positive Testing continuation and Negative Testing
 
+---
 
+## Brief Hiatus - September 28-29, 2025
+**Note:** Development paused for interview. Completed additional positive security tests during this period.
+
+## Day 48: Security Test implementation - Negative Testing
+📅 Date: September 30, 2025
+
+**🎯 Objectives:**
+- Implemented negative test cases for security testing.
+
+**🛠️ Implementation Summary:**
+- Implemented negative test cases for security testing.
+
+**⚠️ Challenges Encountered:**
+- **Tests failing due to HttpClientErrorException on 401 responses**
+- **🐞 Issue:** There's an abnormal test output where in evenif we expected to have 401 response,
+it fails and throw the same 401 response.
+- **⛑️ Symptom:** tests never reached the `assertEquals()` line,
+  making it seem like the framework was not returning the expected response.
+- **⚠️ Root Cause:** `RestTemplate.exchange()` automatically throws `HttpClientErrorException` 
+for any 4xx client error responses by default.
+- **🧪 Solution:** Use assertThrows to expect `HttpClientErrorException` (or its subclass Unauthorized) 
+instead of expecting a ResponseEntity
+- **✅ Result:** Tests now correctly handle 401 responses and can assert on status codes or messages.
 
 **📌 Next Step:** Rank Logic Implementation
 
