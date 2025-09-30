@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.client.HttpClientErrorException;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,6 +95,19 @@ public class GlobalExceptionHandler {
                                         HttpStatus.UNAUTHORIZED.value(),
                                         BAD_CREDENTIALS_MESSAGE.getErrorMessage(),
                                         Map.of("user", List.of(ex.getMessage()))));
+    }
+
+    @ExceptionHandler(HttpClientErrorException.class)
+    public ResponseEntity<ErrorResponseDto> handlesHttpClientRelatedExceptions (HttpClientErrorException ex) {
+
+        String httpRelatedErrorMessage = HttpClientErrorMessage.fromStatus((HttpStatus) ex.getStatusCode());
+
+        return ResponseEntity.status(ex.getStatusCode())
+                             .body(new ErrorResponseDto
+                                       (LocalDateTime.now(),
+                                        ex.getStatusCode().value(),
+                                        httpRelatedErrorMessage,
+                                        Map.of("error", List.of(ex.getMessage()))));
     }
 
     // HTTP STATUS 400 - BAD REQUEST
