@@ -1069,7 +1069,7 @@ for save operations (Create and Update).
 
 **🛠️ Implementation Summary:**
 - Implemented integration test in the project.
-- Updated and fix some player repository test cases and data.
+- Update and fix some player repository test cases and data.
 
 **📌 Next Step:** Security Test implementation - Positive Testing
 
@@ -1112,8 +1112,8 @@ until the JVM stops.
 
 **⚠️ Challenges Encountered:**
 - **Tests failing due to HttpClientErrorException on 401 responses**
-- **🐞 Issue:** There's an abnormal test output where in evenif we expected to have 401 response,
-it fails and throw the same 401 response.
+- **🐞 Issue:** There's an abnormal test output where in even if we expected to have 401 response,
+it fails and throws the same 401 response.
 - **⛑️ Symptom:** tests never reached the `assertEquals()` line,
   making it seem like the framework was not returning the expected response.
 - **⚠️ Root Cause:** `RestTemplate.exchange()` automatically throws `HttpClientErrorException` 
@@ -1123,6 +1123,33 @@ instead of expecting a ResponseEntity
 - **✅ Result:** Tests now correctly handle 401 responses and can assert on status codes or messages.
 
 **📌 Next Step:** Rank Logic Implementation
+
+## Day 49: Security Test implementation - Negative Testing
+📅 Date: October 01, 2025
+
+**🎯 Objectives:**
+- Develop rank implementation further by acquiring rank values as `gameRank` through `@Query`.
+- Adjust all affected models after rank implementation.
+
+**🛠️ Implementation Summary:**
+- Developed rank implementation further by acquiring rank values.
+- Adjusted all affected models after rank implementation.
+
+**🧠 Technical Learning:**
+- **📖 Knowledge Acquired** I was able to learn about rank implementation in SQL `ROW_NUMBER() OVER` 
+which we can call inside the repository's query like this one:
+```
+    @Query(value = """
+                SELECT p.id, p.uuid, p.player_name, p.scores, p.timestamp, p.user_id,
+                       ROW_NUMBER() OVER (ORDER BY p.scores DESC, p.timestamp ASC) as game_rank
+                FROM player_data p
+                ORDER BY p.scores DESC, p.timestamp ASC
+                LIMIT 3
+                """, nativeQuery = true)
+    List<PlayerEntity> findTop3PlayerByOrderByScoresDescAndTimestampAsc ();
+```
+**📌 Next Step:** API testing and documentation
+
 
 ---
 
