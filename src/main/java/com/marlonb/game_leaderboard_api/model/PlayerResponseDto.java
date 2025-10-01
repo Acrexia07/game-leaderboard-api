@@ -8,6 +8,7 @@ public record PlayerResponseDto(
    UUID uuid,
    String playerName,
    Integer scores,
+   Integer gameRank,
    LocalDateTime timestamp,
    Long userId
 ) {}

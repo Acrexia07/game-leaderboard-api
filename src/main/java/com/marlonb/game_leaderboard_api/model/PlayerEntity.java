@@ -27,6 +27,8 @@ public class PlayerEntity {
 
     private Integer scores;
 
+    private Integer gameRank;
+
     private LocalDateTime timestamp;
 
     @OneToOne

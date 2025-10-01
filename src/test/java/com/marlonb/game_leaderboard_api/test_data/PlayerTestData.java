@@ -17,6 +17,7 @@ public class PlayerTestData {
     private static final UUID PLAYER_UUID = UUID.randomUUID();
     private static final String PLAYER_NAME = "Player1";
     private static final Integer PLAYER_SCORE = 56700;
+    private static final Integer PLAYER_RANK = 4;
     private static final LocalDateTime PLAYER_TIMESTAMP = LocalDateTime.of
                                                               (2025, 1, 20, 0, 0);
     private static final UserEntity PLAYER_USER_ACCOUNT = User1TestData.sampleUser1Data();
@@ -35,6 +36,7 @@ public class PlayerTestData {
         BASE_PLAYER_DATA.setUuid(PLAYER_UUID);
         BASE_PLAYER_DATA.setPlayerName(PLAYER_NAME);
         BASE_PLAYER_DATA.setScores(PLAYER_SCORE);
+        BASE_PLAYER_DATA.setGameRank(PLAYER_RANK);
         BASE_PLAYER_DATA.setTimestamp(PLAYER_TIMESTAMP);
         BASE_PLAYER_DATA.setUser(PLAYER_USER_ACCOUNT);
     }
@@ -55,6 +57,7 @@ public class PlayerTestData {
                 samplePlayerData.getUuid(),
                 samplePlayerData.getPlayerName(),
                 samplePlayerData.getScores(),
+                samplePlayerData.getGameRank(),
                 samplePlayerData.getTimestamp(),
                 samplePlayerData.getUser().getId()
         );
@@ -75,6 +78,7 @@ public class PlayerTestData {
                 samplePlayerData().getUuid(),
                 samplePlayerUpdate().getPlayerName(),
                 samplePlayerUpdate().getScores(),
+                samplePlayerData().getGameRank(),
                 samplePlayerData().getTimestamp(),
                 samplePlayerData().getUser().getId()
         );
@@ -113,7 +117,8 @@ public class PlayerTestData {
         return new PlayerSummaryDto(
                 samplePlayerData().getPlayerName(),
                 samplePlayerData().getUuid(),
-                samplePlayerData().getScores()
+                samplePlayerData().getScores(),
+                samplePlayerData().getGameRank()
         );
     }
 
@@ -122,7 +127,8 @@ public class PlayerTestData {
         return new PlayerSummaryDto(
                 samplePlayerData().getPlayerName(),
                 samplePlayerData().getUuid(),
-                samplePlayerUpdate().getScores()
+                samplePlayerUpdate().getScores(),
+                samplePlayerData().getGameRank()
         );
     }
 

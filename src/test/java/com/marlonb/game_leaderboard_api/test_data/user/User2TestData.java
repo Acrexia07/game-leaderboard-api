@@ -35,7 +35,8 @@ public class User2TestData {
         return new PlayerSummaryDto(
                 samplePlayerData2().getPlayerName(),
                 samplePlayerData2().getUuid(),
-                samplePlayerData2().getScores()
+                samplePlayerData2().getScores(),
+                samplePlayerData2().getGameRank()
         );
     }
 

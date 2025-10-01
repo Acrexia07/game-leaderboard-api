@@ -17,6 +17,7 @@ public class Player2TestData {
     private static final UUID PLAYER_UUID = UUID.randomUUID();
     private static final String PLAYER_NAME = "Player2";
     private static final Integer PLAYER_SCORE = 76800;
+    private static final Integer PLAYER_RANK = 3;
     private static final LocalDateTime PLAYER_TIMESTAMP = LocalDateTime.of
                                                           (2025, 2, 14, 0, 0);
     private static final UserEntity PLAYER_USER_ACCOUNT = User1TestData.sampleUser1Data();
@@ -29,6 +30,7 @@ public class Player2TestData {
         BASE_PLAYER_DATA.setUuid(PLAYER_UUID);
         BASE_PLAYER_DATA.setPlayerName(PLAYER_NAME);
         BASE_PLAYER_DATA.setScores(PLAYER_SCORE);
+        BASE_PLAYER_DATA.setGameRank(PLAYER_RANK);
         BASE_PLAYER_DATA.setTimestamp(PLAYER_TIMESTAMP);
         BASE_PLAYER_DATA.setUser(PLAYER_USER_ACCOUNT);
     }
@@ -44,6 +46,7 @@ public class Player2TestData {
                 samplePlayer2Data.getUuid(),
                 samplePlayer2Data.getPlayerName(),
                 samplePlayer2Data.getScores(),
+                samplePlayer2Data.getGameRank(),
                 samplePlayer2Data.getTimestamp(),
                 samplePlayer2Data.getUser().getId()
         );

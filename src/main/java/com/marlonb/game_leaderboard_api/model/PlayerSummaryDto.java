@@ -6,5 +6,6 @@ import java.util.UUID;
 public record PlayerSummaryDto(
         String playerName,
         UUID uuid,
-        Integer scores
+        Integer scores,
+        Integer gameRank
 ) {}
