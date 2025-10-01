@@ -18,7 +18,6 @@ public interface PlayerInfoMapper {
     @Mapping(target = "playerName", source = "playerName")
     @Mapping(target = "uuid", source = "uuid")
     @Mapping(target = "scores", source = "scores")
-    @Mapping(target = "gameRank", source = "gameRank")
     PlayerSummaryDto toSummary (PlayerEntity player);
 
     // Request mapping

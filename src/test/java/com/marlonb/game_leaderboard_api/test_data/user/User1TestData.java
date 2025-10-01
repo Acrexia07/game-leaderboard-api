@@ -50,8 +50,7 @@ public class User1TestData {
         return new PlayerSummaryDto(
                 samplePlayerData().getPlayerName(),
                 samplePlayerData().getUuid(),
-                samplePlayerData().getScores(),
-                samplePlayerData().getGameRank()
+                samplePlayerData().getScores()
         );
     }
 

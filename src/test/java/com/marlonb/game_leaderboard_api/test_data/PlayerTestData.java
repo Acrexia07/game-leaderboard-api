@@ -117,8 +117,7 @@ public class PlayerTestData {
         return new PlayerSummaryDto(
                 samplePlayerData().getPlayerName(),
                 samplePlayerData().getUuid(),
-                samplePlayerData().getScores(),
-                samplePlayerData().getGameRank()
+                samplePlayerData().getScores()
         );
     }
 
@@ -127,8 +126,7 @@ public class PlayerTestData {
         return new PlayerSummaryDto(
                 samplePlayerData().getPlayerName(),
                 samplePlayerData().getUuid(),
-                samplePlayerUpdate().getScores(),
-                samplePlayerData().getGameRank()
+                samplePlayerUpdate().getScores()
         );
     }
 
