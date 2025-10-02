@@ -248,7 +248,7 @@ public class PlayerControllerSliceTests {
             mockMvc.perform(get("/api/players/{id}", nonExistentId))
                    .andExpectAll(
                            status().isNotFound(),
-                           jsonPath("$.message").value("Resource not found!"));
+                           jsonPath("$.message").value("Resource not found"));
         }
 
         @Test
@@ -262,8 +262,8 @@ public class PlayerControllerSliceTests {
                    .andExpectAll(
                            status().isNotFound(),
                            jsonPath("$.message")
-                                   .value("Resource not found!"),
-                           jsonPath("$.error.resource")
+                                   .value("Resource not found"),
+                           jsonPath("$.errors.resource")
                                    .value("Player account not created yet for this user"));
         }
     }

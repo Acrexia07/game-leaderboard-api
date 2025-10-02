@@ -6,17 +6,17 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ErrorMessages {
-    INTERNAL_SERVER_ERROR_MESSAGE("Internal server issue(s) found!"),
-    DUPLICATE_RESOURCE_FOUND_MESSAGE("Resource duplication occurred!"),
-    RESOURCE_NOT_FOUND_MESSAGE("Resource not found!"),
-    JSON_ERROR_MESSAGE("Malformed JSON structure"),
-    FORMAT_REQUEST_ERROR_MESSAGE("Invalid request format"),
-    HTTP_MESSAGE_NOT_READABLE_ERROR_MESSAGE("Unable to process request body"),
-    BAD_CREDENTIALS_MESSAGE("Bad credentials found!"),
-    ACCESS_DENIED_MESSAGE("Forbidden access – insufficient permissions."),
-    DATA_INTEGRITY_ISSUE_MESSAGE("Creation conflict detected!"),
-    PLAYER_CREATION_ERROR_MESSAGE("Each user can only create one player."),
-    VALIDATION_ERROR_MESSAGE("Validation error(s) found!");
+    INTERNAL_SERVER_ERROR_MESSAGE("Internal server error"),
+    DUPLICATE_RESOURCE_FOUND_MESSAGE("Duplicate resource"),
+    RESOURCE_NOT_FOUND_MESSAGE("Resource not found"),
+    JSON_ERROR_MESSAGE("Malformed JSON"),
+    FORMAT_REQUEST_ERROR_MESSAGE("Invalid request"),
+    HTTP_MESSAGE_NOT_READABLE_ERROR_MESSAGE("Unreadable request body"),
+    BAD_CREDENTIALS_MESSAGE("Bad credentials"),
+    ACCESS_DENIED_MESSAGE("Forbidden access"),
+    DATA_INTEGRITY_ISSUE_MESSAGE("Data integration conflict"),
+    PLAYER_CREATION_ERROR_MESSAGE("Player account not created yet for this user"),
+    VALIDATION_ERROR_MESSAGE("Validation error");
 
     private final String errorMessage;
 }

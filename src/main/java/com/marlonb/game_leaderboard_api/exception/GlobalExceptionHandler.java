@@ -2,6 +2,7 @@ package com.marlonb.game_leaderboard_api.exception;
 
 import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,78 +28,92 @@ public class GlobalExceptionHandler {
 
     // HTTP STATUS 500 - INTERNAL SERVER ERROR
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDto> handlesServerRelatedExceptions (Exception ex) {
+    public ResponseEntity<ErrorResponseDto> handlesServerRelatedExceptions (Exception ex,
+                                                                            HttpServletRequest request) {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                              .body(new ErrorResponseDto
                                        (LocalDateTime.now(),
                                         HttpStatus.INTERNAL_SERVER_ERROR.value(),
                                         INTERNAL_SERVER_ERROR_MESSAGE.getErrorMessage(),
-                                        Map.of("server", List.of(ex.getMessage()))));
+                                        Map.of("server", List.of(ex.getMessage())),
+                                        request.getRequestURI()));
     }
 
     // HTTP STATUS 409 - CONFLICT
     @ExceptionHandler(DuplicateResourceFoundException.class)
     public ResponseEntity<ErrorResponseDto> handlesDuplicateResourceException
-            (DuplicateResourceFoundException ex) {
+            (DuplicateResourceFoundException ex,
+             HttpServletRequest request) {
 
         return ResponseEntity.status(HttpStatus.CONFLICT)
                              .body(new ErrorResponseDto
                                        (LocalDateTime.now(),
                                         HttpStatus.CONFLICT.value(),
                                         DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage(),
-                                        Map.of("resource", List.of(ex.getMessage()))));
+                                        Map.of("resource", List.of(ex.getMessage())),
+                                        request.getRequestURI()));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorResponseDto> handlesDataIntegrityExceptions (DataIntegrityViolationException ex) {
+    public ResponseEntity<ErrorResponseDto> handlesDataIntegrityExceptions (DataIntegrityViolationException ex,
+                                                                            HttpServletRequest request) {
 
         return ResponseEntity.status(HttpStatus.CONFLICT)
                              .body(new ErrorResponseDto
                                        (LocalDateTime.now(),
                                         HttpStatus.CONFLICT.value(),
                                         DATA_INTEGRITY_ISSUE_MESSAGE.getErrorMessage(),
-                                        Map.of("player", List.of(PLAYER_CREATION_ERROR_MESSAGE.getErrorMessage()))));
+                                        Map.of("player",
+                                                List.of(PLAYER_CREATION_ERROR_MESSAGE.getErrorMessage())),
+                                        request.getRequestURI()));
     }
 
     // HTTP STATUS 404 - NOT FOUND
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handlesResourceNotFoundExceptions (ResourceNotFoundException ex) {
+    public ResponseEntity<ErrorResponseDto> handlesResourceNotFoundExceptions (ResourceNotFoundException ex,
+                                                                               HttpServletRequest request) {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                              .body(new ErrorResponseDto
                                        (LocalDateTime.now(),
                                         HttpStatus.NOT_FOUND.value(),
                                         RESOURCE_NOT_FOUND_MESSAGE.getErrorMessage(),
-                                        Map.of("resource", List.of(ex.getMessage()))));
+                                        Map.of("resource", List.of(ex.getMessage())),
+                                        request.getRequestURI()));
     }
 
     // HTTP STATUS 403 - FORBIDDEN
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorResponseDto> handlesAccessDeniedExceptions (AccessDeniedException ex) {
+    public ResponseEntity<ErrorResponseDto> handlesAccessDeniedExceptions (AccessDeniedException ex,
+                                                                           HttpServletRequest request) {
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(new ErrorResponseDto
                         (LocalDateTime.now(),
                                 HttpStatus.FORBIDDEN.value(),
                                 ACCESS_DENIED_MESSAGE.getErrorMessage(),
-                                Map.of("credentials", List.of(ex.getMessage()))));
+                                Map.of("credentials", List.of(ex.getMessage())),
+                                request.getRequestURI()));
     }
 
     // HTTP STATUS 401 - UNAUTHORIZED
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ErrorResponseDto> handlesBadCredentialsExceptions (BadCredentialsException ex) {
+    public ResponseEntity<ErrorResponseDto> handlesBadCredentialsExceptions (BadCredentialsException ex,
+                                                                             HttpServletRequest request) {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                              .body(new ErrorResponseDto
                                        (LocalDateTime.now(),
                                         HttpStatus.UNAUTHORIZED.value(),
                                         BAD_CREDENTIALS_MESSAGE.getErrorMessage(),
-                                        Map.of("user", List.of(ex.getMessage()))));
+                                        Map.of("user", List.of(ex.getMessage())),
+                                        request.getRequestURI()));
     }
 
     @ExceptionHandler(HttpClientErrorException.class)
-    public ResponseEntity<ErrorResponseDto> handlesHttpClientRelatedExceptions (HttpClientErrorException ex) {
+    public ResponseEntity<ErrorResponseDto> handlesHttpClientRelatedExceptions (HttpClientErrorException ex,
+                                                                                HttpServletRequest request) {
 
         String httpRelatedErrorMessage = HttpClientErrorMessage.fromStatus((HttpStatus) ex.getStatusCode());
 
@@ -107,13 +122,15 @@ public class GlobalExceptionHandler {
                                        (LocalDateTime.now(),
                                         ex.getStatusCode().value(),
                                         httpRelatedErrorMessage,
-                                        Map.of("error", List.of(ex.getMessage()))));
+                                        Map.of("error", List.of(ex.getMessage())),
+                                        request.getRequestURI()));
     }
 
     // HTTP STATUS 400 - BAD REQUEST
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDto> handlesAttributeValidationExceptions
-            (MethodArgumentNotValidException ex) {
+            (MethodArgumentNotValidException ex,
+             HttpServletRequest request) {
 
         Map<String, List<String>> fieldErrors = new HashMap<>();
 
@@ -132,12 +149,14 @@ public class GlobalExceptionHandler {
                                       (LocalDateTime.now(),
                                        HttpStatus.BAD_REQUEST.value(),
                                        VALIDATION_ERROR_MESSAGE.getErrorMessage(),
-                                       fieldErrors));
+                                       fieldErrors,
+                                       request.getRequestURI()));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponseDto> handlesUnreadableHttpMessageExceptions
-            (HttpMessageNotReadableException ex) {
+            (HttpMessageNotReadableException ex,
+             HttpServletRequest request) {
 
         Map<String, List<String>> customError;
 
@@ -152,6 +171,7 @@ public class GlobalExceptionHandler {
                                        (LocalDateTime.now(),
                                         HttpStatus.BAD_REQUEST.value(),
                                         HTTP_MESSAGE_NOT_READABLE_ERROR_MESSAGE.getErrorMessage(),
-                                        customError));
+                                        customError,
+                                        request.getRequestURI()));
     }
 }

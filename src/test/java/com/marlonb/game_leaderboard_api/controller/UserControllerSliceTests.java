@@ -305,8 +305,8 @@ public class UserControllerSliceTests {
             mockMvc.perform(get("/api/users/{id}", nonExistentId))
                     .andExpectAll(
                             status().isNotFound(),
-                            jsonPath("$.message").value("Resource not found!"),
-                            jsonPath("$.error.resource").value(RESOURCE_NOT_FOUND_ERROR_MESSAGE));
+                            jsonPath("$.message").value("Resource not found"),
+                            jsonPath("$.errors.resource").value(RESOURCE_NOT_FOUND_ERROR_MESSAGE));
         }
 
         @Test
@@ -323,8 +323,8 @@ public class UserControllerSliceTests {
                     .andExpectAll(
                             status().isForbidden(),
                             jsonPath("$.message")
-                                    .value("Forbidden access – insufficient permissions."),
-                            jsonPath("$.error.credentials[0]").value("Access Denied"));
+                                    .value("Forbidden access"),
+                            jsonPath("$.errors.credentials[0]").value("Access Denied"));
 
         }
 
@@ -348,7 +348,7 @@ public class UserControllerSliceTests {
                         .content(invalidJsonTestUserPrincipal))
                     .andExpectAll(
                             status().isBadRequest(),
-                            jsonPath("$.message").value("Validation error(s) found!"));
+                            jsonPath("$.message").value("Validation error"));
         }
 
     }
