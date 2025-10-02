@@ -7,6 +7,7 @@ import com.marlonb.game_leaderboard_api.test_data.PlayerTestData;
 import java.time.LocalDateTime;
 
 import static com.marlonb.game_leaderboard_api.test_data.PlayerTestData.samplePlayerData;
+import static com.marlonb.game_leaderboard_api.test_data.PlayerTestData.samplePlayerSummary;
 
 public class User1TestData {
 
@@ -116,6 +117,27 @@ public class User1TestData {
         return new UserUpdateDto(
                 UPDATED_USER1_NAME,
                 UPDATED_USER1_PASSWORD
+        );
+    }
+
+    /* --- USER SUMMARY DATA --- */
+    public static UserSummaryDto sampleUser1Summary (){
+
+        return new UserSummaryDto(
+                sampleUser1Data().getUsername(),
+                sampleUser1Data().getRole(),
+                sampleUser1Data().getCreatedAt(),
+                samplePlayerSummary()
+        );
+    }
+
+    public static UserSummaryDto sampleUser1UpdateSummary () {
+
+        return new UserSummaryDto(
+                sampleUser1Update().getUsername(),
+                sampleUser1Data().getRole(),
+                sampleUser1Data().getCreatedAt(),
+                samplePlayerSummary()
         );
     }
 

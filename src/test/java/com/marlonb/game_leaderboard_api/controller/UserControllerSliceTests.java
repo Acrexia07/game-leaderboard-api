@@ -33,6 +33,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -58,14 +59,21 @@ public class UserControllerSliceTests {
     private GameUserDetailsService gameUserDetailsService;
 
     private UserResponseDto testAdminUserResponse;
-    private UserEntity testUser;
+    private UserUpdateDto testUserUpdate;
     private Long testUserId;
+    private UserPrincipal testPrincipal;
+    private Long testPrincipalId;
 
     @BeforeEach
     void setup() {
         testAdminUserResponse = AdminUser1TestData.sampleAdminUser1Response();
         UserEntity testUser = User1TestData.sampleUser1Data();
         testUserId = testUser.getId();
+
+        testPrincipal = User1TestData.sampleUser1PrincipalData();
+        testPrincipalId = testPrincipal.getId();
+
+        testUserUpdate = User1TestData.sampleUser1Update();
     }
 
     @Nested
@@ -164,6 +172,28 @@ public class UserControllerSliceTests {
         }
 
         @Test
+        @DisplayName("Should retrieve user profile successfully")
+        void shouldRetrieveUserProfileSuccessfully () throws Exception {
+
+            UserSummaryDto testUserSummary = User1TestData.sampleUser1Summary();
+
+            when(userService.getUserProfile(testPrincipalId))
+                    .thenReturn(testUserSummary);
+
+            String jsonUserSummary = mapper.writeValueAsString(testUserSummary);
+
+            mockMvc.perform(get("/api/users/me")
+                            .with(user(testPrincipal))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonUserSummary))
+                    .andExpectAll(
+                            status().isOk(),
+                            jsonPath("$.apiMessage")
+                                    .value("Retrieved user profile successfully!"),
+                            jsonPath("$.response.username").value(testUserSummary.username()));
+        }
+
+        @Test
         @WithMockUser(roles = "ADMIN")
         @DisplayName("User Management(READ): Should retrieve specific user successfully")
         void shouldRetrieveSpecificUserSuccessfully () throws Exception {
@@ -191,14 +221,13 @@ public class UserControllerSliceTests {
         @DisplayName("User Management(UPDATE): Should update specific user successfully")
         void shouldUpdateSpecificUserSuccessfully () throws Exception {
 
-            UserUpdateDto testUserPrincipalUpdate = User1TestData.sampleUser1Update();
             UserResponseDto testUserPrincipalResponseAfterUpdate =
                                        User1TestData.sampleUser1PrincipalResponseAfterUpdate();
 
-            when(userService.updateSpecificUser(testUserId, testUserPrincipalUpdate))
+            when(userService.updateSpecificUser(testUserId, testUserUpdate))
                     .thenReturn(testUserPrincipalResponseAfterUpdate);
 
-            String jsonUserResponse = mapper.writeValueAsString(testUserPrincipalUpdate);
+            String jsonUserResponse = mapper.writeValueAsString(testUserUpdate);
 
             mockMvc.perform(put("/api/users/{id}", testUserId)
                             .with(csrf())
@@ -209,7 +238,29 @@ public class UserControllerSliceTests {
                             jsonPath("$.apiMessage")
                                     .value("Updated specific user successfully!"),
                             jsonPath("$.response.username")
-                                    .value(testUserPrincipalUpdate.getUsername()));
+                                    .value(testUserUpdate.getUsername()));
+        }
+
+        @Test
+        @DisplayName("Should update user profile successfully")
+        void shouldUpdateUserProfileSuccessfully () throws Exception {
+
+            UserSummaryDto testUserUpdateSummary = User1TestData.sampleUser1UpdateSummary();
+
+            when(userService.updateUserProfile(testPrincipalId, testUserUpdate))
+                    .thenReturn(testUserUpdateSummary);
+
+            String jsonUserUpdate = mapper.writeValueAsString(testUserUpdate);
+
+            mockMvc.perform(put("/api/users/me")
+                            .with(user(testPrincipal))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonUserUpdate))
+                    .andExpectAll(
+                            status().isOk(),
+                            jsonPath("$.apiMessage")
+                                    .value("Update user profile successfully!"),
+                            jsonPath("$.response.username").value(testUserUpdate.getUsername()));
         }
 
         @Test
