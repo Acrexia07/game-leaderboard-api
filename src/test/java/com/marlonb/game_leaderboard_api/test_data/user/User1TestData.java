@@ -62,7 +62,7 @@ public class User1TestData {
         );
     }
 
-    public static UserUpdateDto sampleUser1PrincipalInvalidUpdate () {
+    public static UserUpdateDto sampleUser1InvalidUpdate () {
 
         return new UserUpdateDto(
                 UPDATED_USER1_NAME,
@@ -169,19 +169,19 @@ public class User1TestData {
 
         return new UserResponseDto(
                 sampleUser1PrincipalData().getId(),
-                sampleUser1PrincipalUpdate().getUsername(),
-                sampleUser1PrincipalUpdate().getPassword(),
+                sampleUser1Update().getUsername(),
+                sampleUser1Update().getPassword(),
                 sampleUser1Data().getCreatedAt(),
                 playerSummaryDto()
         );
     }
 
-    public static UserResponseDto sampleUser1PrincipalResponseAfterInvalidUpdate() {
+    public static UserResponseDto sampleUser1ResponseAfterInvalidUpdate() {
 
         return new UserResponseDto(
                 sampleUser1PrincipalData().getId(),
-                sampleUser1PrincipalInvalidUpdate().getUsername(),
-                sampleUser1PrincipalInvalidUpdate().getPassword(),
+                sampleUser1InvalidUpdate().getUsername(),
+                sampleUser1InvalidUpdate().getPassword(),
                 sampleUser1Data().getCreatedAt(),
                 playerSummaryDto()
         );

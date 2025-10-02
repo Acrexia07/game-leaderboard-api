@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -65,7 +66,7 @@ public class UserController {
     }
 
     // Allows access to the user with ADMIN role or the user whose ID matches the authenticated user's ID
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/users/{id}")
     public ResponseEntity<ApiMessageResponseDto<UserResponseDto>> retrieveSpecificUserData (@PathVariable long id) {
 
@@ -76,10 +77,11 @@ public class UserController {
                                          retrievedUser));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/users/{id}")
-    public ResponseEntity<ApiMessageResponseDto<UserResponseDto>>
-                    updateSpecificUserData (@PathVariable long id, @Valid @RequestBody UserUpdateDto userUpdate) {
+    public ResponseEntity<ApiMessageResponseDto<UserResponseDto>> updateSpecificUserData (@PathVariable long id,
+                                                                                          @Valid @RequestBody
+                                                                                          UserUpdateDto userUpdate) {
 
         UserResponseDto updatedUser = userService.updateSpecificUser(id, userUpdate);
 
@@ -95,5 +97,19 @@ public class UserController {
         userService.deleteSpecificUser(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    /* --- Self endpoints --- */
+    @GetMapping("/users/me")
+    public ResponseEntity<ApiMessageResponseDto<UserSummaryDto>> getUserProfile (Authentication auth) {
+
+        UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
+        Long userProfileId = principal.getId();
+
+        UserSummaryDto userProfile = userService.getUserProfile(userProfileId);
+
+        return ResponseEntity.ok().body(new ApiMessageResponseDto<>
+                                        ("Retrieved user profile successfully!",
+                                                userProfile));
     }
 }

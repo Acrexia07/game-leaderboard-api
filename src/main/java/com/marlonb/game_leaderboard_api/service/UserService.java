@@ -113,6 +113,12 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public UserSummaryDto getUserProfile (long id) {
+
+        UserEntity foundUser = findUserId(id);
+        return userMapper.toSummary(foundUser);
+    }
+
     public UserEntity findUserId (long id) {
 
         return userRepository.findById(id)

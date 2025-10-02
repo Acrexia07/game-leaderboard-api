@@ -25,7 +25,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import org.springframework.security.access.AccessDeniedException;
 import java.util.List;
 
 import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.*;
@@ -34,7 +33,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -60,14 +58,14 @@ public class UserControllerSliceTests {
     private GameUserDetailsService gameUserDetailsService;
 
     private UserResponseDto testAdminUserResponse;
-    private UserPrincipal testUserPrincipal;
+    private UserEntity testUser;
     private Long testUserId;
 
     @BeforeEach
     void setup() {
         testAdminUserResponse = AdminUser1TestData.sampleAdminUser1Response();
-        testUserPrincipal = User1TestData.sampleUser1PrincipalData();
-        testUserId = testUserPrincipal.getId();
+        UserEntity testUser = User1TestData.sampleUser1Data();
+        testUserId = testUser.getId();
     }
 
     @Nested
@@ -123,7 +121,6 @@ public class UserControllerSliceTests {
         }
 
         @Test
-        @WithMockUser(roles = "USER")
         @DisplayName("Login(CREATE): Should login when user has valid credentials")
         void shouldPassLoginWhenUserHasValidCredentials() throws Exception {
 
@@ -167,19 +164,18 @@ public class UserControllerSliceTests {
         }
 
         @Test
-        @WithMockUser(username = "1" , roles = "USER")
+        @WithMockUser(roles = "ADMIN")
         @DisplayName("User Management(READ): Should retrieve specific user successfully")
         void shouldRetrieveSpecificUserSuccessfully () throws Exception {
 
-            UserResponseDto testUserPrincipalResponse = User1TestData.sampleUser1PrincipalResponse();
+            UserResponseDto testUserResponse = User1TestData.sampleUser1Response();
 
             when(userService.retrieveSpecificUser(testUserId))
-                    .thenReturn(testUserPrincipalResponse);
+                    .thenReturn(testUserResponse);
 
-            String jsonUserResponse = mapper.writeValueAsString(testUserPrincipalResponse);
+            String jsonUserResponse = mapper.writeValueAsString(testUserResponse);
 
             mockMvc.perform(get("/api/users/{id}", testUserId)
-                            .with(user(testUserPrincipal))
                             .contentType(MediaType.APPLICATION_JSON)
                             .contentType(jsonUserResponse))
                     .andExpectAll(
@@ -187,15 +183,15 @@ public class UserControllerSliceTests {
                             jsonPath("$.apiMessage")
                                     .value("Retrieved specific user successfully!"),
                             jsonPath("$.response.username")
-                                    .value(testUserPrincipalResponse.username()));
+                                    .value(testUserResponse.username()));
         }
 
         @Test
-        @WithMockUser(username = "1", roles = "USER")
+        @WithMockUser(roles = "ADMIN")
         @DisplayName("User Management(UPDATE): Should update specific user successfully")
         void shouldUpdateSpecificUserSuccessfully () throws Exception {
 
-            UserUpdateDto testUserPrincipalUpdate = User1TestData.sampleUser1PrincipalUpdate();
+            UserUpdateDto testUserPrincipalUpdate = User1TestData.sampleUser1Update();
             UserResponseDto testUserPrincipalResponseAfterUpdate =
                                        User1TestData.sampleUser1PrincipalResponseAfterUpdate();
 
@@ -205,7 +201,7 @@ public class UserControllerSliceTests {
             String jsonUserResponse = mapper.writeValueAsString(testUserPrincipalUpdate);
 
             mockMvc.perform(put("/api/users/{id}", testUserId)
-                            .with(user(testUserPrincipal))
+                            .with(csrf())
                             .content(jsonUserResponse)
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpectAll(
@@ -237,7 +233,6 @@ public class UserControllerSliceTests {
     class NegativeTests {
 
         @Test
-        @WithMockUser(roles = "USER ")
         @DisplayName("Login: Should fail to login when user has invalid credentials")
         void shouldFailToLoginWhenUserHasInvalidCredentials () throws Exception {
 
@@ -310,40 +305,19 @@ public class UserControllerSliceTests {
         }
 
         @Test
-        @DisplayName("User Management(READ): Should deny public user accessing other user's data")
-        void shouldDenyPublicUserAccessingOtherUsersData () throws Exception {
-
-            final long otherUserId = 2L;
-
-            when(userService.retrieveSpecificUser(otherUserId))
-                    .thenThrow(new AccessDeniedException("Access Denied!"));
-
-            mockMvc.perform(get("/api/users/{id}", otherUserId)
-                            .with(user(testUserPrincipal)))
-                    .andExpectAll(
-                            status().isForbidden(),
-                            jsonPath("$.message")
-                                    .value("Forbidden access"),
-                            jsonPath("$.errors.credentials[0]").value("Access Denied"));
-
-        }
-
-        @Test
+        @WithMockUser(roles = "ADMIN")
         @DisplayName("User Management(READ): Should fail to update if user data input is invalid")
         void shouldFailToUpdateIfUserDataInputIsInvalid () throws Exception {
 
-            UserUpdateDto invalidTestUserPrincipal =
-                    User1TestData.sampleUser1PrincipalInvalidUpdate();
-            UserResponseDto invalidTestUserPrincipalResponse =
-                    User1TestData.sampleUser1PrincipalResponseAfterInvalidUpdate();
+            UserUpdateDto invalidUser = User1TestData.sampleUser1InvalidUpdate();
+            UserResponseDto invalidUserResponse = User1TestData.sampleUser1ResponseAfterInvalidUpdate();
 
-            when(userService.updateSpecificUser(testUserId, invalidTestUserPrincipal))
-                    .thenReturn(invalidTestUserPrincipalResponse);
+            when(userService.updateSpecificUser(testUserId, invalidUser))
+                    .thenReturn(invalidUserResponse);
 
-            String invalidJsonTestUserPrincipal = mapper.writeValueAsString(invalidTestUserPrincipal);
+            String invalidJsonTestUserPrincipal = mapper.writeValueAsString(invalidUser);
 
             mockMvc.perform(put("/api/users/{id}", testUserId)
-                        .with(user(testUserPrincipal))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidJsonTestUserPrincipal))
                     .andExpectAll(

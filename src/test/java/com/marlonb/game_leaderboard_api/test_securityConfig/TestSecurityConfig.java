@@ -23,12 +23,14 @@ public class TestSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/users/register").permitAll()
+                        .requestMatchers("/api/users/login").permitAll()
+                        .requestMatchers("/api/users/me").authenticated()
                         .requestMatchers("/api/players/me").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/users").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "api/players").hasRole("ADMIN")
+                        .requestMatchers("/api/users/{id}").hasRole("ADMIN")
                         .requestMatchers("/api/players/{id}").hasRole("ADMIN")
-                        .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/leaderboards").authenticated()
                         .anyRequest().authenticated())
                 .build();

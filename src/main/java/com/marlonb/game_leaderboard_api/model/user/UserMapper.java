@@ -14,6 +14,12 @@ public interface UserMapper {
     @Mapping(target = "playerAccount", source = "player", qualifiedByName = "userToSummary")
     UserResponseDto toResponse (UserEntity userResponse);
 
+    @Mapping(target = "username", source = "username")
+    @Mapping(target = "role", source = "role")
+    @Mapping(target = "createdAt", source = "createdAt")
+    @Mapping(target = "playerAccount", source = "player", qualifiedByName = "userToSummary")
+    UserSummaryDto toSummary(UserEntity user);
+
     @Mapping(target = "id", ignore = true)
     UserEntity toEntity (UserRequestDto userRequest);
 
