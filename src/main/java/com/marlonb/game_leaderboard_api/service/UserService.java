@@ -90,7 +90,7 @@ public class UserService {
 
         // Check if the updated username already exists in the database
         // and is different from the current user's username
-        if(userRepository.existsByUsername(foundUser.getUsername()) &&
+        if(userRepository.existsByUsername(userUpdate.getUsername()) &&
            !foundUser.getUsername().equalsIgnoreCase(userUpdate.getUsername())) {
             throw new DuplicateResourceFoundException
                     (String.format(userUpdate.getUsername(), DUPLICATE_USERNAME_FOUND));

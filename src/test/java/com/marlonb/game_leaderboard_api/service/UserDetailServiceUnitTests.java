@@ -257,12 +257,12 @@ public class UserDetailServiceUnitTests {
                 final long testUserId = testUser2.getId();
 
                 UserUpdateDto testUserUpdate = User2TestData.sampleUser2Update();
-                testUser2.setUsername("user1");
+                testUserUpdate.setUsername("User01");
 
                 when(userRepository.findById(testUserId))
                         .thenReturn(Optional.of(testUser2));
 
-                when(userRepository.existsByUsername("user1"))
+                when(userRepository.existsByUsername("User01"))
                         .thenReturn(true);
 
                 assertThrows(DuplicateResourceFoundException.class,
