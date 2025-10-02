@@ -83,14 +83,6 @@ public class PlayerController {
                                          response));
     }
 
-    @DeleteMapping("/players/{id}")
-    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.player.id")
-    public ResponseEntity<Void> deleteSpecificPlayerResource (@PathVariable long id) {
-
-        playerService.deleteSpecificPlayerData(id);
-        return ResponseEntity.noContent().build();
-    }
-
     /* --- Self endpoints --- */
     @GetMapping("/players/me")
     @PreAuthorize("isAuthenticated()")

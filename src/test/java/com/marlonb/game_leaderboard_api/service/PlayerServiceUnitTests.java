@@ -184,18 +184,6 @@ public class PlayerServiceUnitTests {
 
             assertServiceReturnedExpectedResponse(actualResponse, expectedResponse);
         }
-
-        @Test
-        @DisplayName("Should delete specific player data successfully")
-        void shouldDeleteSpecificPlayerDataSuccessfully () {
-
-            when(playerRepository.findById(testPlayerId))
-                    .thenReturn(Optional.of(testPlayer));
-
-            playerService.deleteSpecificPlayerData(testPlayerId);
-
-            verify(playerRepository).deleteById(testPlayerId);
-        }
     }
 
     @Nested
