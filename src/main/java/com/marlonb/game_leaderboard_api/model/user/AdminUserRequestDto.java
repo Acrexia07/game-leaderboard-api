@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.model.user;
 
+import com.marlonb.game_leaderboard_api.validation.ValueOfEnum;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -25,5 +26,6 @@ public class AdminUserRequestDto {
     private String password;
 
     @NotNull(message = "role is required!")
+    @ValueOfEnum(enumClass = UserRoles.class, message = "Role must be ADMIN or USER")
     private UserRoles role;
 }
