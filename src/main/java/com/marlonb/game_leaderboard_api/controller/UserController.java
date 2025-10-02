@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.controller;
 
+import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import com.marlonb.game_leaderboard_api.model.user.*;
 import com.marlonb.game_leaderboard_api.service.UserService;
 import jakarta.validation.Valid;
@@ -101,15 +102,40 @@ public class UserController {
 
     /* --- Self endpoints --- */
     @GetMapping("/users/me")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ApiMessageResponseDto<UserSummaryDto>> getUserProfile (Authentication auth) {
 
         UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
         Long userProfileId = principal.getId();
+
+        if (userProfileId == null) {
+            throw new ResourceNotFoundException("User not found.");
+        }
 
         UserSummaryDto userProfile = userService.getUserProfile(userProfileId);
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
                                         ("Retrieved user profile successfully!",
                                                 userProfile));
+    }
+
+    @PutMapping("/users/me")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiMessageResponseDto<UserSummaryDto>> updateUserProfile (Authentication auth,
+                                                                                    @Valid @RequestBody
+                                                                                    UserUpdateDto updateRequest) {
+
+        UserPrincipal principal  = (UserPrincipal) auth.getPrincipal();
+        Long userProfileId = principal.getId();
+
+        if (userProfileId == null) {
+            throw new ResourceNotFoundException("User not found.");
+        }
+
+        UserSummaryDto userProfile = userService.updateUserProfile(userProfileId, updateRequest);
+
+        return ResponseEntity.ok().body(new ApiMessageResponseDto<>
+                                        ("Update user profile successfully!",
+                                         userProfile));
     }
 }

@@ -113,10 +113,28 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public UserSummaryDto getUserProfile (long id) {
 
         UserEntity foundUser = findUserId(id);
         return userMapper.toSummary(foundUser);
+    }
+
+    @Transactional
+    public UserSummaryDto updateUserProfile (long id,UserUpdateDto updateRequest) {
+
+        UserEntity foundUser = findUserId(id);
+
+        if(userRepository.existsByUsername(updateRequest.getUsername()) &&
+                !foundUser.getUsername().equalsIgnoreCase(updateRequest.getUsername())) {
+            throw new DuplicateResourceFoundException
+                    (String.format(updateRequest.getUsername(), DUPLICATE_USERNAME_FOUND));
+        }
+
+        userMapper.toUpdateFromEntity(foundUser, updateRequest);
+        UserEntity savedUser = userRepository.save(foundUser);
+
+        return userMapper.toSummary(savedUser);
     }
 
     public UserEntity findUserId (long id) {
