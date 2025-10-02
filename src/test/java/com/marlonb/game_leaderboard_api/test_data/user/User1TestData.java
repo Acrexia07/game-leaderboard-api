@@ -54,14 +54,6 @@ public class User1TestData {
         );
     }
 
-    public static UserUpdateDto sampleUser1PrincipalUpdate () {
-
-        return new UserUpdateDto(
-                UPDATED_USER1_NAME,
-                USER1_PASSWORD
-        );
-    }
-
     public static UserUpdateDto sampleUser1InvalidUpdate () {
 
         return new UserUpdateDto(
@@ -122,7 +114,7 @@ public class User1TestData {
     public static UserUpdateDto sampleUser1Update () {
 
         return new UserUpdateDto(
-                sampleUser1Data().getUsername(),
+                UPDATED_USER1_NAME,
                 UPDATED_USER1_PASSWORD
         );
     }
