@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.exception;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,10 +17,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.*;
 
@@ -160,7 +158,9 @@ public class GlobalExceptionHandler {
 
         Map<String, List<String>> customError;
 
-        if (ex.getMessage().contains("JSON")) {
+        if (ex.getCause() instanceof InvalidFormatException) {
+            customError = Map.of("role", List.of(USER_ROLE_ERROR_MESSAGE.getErrorMessage()));
+        } else if (ex.getMessage().contains("JSON")) {
             customError = Map.of("json", List.of(JSON_ERROR_MESSAGE.getErrorMessage()));
         } else {
             customError = Map.of("request", List.of(FORMAT_REQUEST_ERROR_MESSAGE.getErrorMessage()));

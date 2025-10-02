@@ -26,6 +26,5 @@ public class AdminUserRequestDto {
     private String password;
 
     @NotNull(message = "role is required!")
-    @ValueOfEnum(enumClass = UserRoles.class, message = "Role must be ADMIN or USER")
     private UserRoles role;
 }
