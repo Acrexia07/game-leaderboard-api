@@ -44,7 +44,6 @@ public class User2TestData {
         return new UserResponseDto(
                 sampleUser2Data().getId(),
                 sampleUser2Data().getUsername(),
-                sampleUser2Data().getPassword(),
                 sampleUser2Data().getCreatedAt(),
                 playerSummaryDto()
         );

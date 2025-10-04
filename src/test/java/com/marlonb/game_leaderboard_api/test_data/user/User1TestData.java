@@ -79,7 +79,6 @@ public class User1TestData {
         return new UserResponseDto(
                 sampleUser1Data().getId(),
                 sampleUser1Data().getUsername(),
-                sampleUser1Data().getPassword(),
                 sampleUser1Data().getCreatedAt(),
                 null
         );
@@ -98,7 +97,6 @@ public class User1TestData {
         return new UserResponseDto(
                 sampleUser1Data().getId(),
                 sampleUser1Request().getUsername(),
-                sampleUser1Request().getPassword(),
                 sampleUser1Data().getCreatedAt(),
                 null
         );
@@ -173,7 +171,6 @@ public class User1TestData {
         return new UserResponseDto(
                 sampleUser1PrincipalData().getId(),
                 sampleUser1PrincipalData().getUsername(),
-                sampleUser1PrincipalData().getPassword(),
                 sampleUser1Data().getCreatedAt(),
                 playerSummaryDto()
         );
@@ -184,7 +181,6 @@ public class User1TestData {
         return new UserResponseDto(
                 sampleUser1PrincipalData().getId(),
                 sampleUser1Update().getUsername(),
-                sampleUser1Update().getPassword(),
                 sampleUser1Data().getCreatedAt(),
                 playerSummaryDto()
         );
@@ -195,7 +191,6 @@ public class User1TestData {
         return new UserResponseDto(
                 sampleUser1PrincipalData().getId(),
                 sampleUser1InvalidUpdate().getUsername(),
-                sampleUser1InvalidUpdate().getPassword(),
                 sampleUser1Data().getCreatedAt(),
                 playerSummaryDto()
         );

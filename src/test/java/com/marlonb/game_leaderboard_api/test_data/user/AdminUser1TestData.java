@@ -45,7 +45,6 @@ public class AdminUser1TestData {
         return new UserResponseDto(
                 sampleAdminUser1Data().getId(),
                 sampleAdminUser1Data().getUsername(),
-                sampleAdminUser1Data().getPassword(),
                 sampleAdminUser1Data().getCreatedAt(),
                 null
         );
