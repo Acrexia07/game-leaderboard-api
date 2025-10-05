@@ -1150,7 +1150,15 @@ which we can call inside the repository's query like this one:
 ```
 **📌 Next Step:** API testing and documentation
 
-**📌 Final Step:** Finalization of documents and codes
+---
+
+## Day 50~Onwards: Testing phase (Postman and TestRail integration)
+📅 Starting date: October 02, 2025
+
+_**📒 Note: **This phase has no target end date since I will be studying and conducting Manual/Automation testing
+using Postman and TestRail._
+
+**📌 Final Step:** Finalization of documents and cleaning up codes
 
 ---
 
