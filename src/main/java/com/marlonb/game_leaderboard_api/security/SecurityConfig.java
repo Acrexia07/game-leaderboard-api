@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.security;
 
+import com.marlonb.game_leaderboard_api.exception.CustomAuthenticationEntryPoint;
 import com.marlonb.game_leaderboard_api.service.GameUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,7 @@ public class SecurityConfig {
 
     private final GameUserDetailsService gameUserDetailsService;
     private final JwtFilter jwtFilter;
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws  Exception {
@@ -50,6 +52,9 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             // Allow basic auth (mainly for testing/debugging)
             .httpBasic(Customizer.withDefaults())
+            // Handles exception related to authentications
+            .exceptionHandling(exception ->
+                    exception.authenticationEntryPoint(authenticationEntryPoint))
             // Add JWT filter before the standard username/password filter
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
             // Make the app stateless (no HTTP sessions stored)

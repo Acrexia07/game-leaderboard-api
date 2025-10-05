@@ -11,7 +11,6 @@ public enum ErrorMessages {
     RESOURCE_NOT_FOUND_MESSAGE("Resource not found"),
     JSON_ERROR_MESSAGE("Malformed JSON Syntax"),
     FORMAT_REQUEST_ERROR_MESSAGE("Invalid request"),
-    HTTP_MESSAGE_NOT_READABLE_ERROR_MESSAGE("Unreadable request body"),
     BAD_CREDENTIALS_MESSAGE("Bad credentials"),
     ACCESS_DENIED_MESSAGE("Forbidden access"),
     DATA_INTEGRITY_ISSUE_MESSAGE("Data integration conflict"),

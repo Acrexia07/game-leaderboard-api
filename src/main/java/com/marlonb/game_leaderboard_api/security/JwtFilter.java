@@ -33,32 +33,37 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
         String username = null;
 
-        // Check if the header contains a Bearer token, then extract the JWT
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7); // remove "Bearer " prefix
-            username = jwtService.extractUsername(token); // extract subject (username) from JWT
-        }
-
-        // If we have a username and no authentication is set in the SecurityContext
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-            // Load user details from the database (Spring Security UserDetails object)
-            UserDetails userDetails = gameUserDetailsService.loadUserByUsername(username);
-
-            // Validate the token against the user details
-            if (jwtService.isTokenValid(token, userDetails.getUsername())) {
-
-                // Create an authentication token for the user with their authorities
-                var authToken = new UsernamePasswordAuthenticationToken
-                                    (userDetails, null, userDetails.getAuthorities());
-
-                // Attach request-specific details (like IP, session, etc.)
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                // Set the authenticated user in the SecurityContext
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+        try {
+            // Check if the header contains a Bearer token, then extract the JWT
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                token = authHeader.substring(7); // remove "Bearer " prefix
+                username = jwtService.extractUsername(token); // extract subject (username) from JWT
             }
+
+            // If we have a username and no authentication is set in the SecurityContext
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+                // Load user details from the database (Spring Security UserDetails object)
+                UserDetails userDetails = gameUserDetailsService.loadUserByUsername(username);
+
+                // Validate the token against the user details
+                if (jwtService.isTokenValid(token, userDetails.getUsername())) {
+
+                    // Create an authentication token for the user with their authorities
+                    var authToken = new UsernamePasswordAuthenticationToken
+                            (userDetails, null, userDetails.getAuthorities());
+
+                    // Attach request-specific details (like IP, session, etc.)
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    // Set the authenticated user in the SecurityContext
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
+            }
+        } catch (Exception e) {
+            // Silent - let AuthenticationEntryPoint handle it
         }
+
         filterChain.doFilter(request, response);
     }
 }
