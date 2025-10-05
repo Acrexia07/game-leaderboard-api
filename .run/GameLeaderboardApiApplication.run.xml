@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="GameLeaderboardApiApplication" type="Application" factoryName="Application" nameIsGenerated="true">
     <envs>
-      <env name="jwt.secret-key" value="nvnz7soMKLRQmHIkIjsztz7YK51mz62DemOHaILgU9k=" />
+      <env name="jwt.secret-key" value="nvnz7soMKLRQmHIkIjsztz7YK51mz62DemOHbILgU9k=" />
       <env name="jwt.expiration-time" value="86400000" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="com.marlonb.game_leaderboard_api.GameLeaderboardApiApplication" />

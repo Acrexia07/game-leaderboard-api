@@ -1,5 +1,6 @@
 package com.marlonb.game_leaderboard_api.exception;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.marlonb.game_leaderboard_api.exception.custom.DuplicateResourceFoundException;
 import com.marlonb.game_leaderboard_api.exception.custom.ResourceNotFoundException;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.*;
+import static com.marlonb.game_leaderboard_api.exception.HttpClientErrorMessage.*;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -156,22 +158,29 @@ public class GlobalExceptionHandler {
             (HttpMessageNotReadableException ex,
              HttpServletRequest request) {
 
-        Map<String, List<String>> customError;
+        Map<String, List<String>> customErrors;
+        String mainMessage;
 
-        if (ex.getCause() instanceof InvalidFormatException) {
-            customError = Map.of("role", List.of(USER_ROLE_ERROR_MESSAGE.getErrorMessage()));
-        } else if (ex.getMessage().contains("JSON")) {
-            customError = Map.of("json", List.of(JSON_ERROR_MESSAGE.getErrorMessage()));
+        Throwable cause = ex.getCause();
+
+        if (cause instanceof InvalidFormatException) {
+            customErrors = Map.of("role", List.of(USER_ROLE_ERROR_MESSAGE.getErrorMessage()));
+            mainMessage = VALIDATION_ISSUE.getErrorMessage();
+        }
+        else if (cause instanceof JsonParseException) {
+            customErrors = Map.of("json", List.of(JSON_ERROR_MESSAGE.getErrorMessage()));
+            mainMessage = UNREADABLE_BODY.getErrorMessage();
         } else {
-            customError = Map.of("request", List.of(FORMAT_REQUEST_ERROR_MESSAGE.getErrorMessage()));
+            customErrors = Map.of("request", List.of(FORMAT_REQUEST_ERROR_MESSAGE.getErrorMessage()));
+            mainMessage = UNREADABLE_BODY.getErrorMessage();;
         }
 
         return ResponseEntity.badRequest()
                              .body(new ErrorResponseDto
                                        (LocalDateTime.now(),
                                         HttpStatus.BAD_REQUEST.value(),
-                                        HTTP_MESSAGE_NOT_READABLE_ERROR_MESSAGE.getErrorMessage(),
-                                        customError,
+                                        mainMessage,
+                                        customErrors,
                                         request.getRequestURI()));
     }
 }
