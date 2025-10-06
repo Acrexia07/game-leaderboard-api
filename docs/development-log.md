@@ -1175,6 +1175,12 @@ outside development._
   both positive and negative tests.
 - Develop test scripts for each request.
 
+**🛠️ Implementation Summary:**
+- Adjusted all Postman requests covering positive and negative tests.
+- Develop test scripts for each request (pre-request and post-request).
+
+**📌 Next Step:** Continuation of Test Script Development for API Automation Testing with Postman
+
 **📌 Final Step:** Finalization of documents and cleaning up codes
 
 ---
