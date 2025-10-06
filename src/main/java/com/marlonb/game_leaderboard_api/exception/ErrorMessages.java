@@ -14,7 +14,7 @@ public enum ErrorMessages {
     BAD_CREDENTIALS_MESSAGE("Bad credentials"),
     ACCESS_DENIED_MESSAGE("Forbidden access"),
     DATA_INTEGRITY_ISSUE_MESSAGE("Data integration conflict"),
-    PLAYER_CREATION_ERROR_MESSAGE("Player account not created yet for this user"),
+    PLAYER_CREATION_ERROR_MESSAGE("Player in this account already exists"),
     USER_ROLE_ERROR_MESSAGE("Invalid value. Accepts 'ADMIN' or 'USER' only"),
     VALIDATION_ERROR_MESSAGE("Validation error");
 

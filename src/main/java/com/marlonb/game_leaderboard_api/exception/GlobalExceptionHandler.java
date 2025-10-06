@@ -115,7 +115,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handlesHttpClientRelatedExceptions (HttpClientErrorException ex,
                                                                                 HttpServletRequest request) {
 
-        String httpRelatedErrorMessage = HttpClientErrorMessage.fromStatus((HttpStatus) ex.getStatusCode());
+        String httpRelatedErrorMessage = fromStatus((HttpStatus) ex.getStatusCode());
 
         return ResponseEntity.status(ex.getStatusCode())
                              .body(new ErrorResponseDto
