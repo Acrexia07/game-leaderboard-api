@@ -1155,8 +1155,25 @@ which we can call inside the repository's query like this one:
 ## Day 50~Onwards: Testing phase (Postman and TestRail integration)
 📅 Starting date: October 02, 2025
 
-_**📒 Note: **This phase has no target end date since I will be studying and conducting Manual/Automation testing
+_**📒 Note:** This phase has no target end date since I will be studying and conducting Manual/Automation testing
 using Postman and TestRail._
+
+_**Note (October 06, 2025):**
+After studying Postman automation testing and testing it on my project, I will start documenting testing activities 
+outside development._
+
+---
+# TESTING PHASE - OUTSIDE DEVELOPMENT (POSTMAN ~ TESTRAIL INTEGRATION)
+
+--- 
+
+## Day 51 (Testing): Adjust all requests on Postman and develop test scripts
+📅 Date: October 06, 2025
+
+**🎯 Objectives:**
+- After brainstorming, adjust all requests from groups into individual test cases per request on Postman that cover
+  both positive and negative tests.
+- Develop test scripts for each request.
 
 **📌 Final Step:** Finalization of documents and cleaning up codes
 
