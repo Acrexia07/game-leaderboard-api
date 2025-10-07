@@ -1181,6 +1181,15 @@ outside development._
 
 **📌 Next Step:** Continuation of Test Script Development for API Automation Testing with Postman
 
+---
+
+## Day 52 (Testing): Continuation of Test Script Development for API Automation Testing with Postman
+📅 Date: October 06, 2025
+
+**🎯 Objectives:**
+- Centralize token logic on each request with respect to their required tokens.
+- Integrate Postman to TestRail.
+
 **📌 Final Step:** Finalization of documents and cleaning up codes
 
 ---
