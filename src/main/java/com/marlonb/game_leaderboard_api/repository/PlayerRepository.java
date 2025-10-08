@@ -14,11 +14,14 @@ public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
     boolean existsByPlayerName (String playerName);
 
     @Query(value = """
-                SELECT p.id, p.uuid, p.player_name, p.scores, p.timestamp, p.user_id,
-                       ROW_NUMBER() OVER (ORDER BY p.scores DESC, p.timestamp ASC) as game_rank
-                FROM player_data p
-                WHERE p.id = :id
-                """, nativeQuery = true)
+    SELECT ranked.*
+    FROM (
+        SELECT p.id, p.uuid, p.player_name, p.scores, p.timestamp, p.user_id,
+               ROW_NUMBER() OVER (ORDER BY p.scores DESC, p.timestamp ASC) AS game_rank
+        FROM player_data p
+    ) ranked
+    WHERE ranked.id = :id
+    """, nativeQuery = true)
     Optional<PlayerEntity> findById(@Param("id") Long id);
 
     @Query(value = """
