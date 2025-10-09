@@ -1188,9 +1188,53 @@ outside development._
 
 **🎯 Objectives:**
 - Centralize token logic on each request with respect to their required tokens.
-- Integrate Postman to TestRail.
 
-**📌 Final Step:** Finalization of documents and cleaning up codes
+**🛠️ Implementation Summary:**
+- Centralized token logic on each request with respect to their required tokens.
+
+**📌 Next Step:** Categorizing all requests per sub-folders in postman
+
+---
+
+## Day 53 (Testing): Categorizing all requests per sub-folders in postman
+📅 Date: October 07, 2025
+
+**🎯 Objectives:**
+- Adjust all requests locations by categorizing them by folders.
+
+**🛠️ Implementation Summary:**
+- Adjusted token logic on each request with respect to their required tokens.
+- Fix some small issues on test-scripts.
+
+**📌 Next Step:** Categorizing all requests per sub-folders in postman
+
+---
+
+## Day 54 (Testing): Continuation on fixing some bugs and adjust some backend logic
+📅 Date: October 08, 2025
+
+**🎯 Objectives:**
+- Continue fixing all issues and bugs encountered on tests scripts on Postman.
+
+**🛠️ Implementation Summary:**
+- Fixed bugs related to gameRank value.
+- Confirmed all tests passed in one run at `Game Leaderboard API` Collection.
+
+**📌 Next Step:** Postman Documentation.
+
+---
+
+## Day 55 (Testing): Postman Documentation
+📅 Date: October 09, 2025
+
+**🎯 Objectives:**
+- Documenting the API collection on Postman.
+
+**🛠️ Implementation Summary:**
+- Some folders and request are documented. 
+- - Status: `Ongoing`
+
+**📌 Next Step:** Continuation on Postman Documentation.
 
 ---
 
