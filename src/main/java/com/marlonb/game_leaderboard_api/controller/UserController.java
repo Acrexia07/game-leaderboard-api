@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+import static com.marlonb.game_leaderboard_api.controller.UserApiSuccessfulMessages.*;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class UserController {
         URI location = URI.create("/api/users/register/" + createUserRequest.id());
 
         return ResponseEntity.created(location).body(new ApiMessageResponseDto<>
-                                                     ("User created successfully!",
+                                                     (USER_CREATE_API_MESSAGE.getApiMessage(),
                                                       createUserRequest));
     }
 
@@ -39,7 +41,7 @@ public class UserController {
         String verifiedUser = userService.verifyUser(loginRequest);
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
-                                        ("User login successfully!",
+                                        (USER_LOGIN_API_MESSAGE.getApiMessage(),
                                          verifiedUser));
     }
 
@@ -52,7 +54,7 @@ public class UserController {
         URI location = URI.create("/api/users/" + createAdminRequest.id());
 
         return ResponseEntity.created(location).body(new ApiMessageResponseDto<>
-                                                     ("Admin created successfully!",
+                                                     (USER_CREATE_ADMIN_MESSAGE.getApiMessage(),
                                                       createAdminRequest));
     }
 
@@ -62,7 +64,7 @@ public class UserController {
         List<UserResponseDto> listOfUsers = userService.retrieveAllUsers();
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
-                                        ("Retrieved all users successfully!",
+                                        (USER_READ_ALL_API_MESSAGE.getApiMessage(),
                                          listOfUsers));
     }
 
@@ -74,7 +76,7 @@ public class UserController {
         UserResponseDto retrievedUser = userService.retrieveSpecificUser(id);
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
-                                        ("Retrieved specific user successfully!",
+                                        (USER_READ_BY_ID_API_MESSAGE.getApiMessage(),
                                          retrievedUser));
     }
 
@@ -87,7 +89,7 @@ public class UserController {
         UserResponseDto updatedUser = userService.updateSpecificUser(id, userUpdate);
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
-                                        ("Updated specific user successfully!",
+                                        (USER_UPDATE_BY_ID_API_MESSAGE.getApiMessage(),
                                          updatedUser));
     }
 
@@ -115,8 +117,8 @@ public class UserController {
         UserSummaryDto userProfile = userService.getUserProfile(userProfileId);
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
-                                        ("Retrieved user profile successfully!",
-                                                userProfile));
+                                        (USER_READ_PROFILE_API_MESSAGE.getApiMessage(),
+                                         userProfile));
     }
 
     @PutMapping("/users/me")
@@ -135,7 +137,7 @@ public class UserController {
         UserSummaryDto userProfile = userService.updateUserProfile(userProfileId, updateRequest);
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
-                                        ("Update user profile successfully!",
+                                        (USER_UPDATE_PROFILE_API_MESSAGE.getApiMessage(),
                                          userProfile));
     }
 }
