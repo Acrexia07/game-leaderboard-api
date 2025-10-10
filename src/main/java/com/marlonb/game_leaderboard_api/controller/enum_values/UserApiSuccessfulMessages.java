@@ -1,4 +1,4 @@
-package com.marlonb.game_leaderboard_api.controller;
+package com.marlonb.game_leaderboard_api.controller.enum_values;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

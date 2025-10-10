@@ -29,13 +29,15 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         // Extract the "Authorization" header from the request
-        String authHeader = request.getHeader("Authorization");
+        String authorization = "Authorization";
+        String tokenString = "Bearer ";
+        String authHeader = request.getHeader(authorization);
         String token = null;
         String username = null;
 
         try {
             // Check if the header contains a Bearer token, then extract the JWT
-            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            if (authHeader != null && authHeader.startsWith(tokenString)) {
                 token = authHeader.substring(7); // remove "Bearer " prefix
                 username = jwtService.extractUsername(token); // extract subject (username) from JWT
             }

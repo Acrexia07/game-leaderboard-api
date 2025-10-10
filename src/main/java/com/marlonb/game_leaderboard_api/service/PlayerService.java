@@ -140,6 +140,6 @@ public class PlayerService {
 
         return playerRepository.findById(id)
                                .orElseThrow(() -> new ResourceNotFoundException
-                                            (String.format("This player id '%d' does not exist!", id)));
+                                            (String.format(PLAYER_ID_NOT_FOUND.getErrorMessage(), id)));
     }
 }

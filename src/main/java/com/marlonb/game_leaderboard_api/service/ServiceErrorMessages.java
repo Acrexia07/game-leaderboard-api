@@ -11,6 +11,7 @@ public enum ServiceErrorMessages {
     DUPLICATE_PLAYER_NAME_FOUND("Player name '%s' already exist!"),
     INVALID_CREDENTIALS_FOUND("Invalid username or password!"),
     RESOURCE_NOT_FOUND("This user id '%d' does not exist!"),
+    PLAYER_ID_NOT_FOUND("This player id '%d' does not exist!"),
     USER_NOT_FOUND("User not found!");
 
     private final String errorMessage;

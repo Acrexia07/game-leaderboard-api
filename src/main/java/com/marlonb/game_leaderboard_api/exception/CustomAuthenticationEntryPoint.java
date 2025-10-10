@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import static com.marlonb.game_leaderboard_api.exception.AuthenticationErrorMessages.*;
+import static com.marlonb.game_leaderboard_api.exception.enum_values.AuthenticationErrorMessages.*;
+import static com.marlonb.game_leaderboard_api.exception.enum_values.AuthenticationStringValues.*;
 
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -52,11 +53,11 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         String errorMessage;
         String authExceptionMessage = authException.getMessage();
 
-        if (authExceptionMessage.contains("expired")) {
+        if (authExceptionMessage.contains(EXPIRED.getExpectedValueString())) {
             errorMessage = EXPIRED_TOKEN.getErrorMessage();
-        } else if (authExceptionMessage.contains("Invalid")) {
+        } else if (authExceptionMessage.contains(INVALID.getExpectedValueString())) {
             errorMessage = INVALID_TOKEN.getErrorMessage();
-        } else if (authExceptionMessage.contains("Full authentication")) {
+        } else if (authExceptionMessage.contains(FULL_AUTHENTICATION_VALUE.getExpectedValueString())) {
             errorMessage = FULL_AUTHENTICATION.getErrorMessage();
         } else {
             errorMessage = authExceptionMessage;

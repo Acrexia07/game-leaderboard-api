@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
-import static com.marlonb.game_leaderboard_api.controller.PlayerApiSuccessfulMessages.*;
-import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.*;
+import static com.marlonb.game_leaderboard_api.controller.enum_values.PlayerApiSuccessfulMessages.*;
+import static com.marlonb.game_leaderboard_api.exception.enum_values.ErrorMessages.*;
 
 @RestController
 @RequestMapping("/api")

@@ -20,8 +20,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.*;
-import static com.marlonb.game_leaderboard_api.exception.HttpClientErrorMessage.*;
+import static com.marlonb.game_leaderboard_api.exception.enum_values.ErrorMessages.*;
+import static com.marlonb.game_leaderboard_api.exception.enum_values.HttpClientErrorMessage.*;
+import static com.marlonb.game_leaderboard_api.exception.enum_values.ResponseKey.*;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -36,7 +37,7 @@ public class GlobalExceptionHandler {
                                        (LocalDateTime.now(),
                                         HttpStatus.INTERNAL_SERVER_ERROR.value(),
                                         INTERNAL_SERVER_ERROR_MESSAGE.getErrorMessage(),
-                                        Map.of("server", List.of(ex.getMessage())),
+                                        Map.of(SERVER_KEY_VALUE.getKeyValue(), List.of(ex.getMessage())),
                                         request.getRequestURI()));
     }
 
@@ -51,7 +52,7 @@ public class GlobalExceptionHandler {
                                        (LocalDateTime.now(),
                                         HttpStatus.CONFLICT.value(),
                                         DUPLICATE_RESOURCE_FOUND_MESSAGE.getErrorMessage(),
-                                        Map.of("resource", List.of(ex.getMessage())),
+                                        Map.of(RESOURCE_KEY_VALUE.getKeyValue(), List.of(ex.getMessage())),
                                         request.getRequestURI()));
     }
 
@@ -64,7 +65,7 @@ public class GlobalExceptionHandler {
                                        (LocalDateTime.now(),
                                         HttpStatus.CONFLICT.value(),
                                         DATA_INTEGRITY_ISSUE_MESSAGE.getErrorMessage(),
-                                        Map.of("player",
+                                        Map.of(PLAYER_KEY_VALUE.getKeyValue(),
                                                 List.of(PLAYER_CREATION_ERROR_MESSAGE.getErrorMessage())),
                                         request.getRequestURI()));
     }
@@ -79,7 +80,7 @@ public class GlobalExceptionHandler {
                                        (LocalDateTime.now(),
                                         HttpStatus.NOT_FOUND.value(),
                                         RESOURCE_NOT_FOUND_MESSAGE.getErrorMessage(),
-                                        Map.of("resource", List.of(ex.getMessage())),
+                                        Map.of(RESOURCE_KEY_VALUE.getKeyValue(), List.of(ex.getMessage())),
                                         request.getRequestURI()));
     }
 
@@ -93,7 +94,7 @@ public class GlobalExceptionHandler {
                         (LocalDateTime.now(),
                                 HttpStatus.FORBIDDEN.value(),
                                 ACCESS_DENIED_MESSAGE.getErrorMessage(),
-                                Map.of("credentials", List.of(ex.getMessage())),
+                                Map.of(CREDENTIALS_KEY_VALUE.getKeyValue(), List.of(ex.getMessage())),
                                 request.getRequestURI()));
     }
 
@@ -107,7 +108,7 @@ public class GlobalExceptionHandler {
                                        (LocalDateTime.now(),
                                         HttpStatus.UNAUTHORIZED.value(),
                                         BAD_CREDENTIALS_MESSAGE.getErrorMessage(),
-                                        Map.of("user", List.of(ex.getMessage())),
+                                        Map.of(USER_KEY_VALUE.getKeyValue(), List.of(ex.getMessage())),
                                         request.getRequestURI()));
     }
 
@@ -122,7 +123,7 @@ public class GlobalExceptionHandler {
                                        (LocalDateTime.now(),
                                         ex.getStatusCode().value(),
                                         httpRelatedErrorMessage,
-                                        Map.of("error", List.of(ex.getMessage())),
+                                        Map.of(ERROR_KEY_VALUE.getKeyValue(), List.of(ex.getMessage())),
                                         request.getRequestURI()));
     }
 
@@ -139,7 +140,8 @@ public class GlobalExceptionHandler {
           .forEach(error -> {
                                       String fieldName = error.getField();
                                       String fieldMessage = error.getDefaultMessage();
-                                      fieldErrors.computeIfAbsent(fieldName, fieldElement -> new ArrayList<>())
+                                      fieldErrors.computeIfAbsent(fieldName,
+                                                                  fieldElement -> new ArrayList<>())
                                                  .add(fieldMessage);
                                       }
           );
@@ -164,14 +166,17 @@ public class GlobalExceptionHandler {
         Throwable cause = ex.getCause();
 
         if (cause instanceof InvalidFormatException) {
-            customErrors = Map.of("role", List.of(USER_ROLE_ERROR_MESSAGE.getErrorMessage()));
+            customErrors = Map.of(ROLE_KEY_VALUE.getKeyValue(),
+                           List.of(USER_ROLE_ERROR_MESSAGE.getErrorMessage()));
             mainMessage = VALIDATION_ISSUE.getErrorMessage();
         }
         else if (cause instanceof JsonParseException) {
-            customErrors = Map.of("json", List.of(JSON_ERROR_MESSAGE.getErrorMessage()));
+            customErrors = Map.of(JSON_KEY_VALUE.getKeyValue(),
+                           List.of(JSON_ERROR_MESSAGE.getErrorMessage()));
             mainMessage = UNREADABLE_BODY.getErrorMessage();
         } else {
-            customErrors = Map.of("request", List.of(FORMAT_REQUEST_ERROR_MESSAGE.getErrorMessage()));
+            customErrors = Map.of(REQUEST_KEY_VALUE.getKeyValue(),
+                           List.of(FORMAT_REQUEST_ERROR_MESSAGE.getErrorMessage()));
             mainMessage = UNREADABLE_BODY.getErrorMessage();;
         }
 

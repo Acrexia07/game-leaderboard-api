@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.*;
+import static com.marlonb.game_leaderboard_api.exception.enum_values.ErrorMessages.*;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;

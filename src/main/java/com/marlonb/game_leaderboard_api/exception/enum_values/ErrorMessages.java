@@ -1,4 +1,4 @@
-package com.marlonb.game_leaderboard_api.exception;
+package com.marlonb.game_leaderboard_api.exception.enum_values;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +16,7 @@ public enum ErrorMessages {
     DATA_INTEGRITY_ISSUE_MESSAGE("Data integration conflict"),
     PLAYER_CREATION_ERROR_MESSAGE("Player in this account already exists"),
     PLAYER_NOT_FOUND_ERROR_MESSAGE("Player account not created yet for this user"),
+    USER_NOT_FOUND_ERROR_MESSAGE("User not found."),
     USER_ROLE_ERROR_MESSAGE("Invalid value. Accepts 'ADMIN' or 'USER' only"),
     VALIDATION_ERROR_MESSAGE("Validation error");
 

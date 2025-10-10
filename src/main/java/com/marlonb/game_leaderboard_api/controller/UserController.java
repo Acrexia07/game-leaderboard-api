@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
-import static com.marlonb.game_leaderboard_api.controller.UserApiSuccessfulMessages.*;
+import static com.marlonb.game_leaderboard_api.controller.enum_values.UserApiSuccessfulMessages.*;
+import static com.marlonb.game_leaderboard_api.exception.enum_values.ErrorMessages.*;
 
 @RestController
 @RequestMapping("/api")
@@ -111,7 +112,7 @@ public class UserController {
         Long userProfileId = principal.getId();
 
         if (userProfileId == null) {
-            throw new ResourceNotFoundException("User not found.");
+            throw new ResourceNotFoundException(USER_NOT_FOUND_ERROR_MESSAGE.getErrorMessage());
         }
 
         UserSummaryDto userProfile = userService.getUserProfile(userProfileId);
@@ -131,7 +132,7 @@ public class UserController {
         Long userProfileId = principal.getId();
 
         if (userProfileId == null) {
-            throw new ResourceNotFoundException("User not found.");
+            throw new ResourceNotFoundException(USER_NOT_FOUND_ERROR_MESSAGE.getErrorMessage());
         }
 
         UserSummaryDto userProfile = userService.updateUserProfile(userProfileId, updateRequest);

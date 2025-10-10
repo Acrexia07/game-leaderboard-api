@@ -1,4 +1,4 @@
-package com.marlonb.game_leaderboard_api.exception;
+package com.marlonb.game_leaderboard_api.exception.enum_values;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
