@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+import static com.marlonb.game_leaderboard_api.controller.PlayerApiSuccessfulMessages.*;
+import static com.marlonb.game_leaderboard_api.exception.ErrorMessages.*;
+
 @RestController
 @RequestMapping("/api")
 public class PlayerController {
@@ -36,7 +39,7 @@ public class PlayerController {
         URI location = URI.create("/api/players/" + playerResponseForCreate.id());
 
         return ResponseEntity.created(location).body(new ApiMessageResponseDto<>
-                                                    ("Player created successfully!",
+                                                    (PLAYER_CREATE_API_MESSAGE.getApiMessage(),
                                                      playerResponseForCreate));
     }
 
@@ -46,7 +49,7 @@ public class PlayerController {
         List<PlayerResponseDto> listOfPlayers = playerService.retrieveAllPlayersData();
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
-                                       ("Retrieved all players successfully!",
+                                       (PLAYER_READ_ALL_API_MESSAGE.getApiMessage(),
                                         listOfPlayers));
     }
 
@@ -58,7 +61,8 @@ public class PlayerController {
         PlayerResponseDto foundResponse = playerService.retrieveSpecificPlayerData(id);
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
-                                        ("Retrieved specific player successfully!", foundResponse));
+                                        (PLAYER_READ_BY_ID_API_MESSAGE.getApiMessage(),
+                                         foundResponse));
     }
 
     @GetMapping("/leaderboards")
@@ -67,7 +71,7 @@ public class PlayerController {
         List<PlayerResponseDto> listOfTopPlayers = playerService.retrieveTop3Players();
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
-                                       ("Retrieve top 3 players successfully!",
+                                       (PLAYER_LEADERBOARD_API_MESSAGE.getApiMessage(),
                                         listOfTopPlayers));
     }
 
@@ -79,7 +83,7 @@ public class PlayerController {
         PlayerResponseDto response = playerService.updateSpecificPlayerData(id, updateDto);
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
-                                        ("Specific player updated successfully!",
+                                        (PLAYER_UPDATE_BY_ID_API_MESSAGE.getApiMessage(),
                                          response));
     }
 
@@ -93,13 +97,13 @@ public class PlayerController {
         Long playerId = principal.getPlayerId();
 
         if (playerId == null) {
-           throw new ResourceNotFoundException("Player account not created yet for this user");
+           throw new ResourceNotFoundException(PLAYER_NOT_FOUND_ERROR_MESSAGE.getErrorMessage());
         }
 
         PlayerSummaryDto profileResponse = playerService.getPlayerProfile(playerId);
 
         return ResponseEntity.ok().body(new ApiMessageResponseDto<>
-                                        ("Retrieve player profile successfully!",
+                                        (PLAYER_READ_PROFILE_API_MESSAGE.getApiMessage(),
                                         profileResponse));
     }
 
@@ -120,7 +124,7 @@ public class PlayerController {
        PlayerSummaryDto profileResponse = playerService.updatePlayerProfile(playerId, playerUpdate);
 
        return ResponseEntity.ok().body(new ApiMessageResponseDto<>
-                                       ("Update player profile successfully!",
+                                       (PLAYER_UPDATE_PROFILE_API_MESSAGE.getApiMessage(),
                                         profileResponse));
     }
 }

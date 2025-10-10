@@ -15,6 +15,7 @@ public enum ErrorMessages {
     ACCESS_DENIED_MESSAGE("Forbidden access"),
     DATA_INTEGRITY_ISSUE_MESSAGE("Data integration conflict"),
     PLAYER_CREATION_ERROR_MESSAGE("Player in this account already exists"),
+    PLAYER_NOT_FOUND_ERROR_MESSAGE("Player account not created yet for this user"),
     USER_ROLE_ERROR_MESSAGE("Invalid value. Accepts 'ADMIN' or 'USER' only"),
     VALIDATION_ERROR_MESSAGE("Validation error");
 
