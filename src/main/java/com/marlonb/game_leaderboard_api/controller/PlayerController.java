@@ -33,10 +33,11 @@ public class PlayerController {
     public ResponseEntity<ApiMessageResponseDto<PlayerResponseDto>> createPlayerResource
                                                                 (@Valid @RequestBody PlayerRequestDto playerRequest,
                                                                                      Authentication authentication) {
+        String baseUrl = "/api/players/";
 
         // Save new player data and build a Location URI for the created resource
         PlayerResponseDto playerResponseForCreate = playerService.savePlayerData(playerRequest, authentication);
-        URI location = URI.create("/api/players/" + playerResponseForCreate.id());
+        URI location = URI.create(baseUrl + playerResponseForCreate.id());
 
         return ResponseEntity.created(location).body(new ApiMessageResponseDto<>
                                                     (PLAYER_CREATE_API_MESSAGE.getApiMessage(),
