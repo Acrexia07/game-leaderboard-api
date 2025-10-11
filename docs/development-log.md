@@ -25,7 +25,38 @@
 - [Day 21: JWT Implementation preparation - `UserService` implementation](#day-21-jwt-implementation-preparation---userservice-implementation)
 - [Day 22: Expand `UserService` functions with additional CRUD operations](#day-22-expand-userservice-functions-with-additional-crud-operations)
 - [Day 23: TDD Continuation - Negative Test Case Development for `UserService`](#day-23-tdd-continuation---negative-test-case-development-for-userservice)
--[]
+- [Day 24: TDD Continuation - Positive test case development of the controller layer functions](#day-24-tdd-continuation---positive-test-case-development-of-the-controller-layer-functions)
+- [Day 25: Security Planning – JWT & Endpoint Authorization Design](#day-25-security-planning--jwt--endpoint-authorization-design)
+- [Day 26: TDD Continuation - Positive test case development of the other controller layer functions](#day-26-tdd-continuation---positive-test-case-development-of-the-other-controller-layer-functions)
+- [Day 27: JWT Implementation Preparation - Test-Driven Development of Controller layer via Positive Testing](#day-27-jwt-implementation-preparation---test-driven-development-of-controller-layer-via-positive-testing)
+- [Day 28: JWT Implementation Preparation - Test-Driven Development of Controller layer via Positive Testing](#day-28-jwt-implementation-preparation---test-driven-development-of-controller-layer-via-positive-testing)
+- [Day 29: JWT Implementation Preparation - Implementing Admin user roles in the `UserEntity`](#day-29-jwt-implementation-preparation---implementing-admin-user-roles-in-the-userentity)
+- [Day 30: JWT Implementation Preparation - Admin Service Layer and Controller layer Implementation](#day-30-jwt-implementation-preparation---admin-service-layer-and-controller-layer-implementation)
+- [Day 31: JWT Implementation Preparation - User Management Service & Security Testing Setup](#day-31-jwt-implementation-preparation---user-management-service--security-testing-setup)
+- [Day 32: Authentication System Testing (Pre-JWT)](#day-32-authentication-system-testing-pre-jwt)
+- [Day 33: JWT Implementation Preparation - login dummy endpoint creation](#day-33-jwt-implementation-preparation---login-dummy-endpoint-creation)
+- [Day 34: JWT Implementation  - Implementation of JWT token generation](#day-34-jwt-implementation---implementation-of-jwt-token-generation)
+- [Day 35: JWT Implementation - User Login Testing](#day-35-jwt-implementation---jwt-related-service-unit-testing)
+- [Day 36: JWT Implementation Continuation – Token Validation](#day-36-jwt-implementation-continuation--token-validation)
+- [Day 37: Security Refinement – PreAuthorize & Test Cleanup](#day-37-security-refinement--preauthorize--test-cleanup)
+- [Day 38: User controller Unit test recreation](#day-38-user-controller-unit-test-recreation)
+- [Day 39: Implementation of data relationship on `UserEntity` and `PlayerEntity`](#day-39-implementation-of-data-relationship-on-userentity-and-playerentity)
+- [Day 40: Rebuild player controller unit tests aligned with JWT authentication and @PreAuthorize authorization.](#day-40-rebuild-player-controller-unit-tests-aligned-with-jwt-authentication-and-preauthorize-authorization)
+- [Day 41: Continuation for rebuilding player controller tests](#day-41-continuation-for-rebuilding-player-controller-tests)
+- [Day 42: Implementation of new controller functions for handling player profile conveniently](#day-42-implementation-of-new-controller-functions-for-handling-player-profile-conveniently)
+- [Day 43: Continuation of the implementation of player profile](#day-43-continuation-of-the-implementation-of-player-profile)
+- [Day 44-45: Refactoring all the codes and test before proceeding to integration testing](#day-44-45-refactoring-all-the-codes-and-test-before-proceeding-to-integration-testing)
+- [Day 45-46: Integration Test implementation](#day-45-46-integration-test-implementation)
+- [Day 47: Security Test implementation - Positive Testing](#day-47-security-test-implementation---positive-testing)
+- [Day 48: Security Test implementation - Negative Testing](#day-48-security-test-implementation---negative-testing)
+- [Day 49: Security Test implementation - Negative Testing](#day-49-security-test-implementation---negative-testing)
+- [Day 50~Onwards: Testing phase (Postman and TestRail integration)](#day-50onwards-testing-phase-postman-and-testrail-integration)
+- [Day 51 (Testing): Adjust all requests on Postman and develop test scripts](#day-51-testing-adjust-all-requests-on-postman-and-develop-test-scripts)
+- [Day 52 (Testing): Continuation of Test Script Development for API Automation Testing with Postman](#day-52-testing-continuation-of-test-script-development-for-api-automation-testing-with-postman)
+- [Day 53 (Testing): Categorizing all requests per sub-folders in postman](#day-53-testing-categorizing-all-requests-per-sub-folders-in-postman)
+- [Day 54 (Testing): Continuation on fixing some bugs and adjusting some backend logic](#day-54-testing-continuation-on-fixing-some-bugs-and-adjust-some-backend-logic)
+- [Day 55 (Testing): Postman Documentation](#day-55-testing-postman-documentation)
+- [Day 56 (Testing): Final Day - TestRail Implementation and finalizing Documentations](#day-56-testing-final-day---testrail-implementation-and-finalizing-documentations)
 
 ---
 
@@ -1203,7 +1234,7 @@ outside development._
 - Adjust all requests locations by categorizing them by folders.
 
 **🛠️ Implementation Summary:**
-- Adjusted token logic on each request with respect to their required tokens.
+- Adjust token logic on each request with respect to their required tokens.
 - Fix some small issues on test-scripts.
 
 **📌 Next Step:** Categorizing all requests per sub-folders in postman
@@ -1237,7 +1268,7 @@ outside development._
 
 ---
 
-## Day 56 (Testing): TestRail Implementation and finalizing Documentations
+## Day 56 (Testing): Final Day - TestRail Implementation and finalizing Documentations
 📅 Date: October 11, 2025
 
 **🎯 Objectives:**
